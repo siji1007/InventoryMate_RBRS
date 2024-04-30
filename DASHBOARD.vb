@@ -375,13 +375,7 @@ Public Class DASHBOARD
 
     End Sub
 
-
-
-
-
-
-
-
-
-
+    Friend Function Product() As Object
+        Throw New NotImplementedException()
+    End Function
 End Class
