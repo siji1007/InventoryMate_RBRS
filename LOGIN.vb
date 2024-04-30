@@ -44,15 +44,15 @@ Public Class LOGIN
                             updateQuery.Parameters.AddWithValue("@Username", username)
                             updateQuery.ExecuteNonQuery()
 
+
+
                             ' Commit transaction if all operations succeed
                             transaction.Commit()
 
-                            MessageBox.Show("Login successful and status updated to ACTIVE.")
+                            MessageBox.Show("LOGIN SUCCESSFULLY!")
 
-
-
-                            ' Raise the SignInClicked event
-                            RaiseEvent SignInClicked()
+                            Dim mainForm As MAIN_FORM = TryCast(Me.ParentForm, MAIN_FORM)
+                            mainForm.SwitchToDashboard()
 
 
 
@@ -93,6 +93,13 @@ Public Class LOGIN
         End Using
     End Function
 
-
-
+    Private Sub Pass_show_Click(sender As Object, e As EventArgs) Handles Pass_show.Click
+        If txt_password.PasswordChar = Char.MinValue Then
+            ' If password masking is disabled, enable it with '*'
+            txt_password.PasswordChar = "*"
+        Else
+            ' If password masking is enabled, disable it
+            txt_password.PasswordChar = Char.MinValue
+        End If
+    End Sub
 End Class

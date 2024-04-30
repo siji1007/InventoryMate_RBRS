@@ -263,7 +263,7 @@ Public Class TRANSACTION
                                 Cb_warranty.SelectedIndex = -1
 
 
-                                Dim filePath As String = "C:\Users\XtiaN\source\repos\InventoryMate\transac\transaction_status.txt"
+                                Dim filePath As String = "C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\transac\transaction_status.txt"
 
 
                                 Try
@@ -423,7 +423,7 @@ Public Class TRANSACTION
 
 
                                 'READ THE FILE AND DICREAMENT THE CURRENT VALUE TO 1, MEANS THAT DEDUCTED DATA IS PERFORM IN THE DATAGRID
-                                Dim filePath As String = "C:\Users\XtiaN\source\repos\InventoryMate\transac\transaction_status.txt"
+                                Dim filePath As String = "C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\transac\transaction_status.txt"
 
                                 Try
                                     ' Read the current value from the text file

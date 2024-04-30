@@ -24,6 +24,7 @@ Partial Class LOGIN
     Private Sub InitializeComponent()
         logo = New PictureBox()
         GroupBox1 = New GroupBox()
+        Pass_show = New Button()
         txt_password = New TextBox()
         txt_username = New TextBox()
         Btn_SignUp = New Button()
@@ -48,6 +49,7 @@ Partial Class LOGIN
         ' GroupBox1
         ' 
         GroupBox1.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        GroupBox1.Controls.Add(Pass_show)
         GroupBox1.Controls.Add(txt_password)
         GroupBox1.Controls.Add(txt_username)
         GroupBox1.Controls.Add(Btn_SignUp)
@@ -63,17 +65,35 @@ Partial Class LOGIN
         GroupBox1.TabStop = False
         GroupBox1.Text = "LOGIN"
         ' 
+        ' Pass_show
+        ' 
+        Pass_show.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
+        Pass_show.BackColor = Color.Transparent
+        Pass_show.BackgroundImageLayout = ImageLayout.Zoom
+        Pass_show.FlatStyle = FlatStyle.Popup
+        Pass_show.Image = My.Resources.Resources.view
+        Pass_show.Location = New Point(366, 275)
+        Pass_show.Name = "Pass_show"
+        Pass_show.Size = New Size(34, 24)
+        Pass_show.TabIndex = 9
+        Pass_show.UseVisualStyleBackColor = False
+        ' 
         ' txt_password
         ' 
         txt_password.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        txt_password.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        txt_password.ForeColor = SystemColors.Window
         txt_password.Location = New Point(153, 275)
         txt_password.Name = "txt_password"
+        txt_password.PasswordChar = "*"c
         txt_password.Size = New Size(207, 23)
         txt_password.TabIndex = 5
         ' 
         ' txt_username
         ' 
         txt_username.Anchor = AnchorStyles.Bottom Or AnchorStyles.Right
+        txt_username.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        txt_username.ForeColor = Color.White
         txt_username.Location = New Point(153, 224)
         txt_username.Name = "txt_username"
         txt_username.Size = New Size(207, 23)
@@ -154,6 +174,7 @@ Partial Class LOGIN
     Friend WithEvents txt_password As TextBox
     Friend WithEvents txt_username As TextBox
     Friend WithEvents Btn_SignUp As Button
+    Friend WithEvents Pass_show As Button
 
 
 

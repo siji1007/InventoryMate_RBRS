@@ -20,18 +20,15 @@ Public Class MAIN_FORM
         loginControl.Show()
     End Sub
 
-    Private Sub LoginControl_SignInClicked() Handles loginControl.SignInClicked
-        ' Remove the LOGIN UserControl from main_panel
-        mainPanel.Controls.Remove(loginControl)
-        loginControl.Dispose()
-
-        ' Create and show the DASHBOARD UserControl
-        dashboardControl = New DASHBOARD()
+    Public Sub SwitchToDashboard()
+        Dim dashboardControl As New DASHBOARD()
         dashboardControl.Dock = DockStyle.Fill
+        mainPanel.Controls.Clear()  ' Remove any existing controls from the main panel
         mainPanel.Controls.Add(dashboardControl)
         dashboardControl.BringToFront()
         dashboardControl.Show()
     End Sub
+
 
 
 

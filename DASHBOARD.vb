@@ -4,10 +4,6 @@ Imports Org.BouncyCastle.Math.EC
 
 Public Class DASHBOARD
 
-
-
-
-
     Private isHomeFormOpen As Boolean = False
     Private isProductFormOpen As Boolean = False
     Private isWarrantyFormOpen As Boolean = False
@@ -15,6 +11,29 @@ Public Class DASHBOARD
     Private isSupplierFormOpen As Boolean = False
     Private isEmployeeFormOpen As Boolean = False
     Private isTransactionFromOpen As Boolean = False
+
+    Private Function ReadFileValueAndNotify() As Integer
+        Dim filePath As String = "C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\transac\transaction_status.txt" ' Replace with the actual file path
+        Dim fileValue As Integer = 0
+
+        Try
+            ' Read the value from the text file
+            If System.IO.File.Exists(filePath) Then
+                Using reader As New System.IO.StreamReader(filePath)
+                    Dim fileContent As String = reader.ReadLine()
+                    If Integer.TryParse(fileContent, fileValue) Then
+                        ' Successfully parsed the value from the file and it's greater than 0
+
+                    End If
+                End Using
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error reading file: " & ex.Message)
+        End Try
+
+        ' Return the file value
+        Return fileValue
+    End Function
 
 
     Private Sub DASHBOARD_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -49,7 +68,7 @@ Public Class DASHBOARD
                     Btn_supplier.Visible = True
                     Btn_employee.Visible = True
                     Btn_transaction.Visible = True
-                    MessageBox.Show("Admin log")
+
 
                 ElseIf userPrivilege = "EMPLOYEE" AndAlso userStatus = "ACTIVE" Then
                     ' Show or hide buttons based on employee privilege
@@ -178,38 +197,6 @@ Public Class DASHBOARD
             End If
         End If
     End Sub
-
-
-
-
-
-
-
-
-
-
-    Private Function ReadFileValueAndNotify() As Integer
-        Dim filePath As String = "C:\Users\XtiaN\Documents\RBRS GADGET CENTER\RBRS GANDET CENTER\transac\transaction_status.txt" ' Replace with the actual file path
-        Dim fileValue As Integer = 0
-
-        Try
-            ' Read the value from the text file
-            If System.IO.File.Exists(filePath) Then
-                Using reader As New System.IO.StreamReader(filePath)
-                    Dim fileContent As String = reader.ReadLine()
-                    If Integer.TryParse(fileContent, fileValue) Then
-                        ' Successfully parsed the value from the file and it's greater than 0
-
-                    End If
-                End Using
-            End If
-        Catch ex As Exception
-            MessageBox.Show("Error reading file: " & ex.Message)
-        End Try
-
-        ' Return the file value
-        Return fileValue
-    End Function
 
 
     Private Sub txt_name_Load()
@@ -406,6 +393,39 @@ Public Class DASHBOARD
 
     End Sub
 
+
+    Private Sub Btn_logout_Click(sender As Object, e As EventArgs) Handles Btn_logout.Click
+        ' Display a confirmation dialog
+        Dim result As DialogResult = MessageBox.Show("Are you sure you want to logout?", "Logout Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+
+        ' Get the reference to the MainForm
+        Dim mainForm As MAIN_FORM = TryCast(Me.ParentForm, MAIN_FORM)
+
+        ' If user confirms logout
+        If result = DialogResult.Yes Then
+            Try
+                If openDB() Then
+                    ' Update user status to OFFLINE
+                    Dim updateQuery As New MySqlCommand("UPDATE Users SET Status='OFFLINE' WHERE Status= 'ACTIVE';", Conn)
+                    updateQuery.ExecuteNonQuery()
+                Else
+                    MessageBox.Show("Failed to connect to the database")
+                End If
+            Catch ex As Exception
+                MessageBox.Show("Error updating user status: " & ex.Message)
+            Finally
+                closeDB()
+            End Try
+
+            ' Hide the UserControl (dashboard)
+            Me.Hide()
+
+            ' Show the login form in the MainForm
+            mainForm.ShowLogin()
+        Else
+            ' User clicked No, do nothing or handle accordingly
+        End If
+    End Sub
 
 
 End Class

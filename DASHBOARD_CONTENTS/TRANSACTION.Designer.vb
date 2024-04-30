@@ -339,6 +339,7 @@ Partial Class TRANSACTION
         add_btn.AutoSize = True
         add_btn.BackColor = Color.White
         add_btn.BackgroundImageLayout = ImageLayout.Center
+        add_btn.Image = My.Resources.Resources.add
         add_btn.Location = New Point(992, 137)
         add_btn.Name = "add_btn"
         add_btn.Size = New Size(31, 27)
@@ -362,6 +363,7 @@ Partial Class TRANSACTION
         clear_btn.AutoSize = True
         clear_btn.BackColor = Color.White
         clear_btn.BackgroundImageLayout = ImageLayout.Center
+        clear_btn.Image = My.Resources.Resources.remove_from_cart
         clear_btn.Location = New Point(992, 37)
         clear_btn.Name = "clear_btn"
         clear_btn.Size = New Size(32, 29)
