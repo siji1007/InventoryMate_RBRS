@@ -106,6 +106,7 @@ Partial Class LOGIN
         Btn_SignUp.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
         Btn_SignUp.BackgroundImageLayout = ImageLayout.None
         Btn_SignUp.FlatStyle = FlatStyle.Flat
+        Btn_SignUp.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Btn_SignUp.ForeColor = Color.White
         Btn_SignUp.Location = New Point(303, 325)
         Btn_SignUp.Name = "Btn_SignUp"
@@ -120,6 +121,7 @@ Partial Class LOGIN
         Btn_SignIn.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
         Btn_SignIn.BackgroundImageLayout = ImageLayout.None
         Btn_SignIn.FlatStyle = FlatStyle.Flat
+        Btn_SignIn.Font = New Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Btn_SignIn.ForeColor = Color.White
         Btn_SignIn.Location = New Point(101, 325)
         Btn_SignIn.Name = "Btn_SignIn"

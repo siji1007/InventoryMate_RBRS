@@ -53,6 +53,7 @@ Partial Class EMPLOYEE
         txt_emp_address = New TextBox()
         Label4 = New Label()
         txt_search = New TextBox()
+        Label5 = New Label()
         CType(emp_datagridview, ComponentModel.ISupportInitialize).BeginInit()
         status_menu.SuspendLayout()
         SuspendLayout()
@@ -327,12 +328,25 @@ Partial Class EMPLOYEE
         txt_search.Size = New Size(213, 23)
         txt_search.TabIndex = 18
         ' 
+        ' Label5
+        ' 
+        Label5.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        Label5.AutoSize = True
+        Label5.BackColor = Color.Transparent
+        Label5.Image = My.Resources.Resources.search
+        Label5.Location = New Point(879, 101)
+        Label5.Name = "Label5"
+        Label5.Size = New Size(28, 15)
+        Label5.TabIndex = 40
+        Label5.Text = "       "
+        ' 
         ' EMPLOYEE
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         BackgroundImage = My.Resources.Resources.backgroud
         BackgroundImageLayout = ImageLayout.Center
+        Controls.Add(Label5)
         Controls.Add(txt_search)
         Controls.Add(Label4)
         Controls.Add(txt_emp_address)
@@ -385,4 +399,5 @@ Partial Class EMPLOYEE
     Friend WithEvents txt_emp_address As TextBox
     Friend WithEvents Label4 As Label
     Friend WithEvents txt_search As TextBox
+    Friend WithEvents Label5 As Label
 End Class

@@ -102,4 +102,15 @@ Public Class LOGIN
             txt_password.PasswordChar = Char.MinValue
         End If
     End Sub
+
+    Private Sub Btn_SignUp_Click(sender As Object, e As EventArgs) Handles Btn_SignUp.Click
+
+
+        Dim signUpForm As New SIGNUP()
+
+        ' Show the SignUp form as a dialog
+        signUpForm.ShowDialog()
+
+
+    End Sub
 End Class
