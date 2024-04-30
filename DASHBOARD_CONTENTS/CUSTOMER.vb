@@ -77,7 +77,6 @@ Public Class CUSTOMER
 
 
 
-    'add function
     Private Sub Add_cust_btn_Click(sender As Object, e As EventArgs) Handles Add_cust_btn.Click
         Dim Cust_name As String = txt_cname.Text.Trim()
         Dim Cust_address As String = txt_caddress.Text.Trim()
@@ -89,42 +88,95 @@ Public Class CUSTOMER
             Cust_cnumber = Cust_cnumber.Substring(3) ' Remove "+63"
         End If
 
-        If String.IsNullOrWhiteSpace(Cust_name) OrElse String.IsNullOrWhiteSpace(Cust_address) OrElse String.IsNullOrWhiteSpace(Cust_email) OrElse String.IsNullOrWhiteSpace(Cust_cnumber) OrElse Cust_cnumber.Length <> 10 Then
+        If String.IsNullOrWhiteSpace(Cust_name) OrElse
+        String.IsNullOrWhiteSpace(Cust_address) OrElse
+        String.IsNullOrWhiteSpace(Cust_email) OrElse
+        String.IsNullOrWhiteSpace(Cust_cnumber) OrElse
+        Cust_cnumber.Length <> 10 OrElse
+        Not IsValidEmail(Cust_email) OrElse
+        IsNumeric(Cust_name) Then
+
             MessageBox.Show("Please fill the information properly.")
         Else
-            If openDB() Then
-                Dim query As String = "INSERT INTO customer VALUES(NULL, @C_name, @C_address, @C_email, @C_cnumber)"
-                Dim cmd As New MySqlCommand(query, Conn)
-                cmd.Parameters.AddWithValue("@C_name", Cust_name.ToUpper())
-                cmd.Parameters.AddWithValue("@C_address", Cust_address.ToUpper())
-                cmd.Parameters.AddWithValue("@C_email", Cust_email.ToUpper())
-                cmd.Parameters.AddWithValue("@C_cnumber", Cust_cnumber)
-
-                Try
-                    cmd.ExecuteNonQuery()
-                    MessageBox.Show("Customer added successfully!")
-                    customer_datagridview.Rows.Clear()
-                    LoadDataCustomer()
-
-                    txt_cname.Clear()
-                    txt_caddress.Clear()
-                    txt_cemail.Clear()
-                    txt_cnumber.Text = "+63"
-
-                Catch ex As Exception
-                    MessageBox.Show(ex.Message)
-                Finally
-                    closeDB()
-                End Try
+            ' Check if the customer already exists in the database
+            If CustomerExist(Cust_name, Cust_address, Cust_email) Then
+                MessageBox.Show("This customer already exists.", "Duplicate Customer", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Else
-                MessageBox.Show("Failed to connect to the database!")
+                Dim result As DialogResult = MessageBox.Show("Are you sure you want to add this customer?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                If result = DialogResult.Yes Then
+                    If openDB() Then
+                        Dim query As String = "INSERT INTO customer VALUES(NULL, @C_name, @C_address, @C_email, @C_cnumber)"
+                        Dim cmd As New MySqlCommand(query, Conn)
+                        cmd.Parameters.AddWithValue("@C_name", Cust_name.ToUpper())
+                        cmd.Parameters.AddWithValue("@C_address", Cust_address.ToUpper())
+                        cmd.Parameters.AddWithValue("@C_email", Cust_email.ToUpper())
+                        cmd.Parameters.AddWithValue("@C_cnumber", Cust_cnumber)
+
+                        Try
+                            cmd.ExecuteNonQuery()
+                            MessageBox.Show("Customer added successfully!")
+                            customer_datagridview.Rows.Clear()
+                            LoadDataCustomer()
+
+                            txt_cname.Clear()
+                            txt_caddress.Clear()
+                            txt_cemail.Clear()
+                            txt_cnumber.Text = "+63"
+
+                        Catch ex As Exception
+                            MessageBox.Show("Error adding customer: " & ex.Message)
+                        Finally
+                            closeDB()
+                        End Try
+                    Else
+                        MessageBox.Show("Failed to connect to the database!")
+                    End If
+                End If
             End If
         End If
     End Sub
 
 
+    Private Function CustomerExist(ByVal name As String, ByVal address As String, ByVal email As String) As Boolean
+        Dim query As String = "SELECT COUNT(*) FROM customer WHERE Cust_name = @name AND Cust_address = @address AND Cust_email = @email "
+
+        Try
+
+            If openDB() Then
+
+                Using cmd As New MySqlCommand(query, Conn)
+                    cmd.Parameters.AddWithValue("@name", name)
+                    cmd.Parameters.AddWithValue("@address", address)
+                    cmd.Parameters.AddWithValue("@email", email)
+                    Dim customerCount As Integer = Convert.ToInt32(cmd.ExecuteScalar())
+                    Return customerCount > 0
+                End Using
+
+            Else
+                MessageBox.Show("Failed to connect to the database.")
+            End If
 
 
+        Catch ex As Exception
+            MessageBox.Show(ex.Message)
+        Finally
+            closeDB()
+        End Try
+
+
+
+        Return True ' Default return value if an exception occurs
+    End Function
+
+
+    Private Function IsValidEmail(ByVal email As String) As Boolean
+        ' Custom email validation function that accepts variations in case for the domain part
+        Dim parts() As String = email.Split("@"c)
+        If parts.Length = 2 AndAlso parts(1).Equals("gmail.com", StringComparison.OrdinalIgnoreCase) Then
+            Return True
+        End If
+        Return False
+    End Function
 
 
 
@@ -132,48 +184,67 @@ Public Class CUSTOMER
 
 
     Private Sub Update_cust_btn_Click(sender As Object, e As EventArgs) Handles Update_cust_btn.Click
-        Dim Cust_id As Integer
-        If Integer.TryParse(customer_datagridview.CurrentRow.Cells("cl_ID").Value.ToString(), Cust_id) Then
-            Dim Cust_name As String = txt_cname.Text
-            Dim Cust_address As String = txt_caddress.Text
-            Dim Cust_email As String = txt_cemail.Text
-            Dim Cust_cnumber As String = txt_cnumber.Text.Trim()
+        ' Check if a customer is selected
+        If customer_datagridview.CurrentRow IsNot Nothing Then
+            Dim Cust_id As Integer
+            If Integer.TryParse(customer_datagridview.CurrentRow.Cells("cl_ID").Value.ToString(), Cust_id) Then
+                Dim Cust_name As String = txt_cname.Text
+                Dim Cust_address As String = txt_caddress.Text
+                Dim Cust_email As String = txt_cemail.Text
+                Dim Cust_cnumber As String = txt_cnumber.Text.Trim()
 
-            ' Check if the contact number starts with "+63" and remove it
-            If Cust_cnumber.StartsWith("+63") AndAlso Cust_cnumber.Length > 3 Then
-                Cust_cnumber = Cust_cnumber.Substring(3) ' Remove "+63"
-            End If
-
-            If String.IsNullOrWhiteSpace(Cust_name) OrElse String.IsNullOrWhiteSpace(Cust_address) OrElse String.IsNullOrWhiteSpace(Cust_email) OrElse String.IsNullOrWhiteSpace(Cust_cnumber) OrElse Cust_cnumber.Length <> 10 Then
-                MessageBox.Show("Please fill the information properly.")
-            Else
-                If openDB() Then
-                    Dim query As String = "UPDATE customer SET Cust_name = @Cname, Cust_address = @C_address, Cust_email = @C_email, Cust_cnumber = @C_cnumber WHERE Cust_ID = @C_ID"
-                    Dim cmd As New MySqlCommand(query, Conn)
-                    cmd.Parameters.AddWithValue("@C_ID", Cust_id)
-                    cmd.Parameters.AddWithValue("@Cname", Cust_name.ToUpper())
-                    cmd.Parameters.AddWithValue("@C_address", Cust_address.ToUpper())
-                    cmd.Parameters.AddWithValue("@C_email", Cust_email.ToUpper())
-                    cmd.Parameters.AddWithValue("@C_cnumber", Cust_cnumber)
-
-                    Try
-                        cmd.ExecuteNonQuery()
-                        MessageBox.Show("Customer updated successfully!")
-                        customer_datagridview.Rows.Clear()
-                        LoadDataCustomer()
-
-                        txt_cname.Clear()
-                        txt_caddress.Clear()
-                        txt_cemail.Clear()
-                        txt_cnumber.Text = "+63"
-                    Catch ex As Exception
-                        MessageBox.Show(ex.Message)
-                    Finally
-                        closeDB()
-                    End Try
-                Else
-                    MessageBox.Show("Failed to connect to the database")
+                ' Check if the contact number starts with "+63" and remove it
+                If Cust_cnumber.StartsWith("+63") AndAlso Cust_cnumber.Length > 3 Then
+                    Cust_cnumber = Cust_cnumber.Substring(3) ' Remove "+63"
                 End If
+
+                If String.IsNullOrWhiteSpace(Cust_name) OrElse
+            String.IsNullOrWhiteSpace(Cust_address) OrElse
+            String.IsNullOrWhiteSpace(Cust_email) OrElse
+            String.IsNullOrWhiteSpace(Cust_cnumber) OrElse
+            Cust_cnumber.Length <> 10 OrElse
+            Not IsValidEmail(Cust_email) OrElse
+            IsNumeric(Cust_name) Then
+                    MessageBox.Show("Please fill the information properly.")
+                Else
+                    ' Check if the customer already exists in the database
+                    If CustomerExist(Cust_name, Cust_address, Cust_email) Then
+                        MessageBox.Show("This customer already exists.", "Duplicate Customer", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    Else
+                        Dim result As DialogResult = MessageBox.Show("Are you sure you want to update this customer?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                        If result = DialogResult.Yes Then
+                            If openDB() Then
+                                Dim query As String = "UPDATE customer SET Cust_name = @Cname, Cust_address = @C_address, Cust_email = @C_email, Cust_cnumber = @C_cnumber WHERE Cust_ID = @C_ID"
+                                Dim cmd As New MySqlCommand(query, Conn)
+                                cmd.Parameters.AddWithValue("@C_ID", Cust_id)
+                                cmd.Parameters.AddWithValue("@Cname", Cust_name.ToUpper())
+                                cmd.Parameters.AddWithValue("@C_address", Cust_address.ToUpper())
+                                cmd.Parameters.AddWithValue("@C_email", Cust_email.ToUpper())
+                                cmd.Parameters.AddWithValue("@C_cnumber", Cust_cnumber)
+
+                                Try
+                                    cmd.ExecuteNonQuery()
+                                    MessageBox.Show("Customer updated successfully!")
+                                    customer_datagridview.Rows.Clear()
+                                    LoadDataCustomer()
+
+                                    txt_cname.Clear()
+                                    txt_caddress.Clear()
+                                    txt_cemail.Clear()
+                                    txt_cnumber.Text = "+63"
+                                Catch ex As Exception
+                                    MessageBox.Show("Error updating customer: " & ex.Message)
+                                Finally
+                                    closeDB()
+                                End Try
+                            Else
+                                MessageBox.Show("Failed to connect to the database")
+                            End If
+                        End If
+                    End If
+                End If
+            Else
+                MessageBox.Show("Invalid customer ID")
             End If
         Else
             MessageBox.Show("Please select a customer to update")
@@ -181,42 +252,47 @@ Public Class CUSTOMER
     End Sub
 
 
+
     Private Sub Delete_cust_btn_Click(sender As Object, e As EventArgs) Handles Delete_cust_btn.Click
         If customer_datagridview.SelectedRows.Count > 0 Then
             Dim selectedRow As DataGridViewRow = customer_datagridview.SelectedRows(0)
             Dim Cust_ID As Integer = Convert.ToInt32(selectedRow.Cells("cl_ID").Value)
-            If openDB() Then
-                Dim query As String = "DELETE FROM customer WHERE Cust_ID = @c_id"
-                Dim cmd As New MySqlCommand(query, Conn)
-                cmd.Parameters.AddWithValue("@c_id", Cust_ID)
+            Dim result As DialogResult = MessageBox.Show("Are you sure you want to delete this customer?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+            If result = DialogResult.Yes Then
+                If openDB() Then
+                    Dim query As String = "DELETE FROM customer WHERE Cust_ID = @c_id"
+                    Dim cmd As New MySqlCommand(query, Conn)
+                    cmd.Parameters.AddWithValue("@c_id", Cust_ID)
 
-                Try
-                    cmd.ExecuteNonQuery()
-                    customer_datagridview.Rows.Clear()
-                    LoadDataCustomer()
+                    Try
+                        cmd.ExecuteNonQuery()
+                        customer_datagridview.Rows.Clear()
+                        LoadDataCustomer()
 
-                    txt_cname.Clear()
-                    txt_caddress.Clear()
-                    txt_cemail.Clear()
-                    txt_cnumber.Text = "+63"
+                        txt_cname.Clear()
+                        txt_caddress.Clear()
+                        txt_cemail.Clear()
+                        txt_cnumber.Text = "+63"
 
 
 
-                Catch ex As Exception
+                    Catch ex As Exception
 
-                    MessageBox.Show(ex.Message)
+                        MessageBox.Show(ex.Message)
 
-                Finally
-                    closeDB()
+                    Finally
+                        closeDB()
 
-                End Try
-            Else
-                MessageBox.Show("The database is not connected!")
+                    End Try
+                Else
+                    MessageBox.Show("The database is not connected!")
+
+                End If
 
             End If
 
         Else
-            MessageBox.Show("Please select customer to delete!")
+                MessageBox.Show("Please select customer to delete!")
 
 
         End If

@@ -1,4 +1,5 @@
-﻿Imports MySql.Data.MySqlClient
+﻿
+Imports MySql.Data.MySqlClient
 
 Public Class SUPPLIER
     Private Sub Lbl_supplier_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -73,44 +74,100 @@ Public Class SUPPLIER
 
         ' Validate contact number format (optional)
         Dim isValidContact As Boolean = S_contact.All(AddressOf Char.IsDigit) AndAlso S_contact.Length = 10
-        If Not isValidContact Then
-            MessageBox.Show("Please enter a valid 10-digit contact number.", "Invalid Contact Number", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            Return ' Exit the method if contact number is invalid
-        End If
 
-        If String.IsNullOrWhiteSpace(S_name) OrElse String.IsNullOrWhiteSpace(S_store) OrElse String.IsNullOrWhiteSpace(S_address) OrElse String.IsNullOrWhiteSpace(S_email) Then
+        If String.IsNullOrWhiteSpace(S_name) OrElse IsNumeric(S_name) OrElse String.IsNullOrWhiteSpace(S_store) OrElse String.IsNullOrWhiteSpace(S_address) OrElse Not IsValidEmail(S_email) Then
             MessageBox.Show("Please fill all information properly.", "Fill properly", MessageBoxButtons.OK, MessageBoxIcon.Information)
         Else
+            If Not isValidContact Then
+                MessageBox.Show("Please enter a valid 10-digit contact number.", "Invalid Contact Number", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Else
+                If SupplierExist(S_name, S_store, S_address, S_email, S_contact) Then
+
+                    MessageBox.Show("Supplier with the same name, store, email ,and contact number already exists.", "Duplicate Product", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                Else
+                    Dim result As DialogResult = MessageBox.Show("Are you sure you want to add this supplier?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+
+                    If result = DialogResult.Yes Then
+                        If openDB() Then
+                            Dim query As String = "INSERT INTO supplier VALUES(NULL, @S_name, @S_store, @S_address, @S_email, @S_contact)"
+                            Dim cmd As New MySqlCommand(query, Conn)
+                            cmd.Parameters.AddWithValue("@S_name", S_name.ToUpper())
+                            cmd.Parameters.AddWithValue("@S_store", S_store.ToUpper())
+                            cmd.Parameters.AddWithValue("@S_address", S_address.ToUpper())
+                            cmd.Parameters.AddWithValue("@S_email", S_email.ToUpper())
+                            cmd.Parameters.AddWithValue("@S_contact", S_contact)
+
+                            Try
+                                cmd.ExecuteNonQuery()
+                                MessageBox.Show("Supplier added successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                                sup_datagridview.Rows.Clear()
+                                LoadDataSup()
+                                txt_sup_name.Clear()
+                                txt_store_name.Clear()
+                                txt_sup_address.Clear()
+                                txt_sup_email.Clear()
+                                txt_sup_cnumber.Clear()
+                            Catch ex As Exception
+                                MessageBox.Show("An error occurred while adding the supplier. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            Finally
+                                closeDB()
+                            End Try
+                        Else
+                            MessageBox.Show("Failed to connect to the database.", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        End If
+
+                    End If
+                End If
+
+
+            End If
+
+        End If
+
+    End Sub
+
+    Private Function IsValidEmail(ByVal Email As String) As Boolean
+        ' Custom email validation function that accepts variations in case for the domain part
+        Dim parts() As String = Email.Split("@"c)
+        If parts.Length = 2 AndAlso parts(1).Equals("gmail.com", StringComparison.OrdinalIgnoreCase) Then
+            Return True
+        End If
+        Return False
+    End Function
+
+    Private Function SupplierExist(ByVal name As String, ByVal store As String, ByVal address As String, ByVal email As String, ByVal contact As String) As Boolean
+        Dim query As String = "SELECT COUNT(*) FROM supplier WHERE Supp_name = @name AND Supp_store = @store AND Supp_address = @address AND Supp_email = @email AND Supp_cnumber= @contact"
+
+        Try
             If openDB() Then
-                Dim query As String = "INSERT INTO supplier VALUES(NULL, @S_name, @S_store, @S_address, @S_email, @S_contact)"
-                Dim cmd As New MySqlCommand(query, Conn)
-                cmd.Parameters.AddWithValue("@S_name", S_name.ToUpper())
-                cmd.Parameters.AddWithValue("@S_store", S_store.ToUpper())
-                cmd.Parameters.AddWithValue("@S_address", S_address.ToUpper())
-                cmd.Parameters.AddWithValue("@S_email", S_email.ToUpper())
-                cmd.Parameters.AddWithValue("@S_contact", S_contact)
+                Using cmd As New MySqlCommand(query, Conn)
+                    cmd.Parameters.AddWithValue("@name", name.ToUpper())
+                    cmd.Parameters.AddWithValue("@store", store.ToUpper())
+                    cmd.Parameters.AddWithValue("@address", address.ToUpper())
+                    cmd.Parameters.AddWithValue("@email", email.ToUpper())
+                    cmd.Parameters.AddWithValue("@contact", contact)
 
-                Try
-                    cmd.ExecuteNonQuery()
-                    MessageBox.Show("Supplier added successfully", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
-                    sup_datagridview.Rows.Clear()
-                    LoadDataSup()
 
-                    txt_sup_name.Clear()
-                    txt_store_name.Clear()
-                    txt_sup_address.Clear()
-                    txt_sup_email.Clear()
-                    txt_sup_cnumber.Clear()
-                Catch ex As Exception
-                    MessageBox.Show("An error occurred while adding the supplier. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                Finally
-                    closeDB()
-                End Try
+                    Dim supplierCount As Integer = Convert.ToInt32(cmd.ExecuteScalar())
+                    Return supplierCount > 0
+                End Using
             Else
                 MessageBox.Show("Failed to connect to the database.", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
             End If
-        End If
-    End Sub
+        Catch ex As Exception
+            MessageBox.Show("An error occurred while checking supplier existence: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        Finally
+            closeDB()
+        End Try
+
+        ' Default return value if an exception occurs or connection fails
+        Return True
+    End Function
+
+
+
+
+
 
 
     Private Sub Btn_update_Click(sender As Object, e As EventArgs) Handles Btn_update.Click
@@ -127,37 +184,55 @@ Public Class SUPPLIER
                 S_contact = S_contact.Substring(3) ' Remove "+63"
             End If
 
-            If String.IsNullOrWhiteSpace(S_name) OrElse String.IsNullOrWhiteSpace(S_store) OrElse String.IsNullOrWhiteSpace(S_address) OrElse String.IsNullOrWhiteSpace(S_email) OrElse String.IsNullOrWhiteSpace(S_contact) OrElse S_contact.Length <> 10 Then
-                MessageBox.Show("Please fill the information properly.", "Fill properly", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
+
+
+            Dim isValidContact As Boolean = S_contact.All(AddressOf Char.IsDigit) AndAlso S_contact.Length = 10
+
+            If String.IsNullOrWhiteSpace(S_name) OrElse IsNumeric(S_name) OrElse String.IsNullOrWhiteSpace(S_store) OrElse String.IsNullOrWhiteSpace(S_address) OrElse Not IsValidEmail(S_email) Then
+                MessageBox.Show("Please fill all information properly.", "Fill properly", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Else
-                If openDB() Then
-                    Dim query As String = "UPDATE supplier SET Supp_name = @S_name, Supp_store = @S_store, Supp_address = @S_address, Supp_email = @S_email, Supp_cnumber = @S_contact WHERE Supp_ID = @S_id"
-                    Dim cmd As New MySqlCommand(query, Conn)
-                    cmd.Parameters.AddWithValue("@S_id", S_id)
-                    cmd.Parameters.AddWithValue("@S_name", S_name.ToUpper())
-                    cmd.Parameters.AddWithValue("@S_store", S_store.ToUpper())
-                    cmd.Parameters.AddWithValue("@S_address", S_address.ToUpper())
-                    cmd.Parameters.AddWithValue("@S_email", S_email.ToUpper())
-                    cmd.Parameters.AddWithValue("@S_contact", S_contact)
-
-                    Try
-                        cmd.ExecuteNonQuery()
-                        MessageBox.Show("Supplier updated successfully.")
-                        sup_datagridview.Rows.Clear()
-                        LoadDataSup()
-
-                        txt_sup_name.Clear()
-                        txt_store_name.Clear()
-                        txt_sup_address.Clear()
-                        txt_sup_email.Clear()
-                        txt_sup_cnumber.Clear()
-                    Catch ex As Exception
-                        MessageBox.Show(ex.Message)
-                    Finally
-                        closeDB()
-                    End Try
+                If Not isValidContact Then
+                    MessageBox.Show("Please enter a valid 10-digit contact number.", "Invalid Contact Number", MessageBoxButtons.OK, MessageBoxIcon.Information)
                 Else
-                    MessageBox.Show("Failed to connect to the database.")
+                    If SupplierExist(S_name, S_store, S_address, S_email, S_contact) Then
+
+                        MessageBox.Show("Supplier with the same name, store, email ,and contact number already exists.", "Duplicate Product", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    Else
+                        Dim result As DialogResult = MessageBox.Show("Are you sure you want to add this supplier?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+
+                        If result = DialogResult.Yes Then
+                            If openDB() Then
+                                Dim query As String = "UPDATE supplier SET Supp_name = @S_name, Supp_store = @S_store, Supp_address = @S_address, Supp_email = @S_email, Supp_cnumber = @S_contact WHERE Supp_ID = @S_id"
+                                Dim cmd As New MySqlCommand(query, Conn)
+                                cmd.Parameters.AddWithValue("@S_id", S_id)
+                                cmd.Parameters.AddWithValue("@S_name", S_name.ToUpper())
+                                cmd.Parameters.AddWithValue("@S_store", S_store.ToUpper())
+                                cmd.Parameters.AddWithValue("@S_address", S_address.ToUpper())
+                                cmd.Parameters.AddWithValue("@S_email", S_email.ToUpper())
+                                cmd.Parameters.AddWithValue("@S_contact", S_contact)
+
+                                Try
+                                    cmd.ExecuteNonQuery()
+                                    MessageBox.Show("Supplier updated successfully.")
+                                    sup_datagridview.Rows.Clear()
+                                    LoadDataSup()
+
+                                    txt_sup_name.Clear()
+                                    txt_store_name.Clear()
+                                    txt_sup_address.Clear()
+                                    txt_sup_email.Clear()
+                                    txt_sup_cnumber.Clear()
+                                Catch ex As Exception
+                                    MessageBox.Show(ex.Message)
+                                Finally
+                                    closeDB()
+                                End Try
+                            Else
+                                MessageBox.Show("Failed to connect to the database.")
+                            End If
+                        End If
+                    End If
                 End If
             End If
         Else

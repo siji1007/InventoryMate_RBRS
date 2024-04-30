@@ -95,49 +95,80 @@ Public Class EMPLOYEE
         ' Format the date correctly for MySQL
         Dim formattedDate As String = selectedDate.ToString("yyyy-MM-dd")
 
-        'Trim the textbox 
+        ' Trim the textbox 
         Dim Emp_name As String = txt_emp_name.Text.Trim()
         Dim Emp_address As String = txt_emp_address.Text.Trim()
 
         Dim Emp_cnumber As String = txt_emp_cnumber.Text.Trim()
         If Emp_cnumber.StartsWith("+63") Then
-            Emp_cnumber = Emp_cnumber.Substring(3) ' Remove "+63" potangina
+            Emp_cnumber = Emp_cnumber.Substring(3) ' Remove "+63"
         End If
 
         ' Ensure Emp_cnumber contains exactly 10 digits
-        If Emp_cnumber.Length <> 10 OrElse Not Emp_cnumber.All(AddressOf Char.IsDigit) Then
-            MessageBox.Show("Please enter a valid 10-digit phone number.")
+        If String.IsNullOrEmpty(Emp_name) OrElse String.IsNullOrEmpty(Emp_address) OrElse Emp_cnumber.Length <> 10 OrElse Not Emp_cnumber.All(AddressOf Char.IsDigit) Then
+            MessageBox.Show("Please fill the information properly.")
         Else
-            If openDB() Then
-                Dim query As String = "INSERT INTO employee (Emp_name, Emp_address, Emp_cnumber, Emp_bdate, Emp_status) VALUES (@Emp_name, @Emp_address, @Emp_cnumber, STR_TO_DATE(@Emp_bdate, '%Y-%m-%d'), @Emp_status)"
-                Dim cmd As New MySqlCommand(query, Conn)
-                cmd.Parameters.AddWithValue("@Emp_name", Emp_name.ToUpper())
-                cmd.Parameters.AddWithValue("@Emp_address", Emp_address.ToUpper())
-                cmd.Parameters.AddWithValue("@Emp_cnumber", Emp_cnumber)
-                cmd.Parameters.AddWithValue("@Emp_bdate", formattedDate) ' Use formatted date
-                cmd.Parameters.AddWithValue("@Emp_status", selectedStatus.ToUpper())
-
-                Try
-                    cmd.ExecuteNonQuery()
-                    MessageBox.Show("Successfully added")
-                    emp_datagridview.Rows.Clear()
-                    DataLoadEmployee()
-
-                    txt_emp_name.Clear()
-                    txt_emp_address.Clear()
-                    txt_emp_cnumber.Clear()
-                    emp_birthdate.Value = DateTime.Today
-                    Button1.Text = ">>"
-
-
-                Catch ex As Exception
-                    MessageBox.Show(ex.Message)
-                End Try
+            If EmployeeExist(Emp_name, Emp_address, Emp_cnumber) Then
+                MessageBox.Show("Employee with the same name, address, and contact number already exists.", "Duplicate Product", MessageBoxButtons.OK, MessageBoxIcon.Warning)
             Else
-                MessageBox.Show("The database is not connected")
+                Dim result As DialogResult = MessageBox.Show("Are you sure you want to update this customer?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+
+                If result = DialogResult.Yes Then
+                    If openDB() Then
+                        Dim query As String = "INSERT INTO employee (Emp_name, Emp_address, Emp_cnumber, Emp_bdate, Emp_status) VALUES (@Emp_name, @Emp_address, @Emp_cnumber, STR_TO_DATE(@Emp_bdate, '%Y-%m-%d'), @Emp_status)"
+                        Dim cmd As New MySqlCommand(query, Conn)
+                        cmd.Parameters.AddWithValue("@Emp_name", Emp_name.ToUpper())
+                        cmd.Parameters.AddWithValue("@Emp_address", Emp_address.ToUpper())
+                        cmd.Parameters.AddWithValue("@Emp_cnumber", Emp_cnumber)
+                        cmd.Parameters.AddWithValue("@Emp_bdate", formattedDate) ' Use formatted date
+                        cmd.Parameters.AddWithValue("@Emp_status", selectedStatus.ToUpper())
+
+                        Try
+                            cmd.ExecuteNonQuery()
+                            MessageBox.Show("Successfully added")
+                            emp_datagridview.Rows.Clear()
+                            DataLoadEmployee()
+
+                            txt_emp_name.Clear()
+                            txt_emp_address.Clear()
+                            txt_emp_cnumber.Clear()
+                            emp_birthdate.Value = DateTime.Today
+                            Button1.Text = ">>"
+
+                        Catch ex As Exception
+                            MessageBox.Show("Error adding customer : " & ex.Message)
+                        Finally
+                            closeDB()
+                        End Try
+                    Else
+                        MessageBox.Show("The database is not connected")
+                    End If
+                End If
             End If
         End If
     End Sub
+
+    Private Function EmployeeExist(ByVal name As String, ByVal address As String, ByVal cNumber As String) As Boolean
+        Dim query As String = "SELECT COUNT(*) FROM employee WHERE Emp_name = @name AND Emp_address = @address AND Emp_cnumber = @cNumber"
+
+        If openDB() Then
+            Using cmd As New MySqlCommand(query, Conn)
+                cmd.Parameters.AddWithValue("@name", name.ToUpper())
+                cmd.Parameters.AddWithValue("@address", address.ToUpper())
+                cmd.Parameters.AddWithValue("@cNumber", cNumber)
+
+
+                Dim employeeCount As Integer = Convert.ToInt32(cmd.ExecuteScalar())
+                Return employeeCount > 0
+            End Using
+        Else
+            MessageBox.Show("Failed to connect to the database.")
+            End If
+
+        Return True ' Default return value if an exception occurs
+    End Function
+
+
 
 
 
@@ -193,43 +224,50 @@ Public Class EMPLOYEE
         Dim Emp_bdate As String = selectedDate.ToString("yyyy-MM-dd")
         Dim Emp_status As String = selectedStatus
 
-        ' Validate phone number format
-        If Emp_cnumber.Length = 10 AndAlso Emp_cnumber.All(AddressOf Char.IsDigit) Then
-            ' Valid phone number format
-            If openDB() Then
-                Dim query As String = "UPDATE employee SET Emp_name = @Emp_name, Emp_address = @Emp_address, Emp_cnumber = @Emp_cnumber, Emp_bdate = @Emp_bdate, Emp_status = @Emp_status WHERE Emp_ID = @Emp_ID"
-                Dim cmd As New MySqlCommand(query, Conn)
-                cmd.Parameters.AddWithValue("@Emp_ID", Emp_ID)
-                cmd.Parameters.AddWithValue("@Emp_name", Emp_name.ToUpper())
-                cmd.Parameters.AddWithValue("@Emp_address", Emp_address.ToUpper())
-                cmd.Parameters.AddWithValue("@Emp_cnumber", Emp_cnumber)
-                cmd.Parameters.AddWithValue("@Emp_bdate", Emp_bdate)
-                cmd.Parameters.AddWithValue("@Emp_status", Emp_status)
-                Try
-                    cmd.ExecuteNonQuery()
-
-                    emp_datagridview.Rows.Clear()
-                    DataLoadEmployee()
-
-                    txt_emp_name.Clear()
-                    txt_emp_address.Clear()
-                    txt_emp_cnumber.Text = "63"
-                    emp_birthdate.Value = DateTime.Today
-                    Button1.Text = ">>"
-
-
-
-                    MessageBox.Show("Employee successfully updated!")
-                Catch ex As Exception
-                    MessageBox.Show($"Error: {ex.Message}")
-                Finally
-                    closeDB()
-                End Try
-            Else
-                MessageBox.Show("The database failed to connect!")
-            End If
+        If String.IsNullOrEmpty(Emp_name) OrElse String.IsNullOrEmpty(Emp_address) OrElse Emp_cnumber.Length <> 10 OrElse Not Emp_cnumber.All(AddressOf Char.IsDigit) Then
+            MessageBox.Show("Please fill the information properly.")
         Else
-            MessageBox.Show("Please enter a valid 10-digit phone number.")
+            If EmployeeExist(Emp_name, Emp_address, Emp_cnumber) Then
+                MessageBox.Show("Employee with the same name, address, and contact number already exists.", "Duplicate Product", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            Else
+                Dim result As DialogResult = MessageBox.Show("Are you sure you want to update this customer?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+
+                If result = DialogResult.Yes Then
+                    ' Valid phone number format
+                    If openDB() Then
+                        Dim query As String = "UPDATE employee SET Emp_name = @Emp_name, Emp_address = @Emp_address, Emp_cnumber = @Emp_cnumber, Emp_bdate = @Emp_bdate, Emp_status = @Emp_status WHERE Emp_ID = @Emp_ID"
+                        Dim cmd As New MySqlCommand(query, Conn)
+                        cmd.Parameters.AddWithValue("@Emp_ID", Emp_ID)
+                        cmd.Parameters.AddWithValue("@Emp_name", Emp_name.ToUpper())
+                        cmd.Parameters.AddWithValue("@Emp_address", Emp_address.ToUpper())
+                        cmd.Parameters.AddWithValue("@Emp_cnumber", Emp_cnumber)
+                        cmd.Parameters.AddWithValue("@Emp_bdate", Emp_bdate)
+                        cmd.Parameters.AddWithValue("@Emp_status", Emp_status)
+                        Try
+                            cmd.ExecuteNonQuery()
+
+                            emp_datagridview.Rows.Clear()
+                            DataLoadEmployee()
+
+                            txt_emp_name.Clear()
+                            txt_emp_address.Clear()
+                            txt_emp_cnumber.Text = "63"
+                            emp_birthdate.Value = DateTime.Today
+                            Button1.Text = ">>"
+
+
+
+                            MessageBox.Show("Employee successfully updated!")
+                        Catch ex As Exception
+                            MessageBox.Show($"Error: {ex.Message}")
+                        Finally
+                            closeDB()
+                        End Try
+                    Else
+                        MessageBox.Show("The database failed to connect!")
+                    End If
+                End If
+            End If
         End If
     End Sub
 
@@ -256,33 +294,36 @@ Public Class EMPLOYEE
             Dim selectedRow As DataGridViewRow = emp_datagridview.SelectedRows(0)
             Dim EmpId As Integer = Convert.ToInt32(selectedRow.Cells("Emp_ID").Value)
 
-            If openDB() Then
-                Dim query As String = "DELETE FROM employee WHERE Emp_ID = @EmpId"
-                Dim cmd As New MySqlCommand(query, Conn)
-                cmd.Parameters.AddWithValue("@EmpId", EmpId)
-                Try
-                    cmd.ExecuteNonQuery()
-                    emp_datagridview.Rows.Clear()
-                    DataLoadEmployee()
+            Dim result As DialogResult = MessageBox.Show("Are you sure you want to delete this customer?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
-                    txt_emp_name.Clear()
-                    txt_emp_address.Clear()
-                    txt_emp_cnumber.Text = "63"
-                    emp_birthdate.Value = DateTime.Today
-                    Button1.Text = ">>"
+            If result = DialogResult.Yes Then
+                If openDB() Then
+                    Dim query As String = "DELETE FROM employee WHERE Emp_ID = @EmpId"
+                    Dim cmd As New MySqlCommand(query, Conn)
+                    cmd.Parameters.AddWithValue("@EmpId", EmpId)
+                    Try
+                        cmd.ExecuteNonQuery()
+                        emp_datagridview.Rows.Clear()
+                        DataLoadEmployee()
+
+                        txt_emp_name.Clear()
+                        txt_emp_address.Clear()
+                        txt_emp_cnumber.Text = "63"
+                        emp_birthdate.Value = DateTime.Today
+                        Button1.Text = ">>"
 
 
-                Catch ex As Exception
-                    MessageBox.Show(ex.Message)
-                Finally
-                    closeDB()
+                    Catch ex As Exception
+                        MessageBox.Show(ex.Message)
+                    Finally
+                        closeDB()
 
-                End Try
-            Else
-                MessageBox.Show("Failed to connect to database")
+                    End Try
+                Else
+                    MessageBox.Show("Failed to connect to database")
 
+                End If
             End If
-
 
 
 
@@ -299,13 +340,6 @@ Public Class EMPLOYEE
         txt_emp_cnumber.Text = "+63"
         emp_birthdate.Value = DateTime.Today
         Button1.Text = ">>"
-
-
-
-
-
-
-
     End Sub
 
 

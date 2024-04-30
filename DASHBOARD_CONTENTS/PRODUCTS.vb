@@ -23,7 +23,7 @@ Public Class PRODUCTS
         Dim P_price As Integer
         Dim W_ID As Integer
 
-        If String.IsNullOrWhiteSpace(P_name) Then
+        If String.IsNullOrWhiteSpace(P_name) OrElse IsNumeric(P_name) Then
             MessageBox.Show("Please enter a product name.", "Fill properly", MessageBoxButtons.OK, MessageBoxIcon.Information)
         ElseIf String.IsNullOrWhiteSpace(P_model) Then
             MessageBox.Show("Please enter a product model.", "Fill properly", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -201,7 +201,7 @@ Public Class PRODUCTS
             Dim P_stocks As Integer
             Dim P_price As Integer
 
-            If String.IsNullOrWhiteSpace(P_name) OrElse String.IsNullOrWhiteSpace(P_model) OrElse Not Integer.TryParse(txt_stocks.Text, P_stocks) OrElse Not Integer.TryParse(txt_price.Text, P_price) Then
+            If String.IsNullOrWhiteSpace(P_name) OrElse IsNumeric(P_name) OrElse String.IsNullOrWhiteSpace(P_model) OrElse Not Integer.TryParse(txt_stocks.Text, P_stocks) OrElse Not Integer.TryParse(txt_price.Text, P_price) Then
                 MessageBox.Show("Please fill all information properly.", "Fill properly", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Else
 
