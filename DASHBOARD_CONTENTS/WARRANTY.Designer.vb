@@ -189,7 +189,7 @@ Partial Class WARRANTY
         war_month_combobox.DropDownStyle = ComboBoxStyle.DropDownList
         war_month_combobox.FormattingEnabled = True
         war_month_combobox.Items.AddRange(New Object() {"Days", "Months", "Years"})
-        war_month_combobox.Location = New Point(243, 463)
+        war_month_combobox.Location = New Point(242, 461)
         war_month_combobox.Name = "war_month_combobox"
         war_month_combobox.Size = New Size(79, 23)
         war_month_combobox.TabIndex = 45
@@ -201,7 +201,7 @@ Partial Class WARRANTY
         war_coverage_combobox.DropDownStyle = ComboBoxStyle.DropDownList
         war_coverage_combobox.FormattingEnabled = True
         war_coverage_combobox.Items.AddRange(New Object() {"Parts", "Labor"})
-        war_coverage_combobox.Location = New Point(803, 463)
+        war_coverage_combobox.Location = New Point(763, 461)
         war_coverage_combobox.Name = "war_coverage_combobox"
         war_coverage_combobox.Size = New Size(154, 23)
         war_coverage_combobox.TabIndex = 44
@@ -213,7 +213,7 @@ Partial Class WARRANTY
         war_status_combobox.DropDownStyle = ComboBoxStyle.DropDownList
         war_status_combobox.FormattingEnabled = True
         war_status_combobox.Items.AddRange(New Object() {"Active", "Expired"})
-        war_status_combobox.Location = New Point(127, 559)
+        war_status_combobox.Location = New Point(126, 555)
         war_status_combobox.Name = "war_status_combobox"
         war_status_combobox.Size = New Size(195, 23)
         war_status_combobox.TabIndex = 43
@@ -225,14 +225,14 @@ Partial Class WARRANTY
         type_war_combobox.DropDownStyle = ComboBoxStyle.DropDownList
         type_war_combobox.FormattingEnabled = True
         type_war_combobox.Items.AddRange(New Object() {"Limited Warranty", "Service Warranty", "Extended Warranty ", "Extended Warranty ", "Parts Warranty"})
-        type_war_combobox.Location = New Point(127, 510)
+        type_war_combobox.Location = New Point(126, 510)
         type_war_combobox.Name = "type_war_combobox"
         type_war_combobox.Size = New Size(195, 23)
         type_war_combobox.TabIndex = 42
         ' 
         ' txt_war_days
         ' 
-        txt_war_days.Location = New Point(129, 463)
+        txt_war_days.Location = New Point(128, 461)
         txt_war_days.Name = "txt_war_days"
         txt_war_days.PlaceholderText = " ex. 10 Days"
         txt_war_days.Size = New Size(108, 23)
@@ -245,7 +245,7 @@ Partial Class WARRANTY
         Label3.BackColor = Color.Transparent
         Label3.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label3.ForeColor = Color.Black
-        Label3.Location = New Point(683, 466)
+        Label3.Location = New Point(633, 464)
         Label3.Name = "Label3"
         Label3.Size = New Size(101, 20)
         Label3.TabIndex = 40
@@ -258,7 +258,7 @@ Partial Class WARRANTY
         Label2.BackColor = Color.Transparent
         Label2.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label2.ForeColor = Color.White
-        Label2.Location = New Point(17, 562)
+        Label2.Location = New Point(12, 558)
         Label2.Name = "Label2"
         Label2.Size = New Size(72, 20)
         Label2.TabIndex = 39
@@ -271,7 +271,7 @@ Partial Class WARRANTY
         Label1.BackColor = Color.Transparent
         Label1.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label1.ForeColor = Color.White
-        Label1.Location = New Point(17, 513)
+        Label1.Location = New Point(12, 509)
         Label1.Name = "Label1"
         Label1.Size = New Size(50, 20)
         Label1.TabIndex = 38
@@ -284,7 +284,7 @@ Partial Class WARRANTY
         lbl_name_sup.BackColor = Color.Transparent
         lbl_name_sup.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lbl_name_sup.ForeColor = Color.White
-        lbl_name_sup.Location = New Point(17, 466)
+        lbl_name_sup.Location = New Point(12, 464)
         lbl_name_sup.Name = "lbl_name_sup"
         lbl_name_sup.Size = New Size(97, 20)
         lbl_name_sup.TabIndex = 37

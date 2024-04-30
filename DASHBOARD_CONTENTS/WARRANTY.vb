@@ -64,13 +64,6 @@ Public Class WARRANTY
             war_status_combobox.Text = WarStatus
             war_coverage_combobox.Text = WarCoverage
 
-
-
-
-
-
-
-
         End If
 
     End Sub
@@ -79,13 +72,13 @@ Public Class WARRANTY
 
     'ADD BTN, CREATE A FUNCTION FOR ADD, UPDATE, DELETE AND CLEAR 4/23/2024. DON'T WASTE TIME BITCH. 
     Private Sub Btn_add_Click(sender As Object, e As EventArgs) Handles Btn_add.Click
-        Dim WarDuration As String = txt_war_days.Text.Trim()
+        Dim WarDuration As Integer
         Dim WarUnit As String = war_month_combobox.Text.Trim()
         Dim WarType As String = type_war_combobox.Text.Trim()
         Dim WarStatus As String = war_status_combobox.Text.Trim()
         Dim WarCoverage As String = war_coverage_combobox.Text.Trim()
 
-        If String.IsNullOrEmpty(WarDuration) OrElse String.IsNullOrEmpty(WarUnit) OrElse String.IsNullOrEmpty(WarType) OrElse String.IsNullOrEmpty(WarStatus) OrElse String.IsNullOrEmpty(WarCoverage) Then
+        If Not Integer.TryParse(txt_war_days.Text.Trim(), WarDuration) OrElse String.IsNullOrEmpty(WarUnit) OrElse String.IsNullOrEmpty(WarType) OrElse String.IsNullOrEmpty(WarStatus) OrElse String.IsNullOrEmpty(WarCoverage) Then
             MessageBox.Show("Please fill the information properly")
         Else
             If WarrantyExists(WarDuration, WarUnit, WarType, WarStatus, WarCoverage) Then
@@ -95,32 +88,33 @@ Public Class WARRANTY
 
                 If result = DialogResult.Yes Then
                     If openDB() Then
-                        Dim query As String = "INSERT INTO warranty VALUES (WarDuration, WarUnit, WarType, WarStatus, WarCoverage)"
-                        Dim cmd As New MySqlCommand(query, Conn)
-                        cmd.Parameters.AddWithValue("War_Duration", Convert.ToInt32(WarDuration))
-                        cmd.Parameters.AddWithValue("War_DurationUnit", WarUnit.ToUpper())
-                        cmd.Parameters.AddWithValue("War_Type", WarType.ToUpper())
-                        cmd.Parameters.AddWithValue("War_Status", WarStatus.ToUpper())
-                        cmd.Parameters.AddWithValue("War_Coverage", WarCoverage.ToUpper())
+                        Dim query As String = "INSERT INTO warranty (War_Duration, War_DurationUnit, War_Type, War_Status, War_Coverage) VALUES (@WarDuration, @WarUnit, @WarType, @WarStatus, @WarCoverage)"
+                        Using cmd As New MySqlCommand(query, Conn)
+                            cmd.Parameters.AddWithValue("@WarDuration", WarDuration)
+                            cmd.Parameters.AddWithValue("@WarUnit", WarUnit)
+                            cmd.Parameters.AddWithValue("@WarType", WarType)
+                            cmd.Parameters.AddWithValue("@WarStatus", WarStatus)
+                            cmd.Parameters.AddWithValue("@WarCoverage", WarCoverage)
 
-                        Try
-                            cmd.ExecuteNonQuery()
-                            MessageBox.Show("Warranty Added Successfully!")
-                            War_datagridview.Rows.Clear()
-                            LoadDataWarranty()
+                            Try
+                                cmd.ExecuteNonQuery()
+                                MessageBox.Show("Warranty Added Successfully!")
+                                War_datagridview.Rows.Clear()
+                                LoadDataWarranty()
 
-                            txt_war_days.Clear()
-                            war_month_combobox.SelectedIndex = -1
-                            type_war_combobox.SelectedIndex = -1
-                            war_status_combobox.SelectedIndex = -1
-                            war_coverage_combobox.SelectedIndex = -1
+                                txt_war_days.Clear()
+                                war_month_combobox.SelectedIndex = -1
+                                type_war_combobox.SelectedIndex = -1
+                                war_status_combobox.SelectedIndex = -1
+                                war_coverage_combobox.SelectedIndex = -1
 
-                        Catch ex As Exception
-                            MessageBox.Show("Error adding warranty: " & ex.Message)
-                        Finally
-                            closeDB()
-                        End Try
-                    Else
+                            Catch ex As Exception
+                                MessageBox.Show("Error adding warranty: " & ex.Message)
+                            Finally
+                                closeDB()
+                            End Try
+                                End Using
+                            Else
                         MessageBox.Show("Failed to connect to the database")
                     End If
                 End If
@@ -197,37 +191,42 @@ Public Class WARRANTY
                 If WarrantyExists(WarDuration, WarUnit, WarType, WarStatus, WarCoverage) Then
                     MessageBox.Show("This warranty already exists.", "Duplicate Warranty", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                 Else
-                    Try
-                        If openDB() Then
-                            Dim queryUpdate As String = "UPDATE warranty SET War_Duration = @W_duration, War_DurationUnit = @W_unit, War_Type = @W_type, War_Status = @W_status, War_Coverage = @W_coverage WHERE War_ID = @W_ID"
-                            Dim cmdUpdate As New MySqlCommand(queryUpdate, Conn)
-                            cmdUpdate.Parameters.AddWithValue("@W_ID", WarID)
-                            cmdUpdate.Parameters.AddWithValue("@W_duration", Convert.ToInt32(WarDuration))
-                            cmdUpdate.Parameters.AddWithValue("@W_unit", WarUnit.ToUpper())
-                            cmdUpdate.Parameters.AddWithValue("@W_type", WarType.ToUpper())
-                            cmdUpdate.Parameters.AddWithValue("@W_status", WarStatus.ToUpper())
-                            cmdUpdate.Parameters.AddWithValue("@W_coverage", WarCoverage.ToUpper())
+                    Dim result As DialogResult = MessageBox.Show("Are you sure you want to add this warranty?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
-                            cmdUpdate.ExecuteNonQuery()
-                            MessageBox.Show("Warranty is updated")
-                            War_datagridview.Rows.Clear()
-                            LoadDataWarranty()
+                    If result = DialogResult.Yes Then
+                        Try
+                            If openDB() Then
+                                Dim queryUpdate As String = "UPDATE warranty SET War_Duration = @W_duration, War_DurationUnit = @W_unit, War_Type = @W_type, War_Status = @W_status, War_Coverage = @W_coverage WHERE War_ID = @W_ID"
+                                Dim cmdUpdate As New MySqlCommand(queryUpdate, Conn)
+                                cmdUpdate.Parameters.AddWithValue("@W_ID", WarID)
+                                cmdUpdate.Parameters.AddWithValue("@W_duration", Convert.ToInt32(WarDuration))
+                                cmdUpdate.Parameters.AddWithValue("@W_unit", WarUnit.ToUpper())
+                                cmdUpdate.Parameters.AddWithValue("@W_type", WarType.ToUpper())
+                                cmdUpdate.Parameters.AddWithValue("@W_status", WarStatus.ToUpper())
+                                cmdUpdate.Parameters.AddWithValue("@W_coverage", WarCoverage.ToUpper())
 
-                            txt_war_days.Clear()
-                            war_month_combobox.SelectedIndex = -1
-                            type_war_combobox.SelectedIndex = -1
-                            war_status_combobox.SelectedIndex = -1
-                            war_coverage_combobox.SelectedIndex = -1
-                        Else
-                            MessageBox.Show("Failed to connect to the database!", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                        End If
-                    Catch ex As Exception
-                        MessageBox.Show("Error updating warranty: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
-                    Finally
-                        closeDB()
-                    End Try
+                                cmdUpdate.ExecuteNonQuery()
+                                MessageBox.Show("Warranty is updated")
+                                War_datagridview.Rows.Clear()
+                                LoadDataWarranty()
+
+                                txt_war_days.Clear()
+                                war_month_combobox.SelectedIndex = -1
+                                type_war_combobox.SelectedIndex = -1
+                                war_status_combobox.SelectedIndex = -1
+                                war_coverage_combobox.SelectedIndex = -1
+                            Else
+                                MessageBox.Show("Failed to connect to the database!", "Database Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                            End If
+                        Catch ex As Exception
+                            MessageBox.Show("Error updating warranty: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        Finally
+                            closeDB()
+                        End Try
+                    End If
+
                 End If
-            End If
+                End If
         End If
     End Sub
 

@@ -55,7 +55,7 @@ Partial Class CUSTOMER
         Lbl_customer.BackColor = Color.Transparent
         Lbl_customer.Font = New Font("Microsoft Sans Serif", 18F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Lbl_customer.ForeColor = Color.White
-        Lbl_customer.Location = New Point(595, 38)
+        Lbl_customer.Location = New Point(601, 31)
         Lbl_customer.Name = "Lbl_customer"
         Lbl_customer.Size = New Size(151, 29)
         Lbl_customer.TabIndex = 2

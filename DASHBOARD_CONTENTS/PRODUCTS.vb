@@ -37,17 +37,11 @@ Public Class PRODUCTS
             Try
                 If openDB() Then
                     ' Check if the product already exists in the database
-                    Dim productExistsQuery As String = "SELECT COUNT(*) FROM products WHERE prod_name = @P_name AND prod_model = @P_model AND prod_color = @P_color"
-                    Using cmdCheck As New MySqlCommand(productExistsQuery, Conn)
-                        cmdCheck.Parameters.AddWithValue("@P_name", P_name)
-                        cmdCheck.Parameters.AddWithValue("@P_model", P_model)
-                        cmdCheck.Parameters.AddWithValue("@P_color", P_color)
-
-                        Dim productCount As Integer = Convert.ToInt32(cmdCheck.ExecuteScalar())
-                        If productCount > 0 Then
-                            MessageBox.Show("Product with the same name, model, and color already exists. Please enter a different product.", "Duplicate Product", MessageBoxButtons.OK, MessageBoxIcon.Warning)
-                        Else
-                            ' Proceed with database insertion
+                    If ProductExist(P_name, P_model, P_color, P_stocks, P_price) Then
+                        MessageBox.Show("Product with the same name, model, color, stocks, and price already exists.", "Duplicate Product", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+                    Else
+                        Dim result As DialogResult = MessageBox.Show("Are you sure you want to add this product?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                        If result = DialogResult.Yes Then
                             Dim query As String = "INSERT INTO products (prod_name, Warranty_ID, prod_model, prod_color, prod_stocks, prod_price) VALUES (@P_name, @Warranty_ID, @P_model, @P_color, @P_stocks, @P_price)"
                             Using cmdInsert As New MySqlCommand(query, Conn)
                                 cmdInsert.Parameters.AddWithValue("@P_name", P_name.ToUpper())
@@ -72,7 +66,7 @@ Public Class PRODUCTS
                                 Cb_warranty.SelectedIndex = -1
                             End Using
                         End If
-                    End Using
+                    End If
                 Else
                     MessageBox.Show("Failed to connect to the database.")
                 End If
@@ -83,6 +77,35 @@ Public Class PRODUCTS
             End Try
         End If
     End Sub
+
+
+    Private Function ProductExist(ByVal productName As String, ByVal productModel As String, ByVal productColor As String, ByVal productStocks As Integer, ByVal productPrice As Decimal) As Boolean
+        Dim productExistsQuery As String = "SELECT COUNT(*) FROM products WHERE prod_name = @P_name AND prod_model = @P_model AND prod_color = @P_color AND prod_stocks = @P_stocks AND prod_price = @P_price"
+        Try
+            If openDB() Then
+                Using cmdCheck As New MySqlCommand(productExistsQuery, Conn)
+                    cmdCheck.Parameters.AddWithValue("@P_name", productName)
+                    cmdCheck.Parameters.AddWithValue("@P_model", productModel)
+                    cmdCheck.Parameters.AddWithValue("@P_color", productColor)
+                    cmdCheck.Parameters.AddWithValue("@P_stocks", productStocks)
+                    cmdCheck.Parameters.AddWithValue("@P_price", productPrice)
+
+                    Dim productCount As Integer = Convert.ToInt32(cmdCheck.ExecuteScalar())
+                    Return productCount > 0
+                End Using
+            Else
+                MessageBox.Show("Failed to open database connection.")
+                Return False ' Return false if database connection couldn't be opened
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error checking product existence: " & ex.Message)
+            Return False ' Return false in case of an exception
+        Finally
+            closeDB()
+        End Try
+    End Function
+
+
 
 
     Private Sub LoadDataAndSort()
@@ -181,41 +204,53 @@ Public Class PRODUCTS
             If String.IsNullOrWhiteSpace(P_name) OrElse String.IsNullOrWhiteSpace(P_model) OrElse Not Integer.TryParse(txt_stocks.Text, P_stocks) OrElse Not Integer.TryParse(txt_price.Text, P_price) Then
                 MessageBox.Show("Please fill all information properly.", "Fill properly", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Else
-                If openDB() Then
-                    Dim query As String = "UPDATE products SET prod_name = @P_name,Warranty_ID = @WarID, prod_model = @P_model, prod_color = @P_color, prod_stocks = @P_stocks, prod_price = @P_price WHERE prod_id = @P_id"
-                    Dim cmd As New MySqlCommand(query, Conn)
-                    cmd.Parameters.AddWithValue("@P_id", P_id)
-                    cmd.Parameters.AddWithValue("@WarID", WarId)
-                    cmd.Parameters.AddWithValue("@P_name", P_name.ToUpper())
-                    cmd.Parameters.AddWithValue("@P_model", P_model.ToUpper())
-                    cmd.Parameters.AddWithValue("@P_color", P_color.ToUpper())
-                    cmd.Parameters.AddWithValue("@P_stocks", P_stocks)
-                    cmd.Parameters.AddWithValue("@P_price", P_price)
 
-                    Try
-                        cmd.ExecuteNonQuery()
-                        MessageBox.Show("Product updated successfully.")
-                        prod_datagridview.Rows.Clear() ' Clear the DataGridView
-                        LoadDataAndSort() ' Reload data into the DataGridView
+                If ProductExist(P_name, P_model, P_color, P_stocks, P_price) Then
+                    MessageBox.Show("Product with the same name, model, color, stocks, and price already exists.", "Duplicate Product", MessageBoxButtons.OK, MessageBoxIcon.Warning)
 
-                        ' Clear textboxes after updating
-                        txt_product_name.Clear()
-                        show_id.Text = "ID"
-                        txt_product_model.Clear()
-                        txt_product_color.Clear()
-                        txt_stocks.Clear()
-                        txt_price.Clear()
-
-
-                    Catch ex As Exception
-                        MessageBox.Show("Error updating product: " & ex.Message)
-                    Finally
-                        closeDB() ' Close the database after updating
-                    End Try
                 Else
-                    MessageBox.Show("Failed to connect to the database.")
+
+                    Dim result As DialogResult = MessageBox.Show("Are you sure you want to update this product?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+                    If result = DialogResult.Yes Then
+                        If openDB() Then
+                            Dim query As String = "UPDATE products SET prod_name = @P_name,Warranty_ID = @WarID, prod_model = @P_model, prod_color = @P_color, prod_stocks = @P_stocks, prod_price = @P_price WHERE prod_id = @P_id"
+                            Dim cmd As New MySqlCommand(query, Conn)
+                            cmd.Parameters.AddWithValue("@P_id", P_id)
+                            cmd.Parameters.AddWithValue("@WarID", WarId)
+                            cmd.Parameters.AddWithValue("@P_name", P_name.ToUpper())
+                            cmd.Parameters.AddWithValue("@P_model", P_model.ToUpper())
+                            cmd.Parameters.AddWithValue("@P_color", P_color.ToUpper())
+                            cmd.Parameters.AddWithValue("@P_stocks", P_stocks)
+                            cmd.Parameters.AddWithValue("@P_price", P_price)
+
+                            Try
+                                cmd.ExecuteNonQuery()
+                                MessageBox.Show("Product updated successfully.")
+                                prod_datagridview.Rows.Clear() ' Clear the DataGridView
+                                LoadDataAndSort() ' Reload data into the DataGridView
+
+                                ' Clear textboxes after updating
+                                txt_product_name.Clear()
+                                show_id.Text = "ID"
+                                txt_product_model.Clear()
+                                txt_product_color.Clear()
+                                txt_stocks.Clear()
+                                txt_price.Clear()
+
+
+                            Catch ex As Exception
+                                MessageBox.Show("Error updating product: " & ex.Message)
+                            Finally
+                                closeDB() ' Close the database after updating
+                            End Try
+                        Else
+                            MessageBox.Show("Failed to connect to the database.")
+                        End If
+                    End If
+
                 End If
-            End If
+
+                End If
         Else
             MessageBox.Show("Please select a product to update.")
         End If
@@ -227,34 +262,39 @@ Public Class PRODUCTS
             Dim selectedRow As DataGridViewRow = prod_datagridview.SelectedRows(0)
             Dim prodId As Integer = Convert.ToInt32(selectedRow.Cells("prod_id").Value)
 
-            If openDB() Then
-                Dim query As String = "DELETE FROM products WHERE prod_id = @prodId"
-                Dim cmd As New MySqlCommand(query, Conn)
-                cmd.Parameters.AddWithValue("@prodId", prodId)
+            Dim result As DialogResult = MessageBox.Show("Are you sure you want to delete this product?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+            If result = DialogResult.Yes Then
+                If openDB() Then
+                    Dim query As String = "DELETE FROM products WHERE prod_id = @prodId"
+                    Dim cmd As New MySqlCommand(query, Conn)
+                    cmd.Parameters.AddWithValue("@prodId", prodId)
 
-                Try
-                    cmd.ExecuteNonQuery()
-                    MessageBox.Show("Product deleted successfully.")
-                    prod_datagridview.Rows.Remove(selectedRow) ' Remove the selected row from the DataGridView
+                    Try
+                        cmd.ExecuteNonQuery()
+                        MessageBox.Show("Product deleted successfully.")
+                        prod_datagridview.Rows.Remove(selectedRow) ' Remove the selected row from the DataGridView
 
-                    ' Clear textboxes after deletion
-                    txt_product_name.Clear()
-                    show_id.Text = "ID"
-                    txt_product_model.Clear()
-                    txt_product_color.Clear()
-                    txt_stocks.Clear()
-                    txt_price.Clear()
+                        ' Clear textboxes after deletion
+                        txt_product_name.Clear()
+                        show_id.Text = "ID"
+                        txt_product_model.Clear()
+                        txt_product_color.Clear()
+                        txt_stocks.Clear()
+                        txt_price.Clear()
 
-                Catch ex As Exception
-                    MessageBox.Show("Error deleting product: " & ex.Message)
-                Finally
-                    closeDB() ' Close the database after deletion
-                End Try
-            Else
-                MessageBox.Show("Failed to connect to the database.")
+                    Catch ex As Exception
+                        MessageBox.Show("Error deleting product: " & ex.Message)
+                    Finally
+                        closeDB() ' Close the database after deletion
+                    End Try
+                Else
+                    MessageBox.Show("Failed to connect to the database.")
+                End If
+
             End If
+
         Else
-            MessageBox.Show("Please select a product to delete.")
+                MessageBox.Show("Please select a product to delete.")
         End If
     End Sub
 

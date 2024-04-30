@@ -57,6 +57,7 @@ Partial Class LOGIN
         GroupBox1.Controls.Add(Label1)
         GroupBox1.Controls.Add(USERNAME)
         GroupBox1.Dock = DockStyle.Right
+        GroupBox1.Font = New Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         GroupBox1.ForeColor = SystemColors.Window
         GroupBox1.Location = New Point(348, 0)
         GroupBox1.Name = "GroupBox1"
@@ -86,7 +87,7 @@ Partial Class LOGIN
         txt_password.Location = New Point(153, 275)
         txt_password.Name = "txt_password"
         txt_password.PasswordChar = "*"c
-        txt_password.Size = New Size(207, 23)
+        txt_password.Size = New Size(207, 29)
         txt_password.TabIndex = 5
         ' 
         ' txt_username
@@ -96,7 +97,7 @@ Partial Class LOGIN
         txt_username.ForeColor = Color.White
         txt_username.Location = New Point(153, 224)
         txt_username.Name = "txt_username"
-        txt_username.Size = New Size(207, 23)
+        txt_username.Size = New Size(207, 29)
         txt_username.TabIndex = 4
         ' 
         ' Btn_SignUp
