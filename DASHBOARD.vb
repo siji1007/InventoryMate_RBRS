@@ -378,4 +378,34 @@ Public Class DASHBOARD
     Friend Function Product() As Object
         Throw New NotImplementedException()
     End Function
+
+    Private Sub Btn_transaction_Click(sender As Object, e As EventArgs) Handles Btn_transaction.Click
+        If isTransactionFromOpen Then
+            MessageBox.Show("The Transaction form Is Already open", "Form Already Open", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Else
+            Dim TRANSForm As New TRANSACTION()
+            TRANSForm.Dock = DockStyle.Fill
+
+            ' Add PRODUCT form to Panel_Contents and show it
+            Panel_Contents.Controls.Add(TRANSForm)
+            TRANSForm.BringToFront()
+            TRANSForm.Show()
+
+
+            isHomeFormOpen = False
+            isSupplierFormOpen = False
+            isWarrantyFormOpen = False
+            isProductFormOpen = False
+            isCustomerFormOpen = False
+            isEmployeeFormOpen = False
+            isTransactionFromOpen = True
+
+
+        End If
+
+
+    End Sub
+
+
+
 End Class

@@ -27,9 +27,28 @@ Partial Class TRANSACTION
         Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
         Lbl_transaction = New Label()
         Panel1 = New Panel()
-        GroupBox1 = New GroupBox()
-        GroupBox2 = New GroupBox()
         GroupBox3 = New GroupBox()
+        BTN_Cbrefresh = New Button()
+        Label11 = New Label()
+        txt_Custname = New ComboBox()
+        txt_custnumber = New TextBox()
+        txt_custemail = New TextBox()
+        txt_custaddress = New TextBox()
+        Label6 = New Label()
+        Label5 = New Label()
+        Label4 = New Label()
+        Label3 = New Label()
+        GroupBox2 = New GroupBox()
+        Label10 = New Label()
+        txt_service_fee = New TextBox()
+        txt_EmpID = New TextBox()
+        Cb_employeeName = New ComboBox()
+        Label8 = New Label()
+        Label7 = New Label()
+        GroupBox1 = New GroupBox()
+        add_btn = New Button()
+        CLEAR = New Label()
+        clear_btn = New Button()
         lbl_stock = New Label()
         GroupBox4 = New GroupBox()
         Total_cost = New Label()
@@ -49,31 +68,12 @@ Partial Class TRANSACTION
         dt_warranty = New DataGridViewTextBoxColumn()
         dt_warranty_coverage = New DataGridViewTextBoxColumn()
         dt_total = New DataGridViewTextBoxColumn()
-        add_btn = New Button()
-        CLEAR = New Label()
-        clear_btn = New Button()
-        BTN_Cbrefresh = New Button()
-        Label11 = New Label()
-        txt_Custname = New ComboBox()
-        txt_custnumber = New TextBox()
-        txt_custemail = New TextBox()
-        txt_custaddress = New TextBox()
-        Label6 = New Label()
-        Label5 = New Label()
-        Label4 = New Label()
-        Label3 = New Label()
-        Label10 = New Label()
-        txt_service_fee = New TextBox()
-        txt_EmpID = New TextBox()
-        Cb_employeeName = New ComboBox()
-        Label8 = New Label()
-        Label7 = New Label()
         Print_btn = New Button()
         History = New Button()
         Panel1.SuspendLayout()
-        GroupBox1.SuspendLayout()
-        GroupBox2.SuspendLayout()
         GroupBox3.SuspendLayout()
+        GroupBox2.SuspendLayout()
+        GroupBox1.SuspendLayout()
         GroupBox4.SuspendLayout()
         CType(transaction_datagridview, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
@@ -96,10 +96,217 @@ Partial Class TRANSACTION
         Panel1.Controls.Add(GroupBox3)
         Panel1.Controls.Add(GroupBox2)
         Panel1.Controls.Add(GroupBox1)
-        Panel1.Location = New Point(65, 89)
+        Panel1.Location = New Point(65, 48)
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(1032, 612)
         Panel1.TabIndex = 4
+        ' 
+        ' GroupBox3
+        ' 
+        GroupBox3.Controls.Add(BTN_Cbrefresh)
+        GroupBox3.Controls.Add(Label11)
+        GroupBox3.Controls.Add(txt_Custname)
+        GroupBox3.Controls.Add(txt_custnumber)
+        GroupBox3.Controls.Add(txt_custemail)
+        GroupBox3.Controls.Add(txt_custaddress)
+        GroupBox3.Controls.Add(Label6)
+        GroupBox3.Controls.Add(Label5)
+        GroupBox3.Controls.Add(Label4)
+        GroupBox3.Controls.Add(Label3)
+        GroupBox3.Dock = DockStyle.Fill
+        GroupBox3.ForeColor = Color.White
+        GroupBox3.Location = New Point(0, 313)
+        GroupBox3.Name = "GroupBox3"
+        GroupBox3.Size = New Size(1032, 185)
+        GroupBox3.TabIndex = 2
+        GroupBox3.TabStop = False
+        GroupBox3.Text = "CUSTOMER DETAILS"
+        ' 
+        ' BTN_Cbrefresh
+        ' 
+        BTN_Cbrefresh.BackgroundImage = My.Resources.Resources.loading_arrow
+        BTN_Cbrefresh.BackgroundImageLayout = ImageLayout.Center
+        BTN_Cbrefresh.FlatAppearance.BorderSize = 0
+        BTN_Cbrefresh.FlatStyle = FlatStyle.Flat
+        BTN_Cbrefresh.Location = New Point(418, 52)
+        BTN_Cbrefresh.Name = "BTN_Cbrefresh"
+        BTN_Cbrefresh.Size = New Size(37, 28)
+        BTN_Cbrefresh.TabIndex = 35
+        BTN_Cbrefresh.UseVisualStyleBackColor = True
+        ' 
+        ' Label11
+        ' 
+        Label11.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
+        Label11.AutoSize = True
+        Label11.BackColor = Color.White
+        Label11.Font = New Font("Microsoft Sans Serif", 12.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label11.ForeColor = Color.Black
+        Label11.Location = New Point(701, 95)
+        Label11.Name = "Label11"
+        Label11.Size = New Size(37, 20)
+        Label11.TabIndex = 34
+        Label11.Text = "+63"
+        ' 
+        ' txt_Custname
+        ' 
+        txt_Custname.AutoCompleteMode = AutoCompleteMode.Suggest
+        txt_Custname.AutoCompleteSource = AutoCompleteSource.ListItems
+        txt_Custname.FormattingEnabled = True
+        txt_Custname.Location = New Point(191, 52)
+        txt_Custname.Name = "txt_Custname"
+        txt_Custname.Size = New Size(225, 23)
+        txt_Custname.TabIndex = 33
+        ' 
+        ' txt_custnumber
+        ' 
+        txt_custnumber.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
+        txt_custnumber.Location = New Point(741, 94)
+        txt_custnumber.Name = "txt_custnumber"
+        txt_custnumber.Size = New Size(184, 23)
+        txt_custnumber.TabIndex = 32
+        ' 
+        ' txt_custemail
+        ' 
+        txt_custemail.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
+        txt_custemail.Location = New Point(701, 49)
+        txt_custemail.Name = "txt_custemail"
+        txt_custemail.Size = New Size(224, 23)
+        txt_custemail.TabIndex = 31
+        ' 
+        ' txt_custaddress
+        ' 
+        txt_custaddress.Location = New Point(192, 97)
+        txt_custaddress.Name = "txt_custaddress"
+        txt_custaddress.Size = New Size(224, 23)
+        txt_custaddress.TabIndex = 30
+        ' 
+        ' Label6
+        ' 
+        Label6.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
+        Label6.AutoSize = True
+        Label6.BackColor = Color.Transparent
+        Label6.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label6.ForeColor = Color.White
+        Label6.Location = New Point(538, 94)
+        Label6.Name = "Label6"
+        Label6.Size = New Size(157, 20)
+        Label6.TabIndex = 29
+        Label6.Text = "CONTACT NUMBER"
+        ' 
+        ' Label5
+        ' 
+        Label5.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
+        Label5.AutoSize = True
+        Label5.BackColor = Color.Transparent
+        Label5.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label5.ForeColor = Color.White
+        Label5.Location = New Point(538, 52)
+        Label5.Name = "Label5"
+        Label5.Size = New Size(142, 20)
+        Label5.TabIndex = 28
+        Label5.Text = "EMAIL ADDRESS"
+        ' 
+        ' Label4
+        ' 
+        Label4.AutoSize = True
+        Label4.BackColor = Color.Transparent
+        Label4.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label4.ForeColor = Color.White
+        Label4.Location = New Point(48, 97)
+        Label4.Name = "Label4"
+        Label4.Size = New Size(89, 20)
+        Label4.TabIndex = 27
+        Label4.Text = "ADDRESS"
+        ' 
+        ' Label3
+        ' 
+        Label3.AutoSize = True
+        Label3.BackColor = Color.Transparent
+        Label3.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label3.ForeColor = Color.White
+        Label3.Location = New Point(48, 55)
+        Label3.Name = "Label3"
+        Label3.Size = New Size(55, 20)
+        Label3.TabIndex = 26
+        Label3.Text = "NAME"
+        ' 
+        ' GroupBox2
+        ' 
+        GroupBox2.Controls.Add(Label10)
+        GroupBox2.Controls.Add(txt_service_fee)
+        GroupBox2.Controls.Add(txt_EmpID)
+        GroupBox2.Controls.Add(Cb_employeeName)
+        GroupBox2.Controls.Add(Label8)
+        GroupBox2.Controls.Add(Label7)
+        GroupBox2.Dock = DockStyle.Bottom
+        GroupBox2.ForeColor = Color.White
+        GroupBox2.Location = New Point(0, 498)
+        GroupBox2.Name = "GroupBox2"
+        GroupBox2.Size = New Size(1032, 114)
+        GroupBox2.TabIndex = 1
+        GroupBox2.TabStop = False
+        GroupBox2.Text = "EMPLOYEE DETAILS"
+        ' 
+        ' Label10
+        ' 
+        Label10.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        Label10.AutoSize = True
+        Label10.Location = New Point(564, 75)
+        Label10.Name = "Label10"
+        Label10.Size = New Size(71, 15)
+        Label10.TabIndex = 31
+        Label10.Text = "SERVICE FEE"
+        ' 
+        ' txt_service_fee
+        ' 
+        txt_service_fee.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
+        txt_service_fee.Location = New Point(699, 69)
+        txt_service_fee.Name = "txt_service_fee"
+        txt_service_fee.Size = New Size(230, 23)
+        txt_service_fee.TabIndex = 30
+        ' 
+        ' txt_EmpID
+        ' 
+        txt_EmpID.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
+        txt_EmpID.Location = New Point(699, 19)
+        txt_EmpID.Name = "txt_EmpID"
+        txt_EmpID.Size = New Size(224, 23)
+        txt_EmpID.TabIndex = 29
+        ' 
+        ' Cb_employeeName
+        ' 
+        Cb_employeeName.AutoCompleteMode = AutoCompleteMode.Suggest
+        Cb_employeeName.AutoCompleteSource = AutoCompleteSource.ListItems
+        Cb_employeeName.FormattingEnabled = True
+        Cb_employeeName.Location = New Point(191, 22)
+        Cb_employeeName.Name = "Cb_employeeName"
+        Cb_employeeName.Size = New Size(223, 23)
+        Cb_employeeName.TabIndex = 28
+        ' 
+        ' Label8
+        ' 
+        Label8.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        Label8.AutoSize = True
+        Label8.BackColor = Color.Transparent
+        Label8.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label8.ForeColor = Color.White
+        Label8.Location = New Point(653, 25)
+        Label8.Name = "Label8"
+        Label8.Size = New Size(26, 20)
+        Label8.TabIndex = 27
+        Label8.Text = "ID"
+        ' 
+        ' Label7
+        ' 
+        Label7.AutoSize = True
+        Label7.BackColor = Color.Transparent
+        Label7.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label7.ForeColor = Color.White
+        Label7.Location = New Point(46, 25)
+        Label7.Name = "Label7"
+        Label7.Size = New Size(55, 20)
+        Label7.TabIndex = 26
+        Label7.Text = "NAME"
         ' 
         ' GroupBox1
         ' 
@@ -126,43 +333,40 @@ Partial Class TRANSACTION
         GroupBox1.TabStop = False
         GroupBox1.Text = "PRODUCT DETAILS"
         ' 
-        ' GroupBox2
+        ' add_btn
         ' 
-        GroupBox2.Controls.Add(Label10)
-        GroupBox2.Controls.Add(txt_service_fee)
-        GroupBox2.Controls.Add(txt_EmpID)
-        GroupBox2.Controls.Add(Cb_employeeName)
-        GroupBox2.Controls.Add(Label8)
-        GroupBox2.Controls.Add(Label7)
-        GroupBox2.Dock = DockStyle.Bottom
-        GroupBox2.ForeColor = Color.White
-        GroupBox2.Location = New Point(0, 498)
-        GroupBox2.Name = "GroupBox2"
-        GroupBox2.Size = New Size(1032, 114)
-        GroupBox2.TabIndex = 1
-        GroupBox2.TabStop = False
-        GroupBox2.Text = "EMPLOYEE DETAILS"
+        add_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
+        add_btn.AutoSize = True
+        add_btn.BackColor = Color.White
+        add_btn.BackgroundImageLayout = ImageLayout.Center
+        add_btn.Location = New Point(992, 137)
+        add_btn.Name = "add_btn"
+        add_btn.Size = New Size(31, 27)
+        add_btn.TabIndex = 35
+        add_btn.UseVisualStyleBackColor = False
         ' 
-        ' GroupBox3
+        ' CLEAR
         ' 
-        GroupBox3.Controls.Add(BTN_Cbrefresh)
-        GroupBox3.Controls.Add(Label11)
-        GroupBox3.Controls.Add(txt_Custname)
-        GroupBox3.Controls.Add(txt_custnumber)
-        GroupBox3.Controls.Add(txt_custemail)
-        GroupBox3.Controls.Add(txt_custaddress)
-        GroupBox3.Controls.Add(Label6)
-        GroupBox3.Controls.Add(Label5)
-        GroupBox3.Controls.Add(Label4)
-        GroupBox3.Controls.Add(Label3)
-        GroupBox3.Dock = DockStyle.Fill
-        GroupBox3.ForeColor = Color.White
-        GroupBox3.Location = New Point(0, 313)
-        GroupBox3.Name = "GroupBox3"
-        GroupBox3.Size = New Size(1032, 185)
-        GroupBox3.TabIndex = 2
-        GroupBox3.TabStop = False
-        GroupBox3.Text = "CUSTOMER DETAILS"
+        CLEAR.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
+        CLEAR.AutoSize = True
+        CLEAR.Font = New Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        CLEAR.Location = New Point(989, 69)
+        CLEAR.Name = "CLEAR"
+        CLEAR.Size = New Size(42, 13)
+        CLEAR.TabIndex = 34
+        CLEAR.Text = "CLEAR"
+        ' 
+        ' clear_btn
+        ' 
+        clear_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
+        clear_btn.AutoSize = True
+        clear_btn.BackColor = Color.White
+        clear_btn.BackgroundImageLayout = ImageLayout.Center
+        clear_btn.Location = New Point(992, 37)
+        clear_btn.Name = "clear_btn"
+        clear_btn.Size = New Size(32, 29)
+        clear_btn.TabIndex = 33
+        clear_btn.UseVisualStyleBackColor = False
         ' 
         ' lbl_stock
         ' 
@@ -373,217 +577,13 @@ Partial Class TRANSACTION
         dt_total.Name = "dt_total"
         dt_total.ReadOnly = True
         ' 
-        ' add_btn
-        ' 
-        add_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
-        add_btn.AutoSize = True
-        add_btn.BackColor = Color.White
-        add_btn.BackgroundImageLayout = ImageLayout.Center
-        add_btn.Location = New Point(992, 137)
-        add_btn.Name = "add_btn"
-        add_btn.Size = New Size(31, 27)
-        add_btn.TabIndex = 35
-        add_btn.UseVisualStyleBackColor = False
-        ' 
-        ' CLEAR
-        ' 
-        CLEAR.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
-        CLEAR.AutoSize = True
-        CLEAR.Font = New Font("Microsoft Sans Serif", 8.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        CLEAR.Location = New Point(989, 69)
-        CLEAR.Name = "CLEAR"
-        CLEAR.Size = New Size(42, 13)
-        CLEAR.TabIndex = 34
-        CLEAR.Text = "CLEAR"
-        ' 
-        ' clear_btn
-        ' 
-        clear_btn.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
-        clear_btn.AutoSize = True
-        clear_btn.BackColor = Color.White
-        clear_btn.BackgroundImageLayout = ImageLayout.Center
-        clear_btn.Location = New Point(992, 37)
-        clear_btn.Name = "clear_btn"
-        clear_btn.Size = New Size(32, 29)
-        clear_btn.TabIndex = 33
-        clear_btn.UseVisualStyleBackColor = False
-        ' 
-        ' BTN_Cbrefresh
-        ' 
-        BTN_Cbrefresh.BackgroundImage = My.Resources.Resources.loading_arrow
-        BTN_Cbrefresh.BackgroundImageLayout = ImageLayout.Center
-        BTN_Cbrefresh.FlatAppearance.BorderSize = 0
-        BTN_Cbrefresh.FlatStyle = FlatStyle.Flat
-        BTN_Cbrefresh.Location = New Point(418, 52)
-        BTN_Cbrefresh.Name = "BTN_Cbrefresh"
-        BTN_Cbrefresh.Size = New Size(37, 28)
-        BTN_Cbrefresh.TabIndex = 35
-        BTN_Cbrefresh.UseVisualStyleBackColor = True
-        ' 
-        ' Label11
-        ' 
-        Label11.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
-        Label11.AutoSize = True
-        Label11.BackColor = Color.White
-        Label11.Font = New Font("Microsoft Sans Serif", 12.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label11.ForeColor = Color.Black
-        Label11.Location = New Point(701, 95)
-        Label11.Name = "Label11"
-        Label11.Size = New Size(37, 20)
-        Label11.TabIndex = 34
-        Label11.Text = "+63"
-        ' 
-        ' txt_Custname
-        ' 
-        txt_Custname.AutoCompleteMode = AutoCompleteMode.Suggest
-        txt_Custname.AutoCompleteSource = AutoCompleteSource.ListItems
-        txt_Custname.FormattingEnabled = True
-        txt_Custname.Location = New Point(191, 52)
-        txt_Custname.Name = "txt_Custname"
-        txt_Custname.Size = New Size(225, 23)
-        txt_Custname.TabIndex = 33
-        ' 
-        ' txt_custnumber
-        ' 
-        txt_custnumber.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
-        txt_custnumber.Location = New Point(741, 94)
-        txt_custnumber.Name = "txt_custnumber"
-        txt_custnumber.Size = New Size(184, 23)
-        txt_custnumber.TabIndex = 32
-        ' 
-        ' txt_custemail
-        ' 
-        txt_custemail.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
-        txt_custemail.Location = New Point(701, 49)
-        txt_custemail.Name = "txt_custemail"
-        txt_custemail.Size = New Size(224, 23)
-        txt_custemail.TabIndex = 31
-        ' 
-        ' txt_custaddress
-        ' 
-        txt_custaddress.Location = New Point(192, 97)
-        txt_custaddress.Name = "txt_custaddress"
-        txt_custaddress.Size = New Size(224, 23)
-        txt_custaddress.TabIndex = 30
-        ' 
-        ' Label6
-        ' 
-        Label6.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
-        Label6.AutoSize = True
-        Label6.BackColor = Color.Transparent
-        Label6.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label6.ForeColor = Color.White
-        Label6.Location = New Point(538, 94)
-        Label6.Name = "Label6"
-        Label6.Size = New Size(157, 20)
-        Label6.TabIndex = 29
-        Label6.Text = "CONTACT NUMBER"
-        ' 
-        ' Label5
-        ' 
-        Label5.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
-        Label5.AutoSize = True
-        Label5.BackColor = Color.Transparent
-        Label5.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label5.ForeColor = Color.White
-        Label5.Location = New Point(538, 52)
-        Label5.Name = "Label5"
-        Label5.Size = New Size(142, 20)
-        Label5.TabIndex = 28
-        Label5.Text = "EMAIL ADDRESS"
-        ' 
-        ' Label4
-        ' 
-        Label4.AutoSize = True
-        Label4.BackColor = Color.Transparent
-        Label4.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label4.ForeColor = Color.White
-        Label4.Location = New Point(48, 97)
-        Label4.Name = "Label4"
-        Label4.Size = New Size(89, 20)
-        Label4.TabIndex = 27
-        Label4.Text = "ADDRESS"
-        ' 
-        ' Label3
-        ' 
-        Label3.AutoSize = True
-        Label3.BackColor = Color.Transparent
-        Label3.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label3.ForeColor = Color.White
-        Label3.Location = New Point(48, 55)
-        Label3.Name = "Label3"
-        Label3.Size = New Size(55, 20)
-        Label3.TabIndex = 26
-        Label3.Text = "NAME"
-        ' 
-        ' Label10
-        ' 
-        Label10.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        Label10.AutoSize = True
-        Label10.Location = New Point(564, 75)
-        Label10.Name = "Label10"
-        Label10.Size = New Size(71, 15)
-        Label10.TabIndex = 31
-        Label10.Text = "SERVICE FEE"
-        ' 
-        ' txt_service_fee
-        ' 
-        txt_service_fee.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
-        txt_service_fee.Location = New Point(699, 69)
-        txt_service_fee.Name = "txt_service_fee"
-        txt_service_fee.Size = New Size(230, 23)
-        txt_service_fee.TabIndex = 30
-        ' 
-        ' txt_EmpID
-        ' 
-        txt_EmpID.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
-        txt_EmpID.Location = New Point(699, 19)
-        txt_EmpID.Name = "txt_EmpID"
-        txt_EmpID.Size = New Size(224, 23)
-        txt_EmpID.TabIndex = 29
-        ' 
-        ' Cb_employeeName
-        ' 
-        Cb_employeeName.AutoCompleteMode = AutoCompleteMode.Suggest
-        Cb_employeeName.AutoCompleteSource = AutoCompleteSource.ListItems
-        Cb_employeeName.FormattingEnabled = True
-        Cb_employeeName.Location = New Point(191, 22)
-        Cb_employeeName.Name = "Cb_employeeName"
-        Cb_employeeName.Size = New Size(223, 23)
-        Cb_employeeName.TabIndex = 28
-        ' 
-        ' Label8
-        ' 
-        Label8.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        Label8.AutoSize = True
-        Label8.BackColor = Color.Transparent
-        Label8.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label8.ForeColor = Color.White
-        Label8.Location = New Point(653, 25)
-        Label8.Name = "Label8"
-        Label8.Size = New Size(26, 20)
-        Label8.TabIndex = 27
-        Label8.Text = "ID"
-        ' 
-        ' Label7
-        ' 
-        Label7.AutoSize = True
-        Label7.BackColor = Color.Transparent
-        Label7.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label7.ForeColor = Color.White
-        Label7.Location = New Point(46, 25)
-        Label7.Name = "Label7"
-        Label7.Size = New Size(55, 20)
-        Label7.TabIndex = 26
-        Label7.Text = "NAME"
-        ' 
         ' Print_btn
         ' 
         Print_btn.Anchor = AnchorStyles.Top
         Print_btn.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
         Print_btn.FlatStyle = FlatStyle.Flat
         Print_btn.ForeColor = Color.White
-        Print_btn.Location = New Point(558, 703)
+        Print_btn.Location = New Point(552, 666)
         Print_btn.Name = "Print_btn"
         Print_btn.Size = New Size(111, 53)
         Print_btn.TabIndex = 12
@@ -597,7 +597,7 @@ Partial Class TRANSACTION
         History.FlatStyle = FlatStyle.Popup
         History.Font = New Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         History.ForeColor = Color.White
-        History.Location = New Point(984, 48)
+        History.Location = New Point(983, 9)
         History.Name = "History"
         History.Size = New Size(113, 35)
         History.TabIndex = 13
@@ -618,12 +618,12 @@ Partial Class TRANSACTION
         Name = "TRANSACTION"
         Size = New Size(1149, 788)
         Panel1.ResumeLayout(False)
-        GroupBox1.ResumeLayout(False)
-        GroupBox1.PerformLayout()
-        GroupBox2.ResumeLayout(False)
-        GroupBox2.PerformLayout()
         GroupBox3.ResumeLayout(False)
         GroupBox3.PerformLayout()
+        GroupBox2.ResumeLayout(False)
+        GroupBox2.PerformLayout()
+        GroupBox1.ResumeLayout(False)
+        GroupBox1.PerformLayout()
         GroupBox4.ResumeLayout(False)
         GroupBox4.PerformLayout()
         CType(transaction_datagridview, ComponentModel.ISupportInitialize).EndInit()
