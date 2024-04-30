@@ -289,9 +289,8 @@ Public Class DASHBOARD
                 MessageBox.Show("You have pending transactions. You can't perform a different task.", "Pending Transactions", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Else
                 ' Proceed with opening the PRODUCT form
-                Dim customerForm As New EMPLOYEE()
+                Dim customerForm As New CUSTOMER()
                 customerForm.Dock = DockStyle.Fill
-
                 ' Add PRODUCT form to Panel_Contents and show it
                 Panel_Contents.Controls.Add(customerForm)
                 customerForm.BringToFront()
@@ -341,7 +340,34 @@ Public Class DASHBOARD
 
     Private Sub Btn_employee_Click(sender As Object, e As EventArgs) Handles Btn_employee.Click
 
+        If isEmployeeFormOpen Then
+            MessageBox.Show("The Employee form Is Already open", "Form Already Open", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Else
 
+            Dim FileValue As Integer = ReadFileValueAndNotify()
+
+            If FileValue > 0 Then
+                MessageBox.Show("You have pending transactions. You can't perform a different task.", "Pending Transactions", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Else
+                Dim employeeForm As New EMPLOYEE()
+                employeeForm.Dock = DockStyle.Fill
+
+                ' Add PRODUCT form to Panel_Contents and show it
+                Panel_Contents.Controls.Add(employeeForm)
+                employeeForm.BringToFront()
+                employeeForm.Show()
+
+                isHomeFormOpen = False
+                isSupplierFormOpen = False
+                isWarrantyFormOpen = False
+                isProductFormOpen = False
+                isCustomerFormOpen = False
+                isEmployeeFormOpen = True
+                isTransactionFromOpen = False
+            End If
+
+
+        End If
 
 
 

@@ -1,5 +1,5 @@
 ﻿<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()> _
-Partial Class CUSTOMER
+Partial Class TRANSACTION
     Inherits System.Windows.Forms.UserControl
 
     'UserControl overrides dispose to clean up the component list.
@@ -22,34 +22,35 @@ Partial Class CUSTOMER
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Lbl_product = New Label()
+        Lbl_transaction = New Label()
         SuspendLayout()
         ' 
-        ' Lbl_product
+        ' Lbl_transaction
         ' 
-        Lbl_product.AutoSize = True
-        Lbl_product.BackColor = Color.Transparent
-        Lbl_product.Font = New Font("Microsoft Sans Serif", 18.0F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Lbl_product.Location = New Point(595, 38)
-        Lbl_product.Name = "Lbl_product"
-        Lbl_product.Size = New Size(151, 29)
-        Lbl_product.TabIndex = 2
-        Lbl_product.Text = "CUSTOMER"
+        Lbl_transaction.AutoSize = True
+        Lbl_transaction.BackColor = Color.Transparent
+        Lbl_transaction.Font = New Font("Microsoft Sans Serif", 18F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Lbl_transaction.ForeColor = Color.White
+        Lbl_transaction.Location = New Point(583, 15)
+        Lbl_transaction.Name = "Lbl_transaction"
+        Lbl_transaction.Size = New Size(186, 29)
+        Lbl_transaction.TabIndex = 3
+        Lbl_transaction.Text = "TRANSACTION"
         ' 
-        ' CUSTOMER
+        ' TRANSACTION
         ' 
-        AutoScaleDimensions = New SizeF(7.0F, 15.0F)
+        AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         BackgroundImage = My.Resources.Resources.backgroud
-        BackgroundImageLayout = ImageLayout.Stretch
-        Controls.Add(Lbl_product)
+        BackgroundImageLayout = ImageLayout.Center
+        Controls.Add(Lbl_transaction)
         DoubleBuffered = True
-        Name = "CUSTOMER"
+        Name = "TRANSACTION"
         Size = New Size(1149, 788)
         ResumeLayout(False)
         PerformLayout()
     End Sub
 
-    Friend WithEvents Lbl_product As Label
+    Friend WithEvents Lbl_transaction As Label
 
 End Class

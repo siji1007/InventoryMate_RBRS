@@ -1,3 +1,3 @@
-﻿Public Class EMPLOYEE
+﻿Public Class EmployeeForm
 
 End Class
