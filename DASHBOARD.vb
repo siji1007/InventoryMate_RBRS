@@ -70,6 +70,8 @@ Public Class DASHBOARD
                     Btn_transaction.Visible = True
 
 
+
+
                 ElseIf userPrivilege = "EMPLOYEE" AndAlso userStatus = "ACTIVE" Then
                     ' Show or hide buttons based on employee privilege
                     Btn_home.Visible = True
@@ -80,11 +82,15 @@ Public Class DASHBOARD
                     Btn_employee.Visible = False
                     Btn_transaction.Visible = True
 
-                    'adjust the location f the transaction as 0, 358
+
                     Btn_transaction.Location = New Point(0, 358)
 
 
-                    MessageBox.Show("Employee log")
+
+
+
+
+
 
                 ElseIf userPrivilege = "OWNER" AndAlso userStatus = "ACTIVE" Then
                     Btn_home.Visible = True
@@ -94,7 +100,8 @@ Public Class DASHBOARD
                     Btn_supplier.Visible = False
                     Btn_employee.Visible = False
                     Btn_transaction.Visible = True
-                    MessageBox.Show("Owner log")
+                    Btn_transaction.Location = New Point(0, 358)
+
                 Else
                     ' Hide all buttons if user privilege or status doesn't match
                     Btn_home.Visible = True

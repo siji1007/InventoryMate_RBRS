@@ -12,6 +12,33 @@ Public Class PRODUCTS
 
         LoadDataAndSort()
         LoadWarranty()
+
+
+        If openDB() Then
+            ' Assuming Product, Warranty, Customer, Supplier, and Employee are the names of your buttons
+
+            ' Check user privilege and status
+            Dim query As New MySqlCommand("SELECT Privilege, Status FROM Users WHERE Status = 'ACTIVE';", Conn)
+
+
+            Dim userPrivilege = ""
+            Dim userStatus = ""
+
+            Using reader = query.ExecuteReader
+                If reader.Read Then
+                    userPrivilege = reader.GetString("Privilege")
+                    userStatus = reader.GetString("Status")
+                End If
+            End Using
+
+            If userPrivilege = "EMPLOYEE" AndAlso userStatus = "ACTIVE" Then
+                Btn_delete_prod.Enabled = False
+            End If
+        Else
+            MessageBox.Show("The connection of database failed")
+
+
+        End If
     End Sub
 
 
