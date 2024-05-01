@@ -17,11 +17,9 @@ Public Class PURCHASE
         Lbl_purchase.Width = ClientSize.Width ' Adjust this if needed
         Dim centerX = (ClientSize.Width - Lbl_purchase.Width) \ 2
         Lbl_purchase.Location = New Point(centerX, Lbl_purchase.Location.Y)
-
         LoadWarranty()
         LoadProducts()
         LoadSupplier()
-
     End Sub
 
 
@@ -34,7 +32,7 @@ Public Class PURCHASE
             ' Check if the database connection is open
             If openDB() Then
                 ' Query to retrieve the stock, price, model, color, and warranty ID of the selected product
-                Dim queryStockPriceWarranty As String = "SELECT prod_stocks, prod_model, prod_color, prod_price, Warranty_ID FROM products WHERE CONCAT(prod_name, ' - ', prod_model) = @productName"
+                Dim queryStockPriceWarranty As String = "SELECT prod_id, prod_stocks, prod_model, prod_color, prod_price, Warranty_ID, sup_ID FROM products WHERE CONCAT(prod_name, ' - ', prod_model) = @productName"
 
                 Using commandStockPriceWarranty As New MySqlCommand(queryStockPriceWarranty, Conn)
                     commandStockPriceWarranty.Parameters.AddWithValue("@productName", selectedProduct)
@@ -43,20 +41,26 @@ Public Class PURCHASE
                         Dim readerStockPriceWarranty As MySqlDataReader = commandStockPriceWarranty.ExecuteReader()
 
                         If readerStockPriceWarranty.Read() Then
+                            Dim prodID As Integer = Convert.ToInt32(readerStockPriceWarranty("prod_id"))
                             Dim availableStock As Integer = Convert.ToInt32(readerStockPriceWarranty("prod_stocks"))
                             Dim price As Decimal = Convert.ToDecimal(readerStockPriceWarranty("prod_price"))
                             Dim model As String = readerStockPriceWarranty("prod_model").ToString()
                             Dim color As String = readerStockPriceWarranty("prod_color").ToString()
                             Dim warrantyID As Integer = Convert.ToInt32(readerStockPriceWarranty("Warranty_ID"))
+                            Dim suppID As Integer = Convert.ToInt32(readerStockPriceWarranty("sup_ID"))
 
                             ' Update the labels with the retrieved information
+                            prod_id.Text = prodID
                             lbl_stock.Text = "Available Stock: " & availableStock.ToString()
                             txt_price.Text = price.ToString()
                             txt_product_model.Text = model
                             txt_product_color.Text = color
+                            Sup_ID.Text = suppID
+
+
 
                             ' Now, query the warranty information based on the retrieved warranty ID
-                            Dim queryWarrantyInfo As String = "SELECT CONCAT(War_Duration, '-', War_DurationUnit) AS warranty_info FROM warranty WHERE War_ID = @warrantyID"
+                            Dim queryWarrantyInfo As String = "SELECT CONCAT(War_Duration, '-', War_DurationUnit) AS warranty_info, War_Type FROM warranty WHERE War_ID = @warrantyID"
 
                             Using commandWarrantyInfo As New MySqlCommand(queryWarrantyInfo, Conn)
                                 commandWarrantyInfo.Parameters.AddWithValue("@warrantyID", warrantyID)
@@ -64,20 +68,28 @@ Public Class PURCHASE
 
                                 Dim readerWarrantyInfo As MySqlDataReader = commandWarrantyInfo.ExecuteReader()
 
-
                                 If readerWarrantyInfo.Read() Then
-                                    Dim warrantyInfo As String = readerWarrantyInfo("warranty_info").ToString()
+                                    Dim warrantyInfo As String = readerWarrantyInfo("warranty_info")
+                                    Dim WarrantyType As String = readerWarrantyInfo("War_Type")
+
+                                    readerWarrantyInfo.Close()
                                     ' Set the ComboBox value to the retrieved warranty info
-                                    Cb_warranty.Text = warrantyInfo
+                                    Cb_warranty.Text = warrantyInfo & "-" & WarrantyType
+                                    show_id.Text = show_id.Text
+                                    war_type.Text = WarrantyType
+
+
                                 Else
                                     MessageBox.Show("Warranty information not found")
                                 End If
 
                                 readerWarrantyInfo.Close()
                             End Using
+                            readerStockPriceWarranty.Close()
                         Else
                             lbl_stock.Text = "Stock information not found"
                             txt_price.Text = "Price information not found"
+                            war_type.Text = "Warranty type information not found"
                         End If
 
                         readerStockPriceWarranty.Close() ' Close the data reader here
@@ -93,6 +105,48 @@ Public Class PURCHASE
             End If
         End If
     End Sub
+
+    Private Sub Cb_warranty_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Cb_warranty.SelectedIndexChanged
+        If Cb_warranty.SelectedIndex <> -1 Then
+            Try
+                If openDB() Then
+                    Dim selectedWarranty As String = Cb_warranty.SelectedItem.ToString()
+                    Dim warrantyParts As String() = selectedWarranty.Split("-"c)
+                    Dim duration As Integer = Integer.Parse(warrantyParts(0).Trim())
+                    Dim durationUnit As String = warrantyParts(1).Trim()
+                    Dim warType As String = warrantyParts(2).Trim()
+
+                    Dim queryWarrantyId As String = "SELECT War_ID FROM warranty WHERE War_Duration = @Duration AND War_DurationUnit = @DurationUnit AND War_Type = @WarType"
+
+                    Using cmd As New MySqlCommand(queryWarrantyId, Conn)
+                        cmd.Parameters.AddWithValue("@Duration", duration)
+                        cmd.Parameters.AddWithValue("@DurationUnit", durationUnit)
+                        cmd.Parameters.AddWithValue("@WarType", warType)
+
+                        Dim warrantyId As Integer = Convert.ToInt32(cmd.ExecuteScalar())
+
+                        If warrantyId > 0 Then
+                            ' Set the ID in show_id.Text
+                            show_id.Text = warrantyId.ToString()
+                            war_type.Text = warType
+                        Else
+                            MessageBox.Show("Warranty ID not found.")
+                        End If
+
+                    End Using
+
+                    closeDB()
+                Else
+                    MessageBox.Show("THE DATABASE IS NOT CONNECTED")
+                End If
+            Catch ex As Exception
+                MessageBox.Show("Error fetching warranty ID: " & ex.Message)
+            End Try
+        End If
+    End Sub
+
+
+
 
 
     Private Sub add_btn_Click(sender As Object, e As EventArgs) Handles add_btn.Click
@@ -123,58 +177,112 @@ Public Class PURCHASE
     End Sub
 
 
+
     Private Sub Btn_purchase_Click(sender As Object, e As EventArgs) Handles Btn_purchase.Click
-        ' Assuming dt_purchase is the DataGridView containing the purchase details
-        For Each row As DataGridViewRow In dt_purchase.Rows
-            If Not row.IsNewRow Then ' Skip the new row if any
-                Dim ProdID As Integer = Convert.ToInt32(row.Cells("prodID").Value) ' Adjust column name as per your DataGridView
-                Dim ProdQuantity As Integer = Convert.ToInt32(row.Cells("prodStock").Value) ' Adjust column name as per your DataGridView
 
-                ' Check if the product already exists in the database
-                If ProductExists(ProdID) Then
-                    ' Update the product stocks in the database
-                    If Not UpdateProductStocks(ProdID, ProdQuantity) Then
-                        MessageBox.Show("Failed to update product stocks.")
-                        Exit Sub ' Exit the loop if update fails
-                    End If
-                Else
-                    ' Get other product details from the DataGridView
-                    Dim ProdName As String = row.Cells("prodName").Value.ToString()
-                    Dim ProdModel As String = row.Cells("prodModel").Value.ToString()
-                    Dim ProdColor As String = row.Cells("prodColor").Value.ToString()
-                    Dim ProdPrice As Decimal = Convert.ToDecimal(row.Cells("prodPrice").Value) ' Assuming the price is in a decimal format
+        Dim ProdModeltxt As String = txt_product_model.Text.Trim()
+        Dim ProdColortxt As String = txt_product_color.Text.Trim()
+        Dim ProdQuantitytxt As Integer = txt_stocks.Text.Trim()
+        Dim ProdPricetxt As Integer = txt_price.Text.Trim()
 
-                    ' Get the selected supplier ID from Cb_supplier
-                    Dim supplierId As Integer = GetSupplierID(Cb_supplier.Text) ' Modify GetSupplierID function as needed
+        If dt_purchase.Rows.Count < 1 Then ' Assuming the DataGridView has headers, so at least one row is required
+            MessageBox.Show("Please add products to the purchase list.")
+            Exit Sub
+        End If
+        If Cb_Products.SelectedIndex = -1 OrElse
+           String.IsNullOrEmpty(Cb_Products.Text) OrElse
+           String.IsNullOrEmpty(ProdModeltxt) OrElse
+           String.IsNullOrEmpty(ProdColortxt) OrElse
+           Not Integer.TryParse(ProdQuantitytxt, Nothing) OrElse
+           Not Integer.TryParse(ProdPricetxt, Nothing) Then
 
-                    ' Insert the new product into the database with supplier ID
-                    If Not InsertProduct(ProdID, ProdName, ProdModel, ProdColor, ProdQuantity, ProdPrice, supplierId) Then
-                        MessageBox.Show("Failed to insert new product.")
-                        Exit Sub ' Exit the loop if insert fails
+            MessageBox.Show("Please fill the product details properly")
+        Else
+            For Each row As DataGridViewRow In dt_purchase.Rows
+                If Not row.IsNewRow Then ' Skip the new row if any
+                    Dim ProdID As Integer = Convert.ToInt32(row.Cells("prodID").Value) ' Adjust column name as per your DataGridView
+                    Dim ProdQuantity As Integer = Convert.ToInt32(row.Cells("prodStock").Value) ' Adjust column name as per your DataGridView
+
+                    If ProdID = 0 Then
+                        ' Get other product details from the DataGridView
+                        Dim ProdName As String = row.Cells("prodName").Value.ToString()
+                        Dim ProdModel As String = row.Cells("prodModel").Value.ToString()
+                        Dim ProdColor As String = row.Cells("prodColor").Value.ToString()
+                        Dim ProdPrice As Decimal = Convert.ToDecimal(row.Cells("prodPrice").Value) ' Assuming the price is in a decimal format
+
+                        ' Check if a supplier is selected
+                        If Cb_supplier.SelectedIndex = -1 Then
+                            ' Supplier not selected, so show a message to select a supplier
+                            MessageBox.Show("Please select a supplier.")
+                            Exit Sub
+                        End If
+
+                        ' Check if warranty ID is selected
+                        If show_id.Text = "" Then
+                            ' Warranty ID not selected, show a message
+                            MessageBox.Show("Please select a warranty.")
+                            Exit Sub
+                        End If
+
+                        Dim supplierId As Integer
+                        If Cb_supplier.SelectedIndex = Cb_supplier.Items.Count - 1 Then
+                            ' The last item in the ComboBox is for adding a new supplier
+                            ' Insert the new supplier into the database and get the new supplier ID
+                            supplierId = InsertSupplier(Cb_supplier.Text, txt_store_name.Text, txt_sup_address.Text, txt_sup_email.Text, txt_sup_cnumber.Text)
+                        Else
+                            ' Get the selected supplier ID from Cb_supplier
+                            supplierId = GetSupplierID(Cb_supplier.Text) ' Modify GetSupplierID function as needed
+                        End If
+
+                        ' Insert the new product into the database with supplier ID and warranty ID
+                        If Not InsertProduct(ProdName, ProdModel, ProdColor, ProdQuantity, ProdPrice, supplierId, Convert.ToInt32(show_id.Text)) Then
+                            MessageBox.Show("Failed to insert new product.")
+                            Exit Sub ' Exit the loop if insert fails
+                        End If
+
+                    Else
+                        ' Update the product stocks in the database
+                        If Not UpdateProductStocks(ProdID, ProdQuantity) Then
+                            MessageBox.Show("Failed to update product stocks.")
+                            Exit Sub ' Exit the loop if update fails
+                        End If
+
                     End If
                 End If
-            End If
-        Next
-
-        MessageBox.Show("Purchase completed successfully.")
+            Next
+            MessageBox.Show("Purchase completed successfully.")
+        End If        ' Assuming dt_purchase is the DataGridView containing the purchase details
     End Sub
 
 
 
-    Private Function GetSupplierID(ByVal supplierName As String) As Integer
-        Dim supplierId As Integer = 0
+
+
+
+
+
+
+    Private Function InsertSupplier(ByVal supplierName As String, ByVal storeName As String, ByVal storeAddress As String, ByVal supplierEmail As String, ByVal supplierContactNumber As String) As Integer
+        Dim supplierId As Integer = 0 ' Initialize to a default value
 
         ' Assuming you have a connection named Conn
         If openDB() Then
-            Dim query As String = "SELECT supplier_id FROM supplier WHERE Supp_name = @supplierName"
+            ' Insert query to add the new supplier to the database
+            Dim insertQuery As String = "INSERT INTO supplier (Supp_name, Supp_store, Supp_address, Supp_email, Supp_cnumber) VALUES (@supplierName, @storeName, @storeAddress, @supplierEmail, @supplierContactNumber); SELECT LAST_INSERT_ID()"
 
-            Using command As New MySqlCommand(query, Conn)
+            Using command As New MySqlCommand(insertQuery, Conn)
                 command.Parameters.AddWithValue("@supplierName", supplierName)
-                Dim reader As MySqlDataReader = command.ExecuteReader()
-                If reader.Read() Then
-                    supplierId = Convert.ToInt32(reader("supplier_id"))
-                End If
-                reader.Close()
+                command.Parameters.AddWithValue("@storeName", storeName)
+                command.Parameters.AddWithValue("@storeAddress", storeAddress)
+                command.Parameters.AddWithValue("@supplierEmail", supplierEmail)
+                command.Parameters.AddWithValue("@supplierContactNumber", supplierContactNumber)
+
+                Try
+                    ' Execute the insert query and get the last inserted ID
+                    supplierId = Convert.ToInt32(command.ExecuteScalar())
+                Catch ex As Exception
+                    MessageBox.Show("Error inserting new supplier: " & ex.Message)
+                End Try
             End Using
 
             closeDB() ' Close the database connection after use
@@ -184,25 +292,10 @@ Public Class PURCHASE
     End Function
 
 
-    Private Function ProductExists(ByVal productId As Integer) As Boolean
-        Dim exists As Boolean = False
 
-        ' Check if the product exists in the database
-        ' Assuming you have a connection named Conn
-        If openDB() Then
-            Dim query As String = "SELECT COUNT(*) FROM products WHERE prod_id = @productId"
 
-            Using command As New MySqlCommand(query, Conn)
-                command.Parameters.AddWithValue("@productId", productId)
-                Dim count As Integer = Convert.ToInt32(command.ExecuteScalar())
-                exists = (count > 0)
-            End Using
 
-            closeDB() ' Close the database connection after use
-        End If
 
-        Return exists
-    End Function
 
     Private Function InsertProduct(ByVal productId As Integer, ByVal productName As String, ByVal productModel As String, ByVal productColor As String, ByVal productStock As Integer, ByVal productPrice As Decimal, ByVal supplierId As Integer) As Boolean
         Dim success As Boolean = False
@@ -210,7 +303,7 @@ Public Class PURCHASE
         ' Assuming you have a connection named Conn
         If openDB() Then
             ' Insert query to add the new product to the database
-            Dim insertQuery As String = "INSERT INTO products (prod_id, prod_name, prod_model, prod_color, prod_stocks, prod_price, supplier_id) VALUES (@productId, @productName, @productModel, @productColor, @productStock, @productPrice, @supplierId)"
+            Dim insertQuery As String = "INSERT INTO products (prod_id, prod_name, prod_model, prod_color, prod_stocks, prod_price, sup_ID) VALUES (@productId, @productName, @productModel, @productColor, @productStock, @productPrice, @supplierId)"
 
             Using command As New MySqlCommand(insertQuery, Conn)
                 command.Parameters.AddWithValue("@productId", productId)
@@ -234,6 +327,60 @@ Public Class PURCHASE
 
         Return success
     End Function
+
+
+
+
+
+
+
+    Private Function GetSupplierID(ByVal supplierName As String) As Integer
+        Dim supplierId As Integer = 0
+
+        ' Assuming you have a connection named Conn
+        If openDB() Then
+            Dim query As String = "SELECT Supp_ID FROM supplier WHERE Supp_name = @supplierName"
+
+            Using command As New MySqlCommand(query, Conn)
+                command.Parameters.AddWithValue("@supplierName", supplierName)
+                Dim reader As MySqlDataReader = command.ExecuteReader()
+                If reader.Read() Then
+                    supplierId = Convert.ToInt32(reader("Supp_ID"))
+                End If
+                reader.Close()
+            End Using
+
+            closeDB() ' Close the database connection after use
+        End If
+
+        Return supplierId
+    End Function
+
+
+
+    Private Function ProductExists(ByVal productId As Integer) As Boolean
+        Dim exists As Boolean = False
+
+        ' Check if the product exists in the database
+        ' Assuming you have a connection named Conn
+        If openDB() Then
+            Dim query As String = "SELECT COUNT(*) FROM products WHERE prod_id = @productId"
+
+            Using command As New MySqlCommand(query, Conn)
+                command.Parameters.AddWithValue("@productId", productId)
+                Dim count As Integer = Convert.ToInt32(command.ExecuteScalar())
+                exists = (count > 0)
+            End Using
+
+            closeDB() ' Close the database connection after use
+        End If
+
+        Return exists
+    End Function
+
+
+
+
 
 
 
@@ -265,6 +412,9 @@ Public Class PURCHASE
 
 
 
+
+
+
     ' Function to retrieve the product ID based on the product name
     Private Function GetProductID(ByVal productName As String, ByVal productModel As String) As Integer
         Dim productId As Integer = 0 ' Initialize to a default value
@@ -292,11 +442,14 @@ Public Class PURCHASE
 
 
 
+
+
+
+
+
     Private Sub LoadWarranty()
-
-
         If openDB() Then
-            Dim query_warranty = "SELECT CONCAT(War_Duration, '-', War_DurationUnit) AS warranty_info FROM warranty"
+            Dim query_warranty = "SELECT CONCAT(War_Duration, '-', War_DurationUnit, '-', War_Type) AS warranty_info FROM warranty"
             Using cmd As New MySqlCommand(query_warranty, Conn)
                 Try
                     Using reader = cmd.ExecuteReader
@@ -320,9 +473,8 @@ Public Class PURCHASE
         Else
             MessageBox.Show("The Database failed to connect.")
         End If
-
-
     End Sub
+
 
     Private Sub LoadProducts()
         Cb_Products.Items.Clear()
@@ -348,8 +500,13 @@ Public Class PURCHASE
         Else
             MessageBox.Show("The database is not connected.")
         End If
-
     End Sub
+
+
+
+
+
+
 
     Private Sub LoadSupplier()
         Cb_supplier.Items.Clear()
@@ -380,6 +537,12 @@ Public Class PURCHASE
         End If
     End Sub
 
+
+
+
+
+
+
     Private Sub Cb_supplier_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Cb_supplier.SelectedIndexChanged
         ' Check if an item is selected in the ComboBox
         If Cb_supplier.SelectedIndex <> -1 Then
@@ -389,7 +552,7 @@ Public Class PURCHASE
             ' Check if the database connection is open
             If openDB() Then
                 ' Define the SQL query to fetch specific details of the selected supplier
-                Dim query_supplier As String = "SELECT Supp_store, Supp_address, Supp_email, Supp_cnumber FROM supplier WHERE Supp_name = @supplierName"
+                Dim query_supplier As String = "SELECT Supp_ID, Supp_store, Supp_address, Supp_email, Supp_cnumber FROM supplier WHERE Supp_name = @supplierName"
 
                 Using command As New MySqlCommand(query_supplier, Conn)
                     ' Add parameter for supplier name to the query
@@ -402,6 +565,7 @@ Public Class PURCHASE
                         ' Check if data is retrieved
                         If reader.Read() Then
                             ' Update the TextBoxes with the retrieved supplier information
+                            Sup_ID.Text = reader("Supp_ID").ToString()
                             txt_store_name.Text = reader("Supp_store").ToString()
                             txt_sup_address.Text = reader("Supp_address").ToString()
                             txt_sup_email.Text = reader("Supp_email").ToString()
@@ -453,7 +617,6 @@ Public Class PURCHASE
             Next
         End If
     End Sub
-
 
 
 

@@ -27,7 +27,8 @@ Partial Class PURCHASE
         Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
         Btn_back = New Button()
         GroupBox1 = New GroupBox()
-        Prod_ID = New Label()
+        prod_id = New Label()
+        war_type = New Label()
         lbl_stock = New Label()
         Cb_Products = New ComboBox()
         add_btn = New Button()
@@ -53,6 +54,7 @@ Partial Class PURCHASE
         prodStock = New DataGridViewTextBoxColumn()
         prodPrice = New DataGridViewTextBoxColumn()
         GroupBox2 = New GroupBox()
+        Sup_ID = New Label()
         Cb_supplier = New ComboBox()
         Label3 = New Label()
         Label5 = New Label()
@@ -85,7 +87,8 @@ Partial Class PURCHASE
         ' GroupBox1
         ' 
         GroupBox1.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        GroupBox1.Controls.Add(Prod_ID)
+        GroupBox1.Controls.Add(prod_id)
+        GroupBox1.Controls.Add(war_type)
         GroupBox1.Controls.Add(lbl_stock)
         GroupBox1.Controls.Add(Cb_Products)
         GroupBox1.Controls.Add(add_btn)
@@ -108,19 +111,28 @@ Partial Class PURCHASE
         GroupBox1.ForeColor = Color.White
         GroupBox1.Location = New Point(16, 74)
         GroupBox1.Name = "GroupBox1"
-        GroupBox1.Size = New Size(1119, 323)
+        GroupBox1.Size = New Size(1119, 346)
         GroupBox1.TabIndex = 1
         GroupBox1.TabStop = False
         GroupBox1.Text = "PRODUCT DETAILS"
         ' 
-        ' Prod_ID
+        ' prod_id
         ' 
-        Prod_ID.AutoSize = True
-        Prod_ID.Location = New Point(502, 187)
-        Prod_ID.Name = "Prod_ID"
-        Prod_ID.Size = New Size(26, 20)
-        Prod_ID.TabIndex = 52
-        Prod_ID.Text = "ID"
+        prod_id.AutoSize = True
+        prod_id.Location = New Point(491, 187)
+        prod_id.Name = "prod_id"
+        prod_id.Size = New Size(26, 20)
+        prod_id.TabIndex = 54
+        prod_id.Text = "ID"
+        ' 
+        ' war_type
+        ' 
+        war_type.AutoSize = True
+        war_type.Location = New Point(762, 309)
+        war_type.Name = "war_type"
+        war_type.Size = New Size(111, 20)
+        war_type.TabIndex = 53
+        war_type.Text = "Warranty Type"
         ' 
         ' lbl_stock
         ' 
@@ -148,9 +160,9 @@ Partial Class PURCHASE
         add_btn.BackColor = Color.White
         add_btn.BackgroundImageLayout = ImageLayout.Center
         add_btn.Image = My.Resources.Resources.add
-        add_btn.Location = New Point(1033, 150)
+        add_btn.Location = New Point(1033, 144)
         add_btn.Name = "add_btn"
-        add_btn.Size = New Size(31, 27)
+        add_btn.Size = New Size(31, 31)
         add_btn.TabIndex = 49
         add_btn.UseVisualStyleBackColor = False
         ' 
@@ -380,6 +392,7 @@ Partial Class PURCHASE
         ' GroupBox2
         ' 
         GroupBox2.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        GroupBox2.Controls.Add(Sup_ID)
         GroupBox2.Controls.Add(Cb_supplier)
         GroupBox2.Controls.Add(Label3)
         GroupBox2.Controls.Add(Label5)
@@ -392,12 +405,21 @@ Partial Class PURCHASE
         GroupBox2.Controls.Add(txt_store_name)
         GroupBox2.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         GroupBox2.ForeColor = Color.White
-        GroupBox2.Location = New Point(16, 385)
+        GroupBox2.Location = New Point(18, 419)
         GroupBox2.Name = "GroupBox2"
-        GroupBox2.Size = New Size(1119, 188)
+        GroupBox2.Size = New Size(1119, 186)
         GroupBox2.TabIndex = 2
         GroupBox2.TabStop = False
         GroupBox2.Text = "SUPPLIER DETAILS"
+        ' 
+        ' Sup_ID
+        ' 
+        Sup_ID.AutoSize = True
+        Sup_ID.Location = New Point(495, 46)
+        Sup_ID.Name = "Sup_ID"
+        Sup_ID.Size = New Size(26, 20)
+        Sup_ID.TabIndex = 54
+        Sup_ID.Text = "ID"
         ' 
         ' Cb_supplier
         ' 
@@ -522,7 +544,7 @@ Partial Class PURCHASE
         ' 
         Btn_purchase.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
         Btn_purchase.ForeColor = Color.White
-        Btn_purchase.Location = New Point(541, 579)
+        Btn_purchase.Location = New Point(546, 611)
         Btn_purchase.Name = "Btn_purchase"
         Btn_purchase.Size = New Size(115, 64)
         Btn_purchase.TabIndex = 4
@@ -585,7 +607,6 @@ Partial Class PURCHASE
     Friend WithEvents clear_btn As Button
     Friend WithEvents Cb_Products As ComboBox
     Friend WithEvents lbl_stock As Label
-    Friend WithEvents Prod_ID As Label
     Friend WithEvents Cb_supplier As ComboBox
     Friend WithEvents prodID As DataGridViewTextBoxColumn
     Friend WithEvents prodName As DataGridViewTextBoxColumn
@@ -593,5 +614,8 @@ Partial Class PURCHASE
     Friend WithEvents prodColor As DataGridViewTextBoxColumn
     Friend WithEvents prodStock As DataGridViewTextBoxColumn
     Friend WithEvents prodPrice As DataGridViewTextBoxColumn
+    Friend WithEvents war_type As Label
+    Friend WithEvents Sup_ID As Label
+    Friend WithEvents prod_id As Label
 
 End Class
