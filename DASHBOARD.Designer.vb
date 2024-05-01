@@ -238,14 +238,20 @@ Partial Class DASHBOARD
         ' 
         txt_name.AutoSize = True
         txt_name.Dock = DockStyle.Right
+        txt_name.FlatStyle = FlatStyle.Flat
         txt_name.Font = New Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         txt_name.ForeColor = Color.White
+        txt_name.Image = My.Resources.Resources.user__1_
+        txt_name.ImageAlign = ContentAlignment.MiddleLeft
         txt_name.Location = New Point(510, 0)
+        txt_name.Margin = New Padding(5, 0, 5, 0)
         txt_name.Name = "txt_name"
-        txt_name.Padding = New Padding(5)
-        txt_name.Size = New Size(76, 34)
+        txt_name.Padding = New Padding(5, 0, 5, 0)
+        txt_name.RightToLeft = RightToLeft.No
+        txt_name.Size = New Size(76, 24)
         txt_name.TabIndex = 0
         txt_name.Text = "NAME"
+        txt_name.TextAlign = ContentAlignment.MiddleRight
         ' 
         ' Panel_Contents
         ' 
@@ -274,7 +280,7 @@ Partial Class DASHBOARD
     Friend WithEvents Panel1 As Panel
     Friend WithEvents Panel2 As Panel
     Friend WithEvents Panel3 As Panel
-    Friend WithEvents Panel_Contents As Panel
+    Public WithEvents Panel_Contents As Panel
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents Btn_home As Button
     Friend WithEvents Btn_transaction As Button

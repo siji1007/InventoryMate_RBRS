@@ -62,9 +62,10 @@ Partial Class EMPLOYEE
         ' 
         lbl_employee.AutoSize = True
         lbl_employee.BackColor = Color.Transparent
+        lbl_employee.ContextMenuStrip = status_menu
         lbl_employee.Font = New Font("Microsoft Sans Serif", 21.75F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         lbl_employee.ForeColor = Color.White
-        lbl_employee.Location = New Point(601, 31)
+        lbl_employee.Location = New Point(601, 26)
         lbl_employee.Name = "lbl_employee"
         lbl_employee.Size = New Size(174, 33)
         lbl_employee.TabIndex = 0

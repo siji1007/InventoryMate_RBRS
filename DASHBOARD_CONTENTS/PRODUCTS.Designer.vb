@@ -58,6 +58,7 @@ Partial Class PRODUCTS
         Purchase = New Button()
         Label3 = New Label()
         prod_search = New TextBox()
+        Panel_purchase = New Panel()
         CType(prod_datagridview, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
@@ -403,12 +404,21 @@ Partial Class PRODUCTS
         prod_search.Size = New Size(213, 23)
         prod_search.TabIndex = 38
         ' 
+        ' Panel_purchase
+        ' 
+        Panel_purchase.Dock = DockStyle.Fill
+        Panel_purchase.Location = New Point(0, 0)
+        Panel_purchase.Name = "Panel_purchase"
+        Panel_purchase.Size = New Size(1149, 788)
+        Panel_purchase.TabIndex = 41
+        ' 
         ' PRODUCTS
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), Image)
         BackgroundImageLayout = ImageLayout.Center
+        Controls.Add(Panel_purchase)
         Controls.Add(Purchase)
         Controls.Add(Label3)
         Controls.Add(prod_search)
@@ -468,5 +478,6 @@ Partial Class PRODUCTS
     Friend WithEvents Purchase As Button
     Friend WithEvents Label3 As Label
     Friend WithEvents prod_search As TextBox
+    Public WithEvents Panel_purchase As Panel
 
 End Class

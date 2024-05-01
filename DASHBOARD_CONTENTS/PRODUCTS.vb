@@ -1,6 +1,8 @@
 ﻿Imports MySql.Data.MySqlClient
 
 Public Class PRODUCTS
+    Private dashboardForm As DASHBOARD
+
     Private Sub Lbl_product_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Lbl_product.TextAlign = ContentAlignment.MiddleCenter
         Lbl_product.AutoSize = False
@@ -9,6 +11,8 @@ Public Class PRODUCTS
 
         Dim centerX = (ClientSize.Width - Lbl_product.Width) \ 2
         Lbl_product.Location = New Point(centerX, Lbl_product.Location.Y)
+
+        Panel_purchase.Visible = False
 
         LoadDataAndSort()
         LoadWarranty()
@@ -277,7 +281,7 @@ Public Class PRODUCTS
 
                 End If
 
-                End If
+            End If
         Else
             MessageBox.Show("Please select a product to update.")
         End If
@@ -321,7 +325,7 @@ Public Class PRODUCTS
             End If
 
         Else
-                MessageBox.Show("Please select a product to delete.")
+            MessageBox.Show("Please select a product to delete.")
         End If
     End Sub
 
@@ -424,6 +428,29 @@ Public Class PRODUCTS
         End If
     End Sub
 
+    ' Assuming dashboardForm is a reference to your DASHBOARD form
+    ' Assuming dashboardForm is a reference to your existing DASHBOARD form instance
+    Public dash As New DASHBOARD()
+    Private Sub Purchase_Click(sender As Object, e As EventArgs) Handles Purchase.Click
 
+        Panel_purchase.Visible = True
+        dash.Boolean_panel()
 
+        ' Create an instance of the PURCHASE form
+        ' Pass a reference to the PRODUCTS form to the PURCHASE form
+        Dim PurchaseForm As New PURCHASE With {
+            .Dock = DockStyle.Fill,
+            .ProductForm = Me
+        }
+
+        ' Add PurchaseForm to Panel_purchase and show it
+        Panel_purchase.Controls.Add(PurchaseForm)
+        PurchaseForm.BringToFront()
+        PurchaseForm.Show()
+    End Sub
+
+    Friend Function Purchase_panel() As Object
+        Panel_purchase.Visible = False
+        Return True
+    End Function
 End Class

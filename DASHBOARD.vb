@@ -4,6 +4,9 @@ Imports Org.BouncyCastle.Math.EC
 
 Public Class DASHBOARD
 
+
+
+
     Private isHomeFormOpen As Boolean = False
     Private isProductFormOpen As Boolean = False
     Private isWarrantyFormOpen As Boolean = False
@@ -34,7 +37,6 @@ Public Class DASHBOARD
         ' Return the file value
         Return fileValue
     End Function
-
 
     Private Sub DASHBOARD_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -204,6 +206,11 @@ Public Class DASHBOARD
             End If
         End If
     End Sub
+
+    Friend Function Boolean_panel() As Object
+        isProductFormOpen = False
+        Return True
+    End Function
 
 
     Private Sub txt_name_Load()

@@ -110,7 +110,6 @@ Public Class TRANSACTION
         Else
             MessageBox.Show("The database is not connected.")
         End If
-
     End Sub
 
 
@@ -369,10 +368,9 @@ Public Class TRANSACTION
 
             Next
 
-
-
         End If
     End Sub
+
 
     Private Sub clear_btn_Click(sender As Object, e As EventArgs) Handles clear_btn.Click
         ' Check if there is a selected row
@@ -1036,11 +1034,7 @@ Public Class TRANSACTION
         End Try
     End Sub
 
+    Private Sub CLEAR_Click(sender As Object, e As EventArgs) Handles CLEAR.Click
 
-
-
-
-
-
-
+    End Sub
 End Class
