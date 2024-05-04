@@ -259,7 +259,9 @@ Public Class TRANSACTION
                                 Cb_Products.SelectedIndex = -1
                                 txt_quantity.Clear()
                                 txt_price.Clear()
-                                Cb_warranty.SelectedIndex = -1
+
+
+
 
 
                                 Dim filePath As String = "C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\transac\transaction_status.txt"
@@ -862,7 +864,6 @@ Public Class TRANSACTION
 
 
 
-
     Private Sub CustomerComboboxLoad()
         If txt_Custname.SelectedIndex = -1 Then
             ' Clear the ComboBox selection and text
@@ -883,8 +884,6 @@ Public Class TRANSACTION
         txt_Custname.Items.Clear()
         LoadCustomer()
     End Sub
-
-
 
 
     Private Function GetLastCustomerID() As Integer
@@ -914,6 +913,8 @@ Public Class TRANSACTION
 
         Return lastCustomerID
     End Function
+
+
 
 
     Private Sub PrintExcel()

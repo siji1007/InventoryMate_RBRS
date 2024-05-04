@@ -67,6 +67,7 @@ Partial Class PURCHASE
         txt_store_name = New TextBox()
         Lbl_purchase = New Label()
         Btn_purchase = New Button()
+        NewSupplier = New RadioButton()
         GroupBox1.SuspendLayout()
         CType(dt_purchase, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox2.SuspendLayout()
@@ -392,6 +393,7 @@ Partial Class PURCHASE
         ' GroupBox2
         ' 
         GroupBox2.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        GroupBox2.Controls.Add(NewSupplier)
         GroupBox2.Controls.Add(Sup_ID)
         GroupBox2.Controls.Add(Cb_supplier)
         GroupBox2.Controls.Add(Label3)
@@ -551,6 +553,17 @@ Partial Class PURCHASE
         Btn_purchase.Text = "PURCHASE "
         Btn_purchase.UseVisualStyleBackColor = False
         ' 
+        ' NewSupplier
+        ' 
+        NewSupplier.AutoSize = True
+        NewSupplier.Location = New Point(760, 127)
+        NewSupplier.Name = "NewSupplier"
+        NewSupplier.Size = New Size(211, 24)
+        NewSupplier.TabIndex = 55
+        NewSupplier.TabStop = True
+        NewSupplier.Text = "INSERT NEW SUPPLIER"
+        NewSupplier.UseVisualStyleBackColor = True
+        ' 
         ' PURCHASE
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
@@ -617,5 +630,6 @@ Partial Class PURCHASE
     Friend WithEvents war_type As Label
     Friend WithEvents Sup_ID As Label
     Friend WithEvents prod_id As Label
+    Friend WithEvents NewSupplier As RadioButton
 
 End Class

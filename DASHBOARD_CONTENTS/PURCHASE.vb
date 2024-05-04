@@ -24,7 +24,6 @@ Public Class PURCHASE
 
 
     Private Sub Cb_Products_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Cb_Products.SelectedIndexChanged
-        ' Check if a product is selected in the ComboBox
         If Cb_Products.SelectedIndex <> -1 Then
             ' Get the selected product name from the ComboBox
             Dim selectedProduct As String = Cb_Products.SelectedItem.ToString()
@@ -148,33 +147,28 @@ Public Class PURCHASE
 
 
 
-
     Private Sub add_btn_Click(sender As Object, e As EventArgs) Handles add_btn.Click
-        ' Get the raw product name from the ComboBox
         Dim rawProdName As String = Cb_Products.Text
-
-        ' Trim the product name to remove text after "-"
         Dim hyphenIndex As Integer = rawProdName.IndexOf("-")
         Dim ProdName As String = If(hyphenIndex <> -1, rawProdName.Substring(0, hyphenIndex).Trim(), rawProdName.Trim())
 
         ' Get the other values from the form controls
         Dim ProdModel As String = txt_product_model.Text
         Dim ProdColor As String = txt_product_color.Text
-        Dim ProdQuantity As Integer = Convert.ToInt32(txt_stocks.Text) ' Convert to Integer for quantity
-        Dim ProdPrice As Decimal = Convert.ToDecimal(txt_price.Text) ' Convert to Decimal for price
 
-        ' Get the product ID based on the selected product name and model
-        Dim ProdID As Integer = GetProductID(ProdName, ProdModel)
+        ' Check if the quantity and price are not empty before converting
+        Dim ProdQuantity As Integer
+        Dim ProdPrice As Decimal
 
-        ' Update the product stocks in the database
-
-        ' Create a new row for the DataGridView with product ID included
-        Dim row As String() = {ProdID.ToString(), ProdName, ProdModel, ProdColor, ProdQuantity.ToString(), ProdPrice.ToString()}
-
-        ' Add the new row to the DataGridView
-        dt_purchase.Rows.Add(row)
-
+        If Integer.TryParse(txt_stocks.Text, ProdQuantity) AndAlso Decimal.TryParse(txt_price.Text, ProdPrice) Then
+            Dim ProdID As Integer = GetProductID(ProdName, ProdModel)
+            Dim row As String() = {ProdID.ToString(), ProdName, ProdModel, ProdColor, ProdQuantity.ToString(), ProdPrice.ToString()}
+            dt_purchase.Rows.Add(row)
+        Else
+            MessageBox.Show("Please fill the entries properly")
+        End If
     End Sub
+
 
 
 
@@ -593,6 +587,22 @@ Public Class PURCHASE
             dt_purchase.Rows.Remove(selectedRow)
         Else
             MessageBox.Show("Please select a row to clear.")
+            Cb_Products.SelectedIndex = -1
+            Cb_warranty.SelectedIndex = -1
+            txt_product_model.Clear()
+            txt_product_color.Clear()
+            txt_stocks.Clear()
+            txt_price.Clear()
+            show_id.Text = "ID"
+            war_type.Text = "Warranty Type"
+            prod_id.Text = "ID"
+            lbl_stock.Text = "STOCKS"
+
+
+
+
+
+
         End If
     End Sub
 
@@ -617,7 +627,6 @@ Public Class PURCHASE
             Next
         End If
     End Sub
-
 
 
 End Class
