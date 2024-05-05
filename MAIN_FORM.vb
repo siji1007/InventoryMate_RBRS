@@ -7,23 +7,13 @@ Public Class MAIN_FORM
     Private Sub MAIN_FORM_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.WindowState = FormWindowState.Maximized
         ShowLogin()
-        CheckDatabase()
+
 
 
     End Sub
 
 
-    Private Sub CheckDatabase()
-        Dim dbName As String = "inventorymate10012"
-        Dim exists As Boolean = CheckDatabaseExists(dbName)
 
-        If exists Then
-            MessageBox.Show($"Database {dbName} exists.", "Database Existence", MessageBoxButtons.OK, MessageBoxIcon.Information)
-        Else
-            MessageBox.Show($"Database {dbName} does not exist. Restoring from backup...", "Database Existence", MessageBoxButtons.OK, MessageBoxIcon.Information)
-            RestoreDatabaseFromBackup("C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\BACKUPDatabase\BackUPdb.sql")
-        End If
-    End Sub
 
 
 

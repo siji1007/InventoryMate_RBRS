@@ -59,7 +59,10 @@ Partial Class PRODUCTS
         Label3 = New Label()
         prod_search = New TextBox()
         Panel_purchase = New Panel()
+        Label5 = New Label()
+        Cb_supplier = New ComboBox()
         CType(prod_datagridview, ComponentModel.ISupportInitialize).BeginInit()
+        Panel_purchase.SuspendLayout()
         SuspendLayout()
         ' 
         ' Lbl_product
@@ -406,11 +409,34 @@ Partial Class PRODUCTS
         ' 
         ' Panel_purchase
         ' 
+        Panel_purchase.Controls.Add(Label5)
+        Panel_purchase.Controls.Add(Cb_supplier)
         Panel_purchase.Dock = DockStyle.Fill
         Panel_purchase.Location = New Point(0, 0)
         Panel_purchase.Name = "Panel_purchase"
         Panel_purchase.Size = New Size(1149, 788)
         Panel_purchase.TabIndex = 41
+        ' 
+        ' Label5
+        ' 
+        Label5.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left
+        Label5.AutoSize = True
+        Label5.BackColor = Color.Transparent
+        Label5.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label5.ForeColor = SystemColors.ActiveCaptionText
+        Label5.Location = New Point(618, 593)
+        Label5.Name = "Label5"
+        Label5.Size = New Size(67, 20)
+        Label5.TabIndex = 43
+        Label5.Text = "Supplier"
+        ' 
+        ' Cb_supplier
+        ' 
+        Cb_supplier.FormattingEnabled = True
+        Cb_supplier.Location = New Point(697, 590)
+        Cb_supplier.Name = "Cb_supplier"
+        Cb_supplier.Size = New Size(230, 23)
+        Cb_supplier.TabIndex = 42
         ' 
         ' PRODUCTS
         ' 
@@ -418,7 +444,6 @@ Partial Class PRODUCTS
         AutoScaleMode = AutoScaleMode.Font
         BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), Image)
         BackgroundImageLayout = ImageLayout.Center
-        Controls.Add(Panel_purchase)
         Controls.Add(Purchase)
         Controls.Add(Label3)
         Controls.Add(prod_search)
@@ -441,10 +466,13 @@ Partial Class PRODUCTS
         Controls.Add(prod_name_label)
         Controls.Add(prod_datagridview)
         Controls.Add(Lbl_product)
+        Controls.Add(Panel_purchase)
         DoubleBuffered = True
         Name = "PRODUCTS"
         Size = New Size(1149, 788)
         CType(prod_datagridview, ComponentModel.ISupportInitialize).EndInit()
+        Panel_purchase.ResumeLayout(False)
+        Panel_purchase.PerformLayout()
         ResumeLayout(False)
         PerformLayout()
     End Sub
@@ -479,5 +507,7 @@ Partial Class PRODUCTS
     Friend WithEvents Label3 As Label
     Friend WithEvents prod_search As TextBox
     Public WithEvents Panel_purchase As Panel
+    Friend WithEvents Label5 As Label
+    Friend WithEvents Cb_supplier As ComboBox
 
 End Class

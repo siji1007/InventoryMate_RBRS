@@ -74,6 +74,7 @@ Public Class PRODUCTS
                     Else
                         Dim result As DialogResult = MessageBox.Show("Are you sure you want to add this product?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
                         If result = DialogResult.Yes Then
+                            openDB()
                             Dim query As String = "INSERT INTO products (prod_name, Warranty_ID, prod_model, prod_color, prod_stocks, prod_price) VALUES (@P_name, @Warranty_ID, @P_model, @P_color, @P_stocks, @P_price)"
                             Using cmdInsert As New MySqlCommand(query, Conn)
                                 cmdInsert.Parameters.AddWithValue("@P_name", P_name.ToUpper())
@@ -97,6 +98,7 @@ Public Class PRODUCTS
                                 show_id.Text = "ID"
                                 Cb_warranty.SelectedIndex = -1
                             End Using
+                            closeDB()
                         End If
                     End If
                 Else
@@ -109,7 +111,6 @@ Public Class PRODUCTS
             End Try
         End If
     End Sub
-
 
     Private Function ProductExist(ByVal productName As String, ByVal productModel As String, ByVal productColor As String, ByVal productStocks As Integer, ByVal productPrice As Decimal) As Boolean
         Dim productExistsQuery As String = "SELECT COUNT(*) FROM products WHERE prod_name = @P_name AND prod_model = @P_model AND prod_color = @P_color AND prod_stocks = @P_stocks AND prod_price = @P_price"
@@ -383,12 +384,16 @@ Public Class PRODUCTS
                 End Try
 
             End Using
-
-
         Else
             MessageBox.Show("The Database failed to connect.")
         End If
     End Sub
+
+
+
+
+
+
 
     Private Sub Cb_warranty_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Cb_warranty.SelectedIndexChanged
         If Cb_warranty.SelectedIndex <> -1 Then
@@ -454,4 +459,44 @@ Public Class PRODUCTS
         Panel_purchase.Visible = False
         Return True
     End Function
+
+
+
+    Private Sub Cb_supplier_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Cb_supplier.SelectedIndexChanged
+        If Cb_supplier.SelectedIndex <> -1 Then
+            Try
+                If openDB() Then
+
+                End If
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            Catch ex As Exception
+
+            End Try
+        End If
+
+
+
+
+
+
+
+
+    End Sub
+
+
+
+
 End Class
