@@ -37,6 +37,7 @@ Public Class PRODUCTS
 
             If userPrivilege = "EMPLOYEE" AndAlso userStatus = "ACTIVE" Then
                 Btn_delete_prod.Enabled = False
+                Btn_update_prod.Enabled = False
             End If
         Else
             MessageBox.Show("The connection of database failed")

@@ -890,12 +890,12 @@ Public Class TRANSACTION
     End Sub
 
 
-    Private Function GetLastCustomerID() As Integer
-        Dim lastCustomerID As Integer = 0 ' Default value if no ID is found
+    Private Function GetLastTransactionID() As Integer
+        Dim transactionId As Integer = 0 ' Default value if no ID is found
 
         ' Check if the database connection can be opened
         If openDB() Then
-            Dim query As String = "SELECT Customer_ID FROM Transactions ORDER BY Transac_ID DESC LIMIT 1;
+            Dim query As String = "SELECT Transac_ID FROM Transactions ORDER BY Transac_ID DESC LIMIT 1;
 "
             Dim cmd As New MySqlCommand(query, Conn)
 
@@ -903,7 +903,7 @@ Public Class TRANSACTION
                 ' Execute the SQL query and retrieve the last customer ID
                 Dim result As Object = cmd.ExecuteScalar()
                 If result IsNot Nothing AndAlso Not IsDBNull(result) Then
-                    lastCustomerID = Convert.ToInt32(result)
+                    transactionId = Convert.ToInt32(result)
                 End If
             Catch ex As Exception
                 MessageBox.Show("Error retrieving last Customer ID: " & ex.Message)
@@ -915,17 +915,17 @@ Public Class TRANSACTION
             MessageBox.Show("Failed to open the database connection.")
         End If
 
-        Return lastCustomerID
+        Return transactionId
     End Function
 
 
 
 
     Private Sub PrintExcel()
-        Dim customerId As String = GetLastCustomerID() ' Assuming you have a function to retrieve the last customer ID
+        Dim transactionId As String = GetLastTransactionID()
 
 
-        If Not String.IsNullOrWhiteSpace(customerId) Then
+        If Not String.IsNullOrWhiteSpace(transactionId) Then
             Dim applixcl As Excel.Application
             Dim workbook As Excel.Workbook
             Dim sheet As Excel.Worksheet
@@ -976,12 +976,13 @@ Public Class TRANSACTION
             Next
 
             ' Generate the filename with the current date
-            Dim currentDate As String = DateTime.Now.ToString("yyyyMMdd_hhmmss")
-            Dim fileName As String = $"TransReceipt_{customerId}_{currentDate}.xlsx"
+
+            Dim fileName As String = $"TransReceipt_{transactionId}.xlsx"
 
             ' Save the Excel workbook with the filename including the current date
             Dim savePath As String = $"C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\AllReceipts\{fileName}"
             workbook.SaveAs(savePath)
+
 
             ' Release Excel objects to free up resources
             ReleaseObject(sheet)

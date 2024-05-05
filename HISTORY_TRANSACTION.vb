@@ -1,4 +1,5 @@
-﻿Imports MySql.Data.MySqlClient
+﻿Imports System.IO
+Imports MySql.Data.MySqlClient
 
 Public Class HISTORY_TRANSACTION
     Private Sub HISTORY_TRANSACTION_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -95,17 +96,27 @@ Public Class HISTORY_TRANSACTION
     End Sub
 
     Private Sub ShowReceipt_Click(sender As Object, e As EventArgs) Handles ShowReceipt.Click
-
         If History_Dt.SelectedRows.Count > 0 Then
             Dim selectedRow As DataGridViewRow = History_Dt.SelectedRows(0)
-            Dim TransID As String = selectedRow.Cells("Trans_ID").Value.ToString()
-            Dim TransDate As String = selectedRow.Cells("TransDate").Value.ToString()
-            MessageBox.Show(TransDate)
-            Dim excelFilePath As String = $"C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\AllReceipts\TransReceipt_{TransID}_{TransDate}.xlsx"
-            Process.Start(excelFilePath)
+            Dim TransID As Integer = Convert.ToInt32(selectedRow.Cells("Trans_ID").Value)
+            Dim excelFilePath As String = $"C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\AllReceipts\TransReceipt_{TransID}.xlsx"
+
+            If File.Exists(excelFilePath) Then
+                Try
+                    Process.Start(New ProcessStartInfo(excelFilePath) With {
+                        .UseShellExecute = True
+                    })
+                Catch ex As Exception
+                    MessageBox.Show($"Error opening Excel file: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                End Try
+            Else
+                MessageBox.Show("The Excel file does not exist.", "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Warning)
+            End If
         Else
             MessageBox.Show("Please select a row first.", "No Row Selected", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
     End Sub
+
+
 
 End Class
