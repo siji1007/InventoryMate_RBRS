@@ -171,9 +171,7 @@ Public Class PURCHASE
 
 
 
-
     Private Sub Btn_purchase_Click(sender As Object, e As EventArgs) Handles Btn_purchase.Click
-
         Dim ProdModeltxt As String = txt_product_model.Text.Trim()
         Dim ProdColortxt As String = txt_product_color.Text.Trim()
         Dim ProdQuantitytxt As Integer = txt_stocks.Text.Trim()

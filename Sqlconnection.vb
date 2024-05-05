@@ -19,6 +19,9 @@ Module Sqlconnection
         End Try
     End Function
 
+
+
+
     Public Sub closeDB()
         If Conn.State = ConnectionState.Open Then
             Conn.Close()

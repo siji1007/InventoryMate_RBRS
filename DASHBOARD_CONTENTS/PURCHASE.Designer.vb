@@ -54,6 +54,7 @@ Partial Class PURCHASE
         prodStock = New DataGridViewTextBoxColumn()
         prodPrice = New DataGridViewTextBoxColumn()
         GroupBox2 = New GroupBox()
+        NewSupplier = New RadioButton()
         Sup_ID = New Label()
         Cb_supplier = New ComboBox()
         Label3 = New Label()
@@ -67,7 +68,7 @@ Partial Class PURCHASE
         txt_store_name = New TextBox()
         Lbl_purchase = New Label()
         Btn_purchase = New Button()
-        NewSupplier = New RadioButton()
+        InsProduct = New RadioButton()
         GroupBox1.SuspendLayout()
         CType(dt_purchase, ComponentModel.ISupportInitialize).BeginInit()
         GroupBox2.SuspendLayout()
@@ -88,6 +89,7 @@ Partial Class PURCHASE
         ' GroupBox1
         ' 
         GroupBox1.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        GroupBox1.Controls.Add(InsProduct)
         GroupBox1.Controls.Add(prod_id)
         GroupBox1.Controls.Add(war_type)
         GroupBox1.Controls.Add(lbl_stock)
@@ -414,6 +416,17 @@ Partial Class PURCHASE
         GroupBox2.TabStop = False
         GroupBox2.Text = "SUPPLIER DETAILS"
         ' 
+        ' NewSupplier
+        ' 
+        NewSupplier.AutoSize = True
+        NewSupplier.Location = New Point(760, 127)
+        NewSupplier.Name = "NewSupplier"
+        NewSupplier.Size = New Size(211, 24)
+        NewSupplier.TabIndex = 55
+        NewSupplier.TabStop = True
+        NewSupplier.Text = "INSERT NEW SUPPLIER"
+        NewSupplier.UseVisualStyleBackColor = True
+        ' 
         ' Sup_ID
         ' 
         Sup_ID.AutoSize = True
@@ -553,16 +566,16 @@ Partial Class PURCHASE
         Btn_purchase.Text = "PURCHASE "
         Btn_purchase.UseVisualStyleBackColor = False
         ' 
-        ' NewSupplier
+        ' InsProduct
         ' 
-        NewSupplier.AutoSize = True
-        NewSupplier.Location = New Point(760, 127)
-        NewSupplier.Name = "NewSupplier"
-        NewSupplier.Size = New Size(211, 24)
-        NewSupplier.TabIndex = 55
-        NewSupplier.TabStop = True
-        NewSupplier.Text = "INSERT NEW SUPPLIER"
-        NewSupplier.UseVisualStyleBackColor = True
+        InsProduct.AutoSize = True
+        InsProduct.Location = New Point(194, 307)
+        InsProduct.Name = "InsProduct"
+        InsProduct.Size = New Size(209, 24)
+        InsProduct.TabIndex = 56
+        InsProduct.TabStop = True
+        InsProduct.Text = "INSERT NEW PRODUCT"
+        InsProduct.UseVisualStyleBackColor = True
         ' 
         ' PURCHASE
         ' 
@@ -631,5 +644,6 @@ Partial Class PURCHASE
     Friend WithEvents Sup_ID As Label
     Friend WithEvents prod_id As Label
     Friend WithEvents NewSupplier As RadioButton
+    Friend WithEvents InsProduct As RadioButton
 
 End Class

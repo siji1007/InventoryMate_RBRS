@@ -264,6 +264,8 @@ Public Class TRANSACTION
 
 
 
+
+
                                 Dim filePath As String = "C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\transac\transaction_status.txt"
 
 
@@ -651,9 +653,11 @@ Public Class TRANSACTION
             closeDB()
 
             txt_Custname.Text = ""
+
             txt_custemail.Clear()
             txt_custnumber.Clear()
             txt_custaddress.Clear()
+            Total_cost.Text = "0"
 
             Cb_employeeName.Text = ""
             txt_EmpID.Clear()
@@ -931,7 +935,7 @@ Public Class TRANSACTION
             applixcl.Visible = True ' Set Excel to be visible
 
             ' Open the Excel workbook
-            workbook = applixcl.Workbooks.Open("C:\Users\XtiaN\source\repos\InventoryMate\AllReceipts\TransReceipt.xlsx")
+            workbook = applixcl.Workbooks.Open("C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\AllReceipts\TransReceipt.xlsx")
 
             ' Get the first worksheet (assuming it's the one you want to work with)
             sheet = workbook.Sheets(1)
@@ -976,7 +980,7 @@ Public Class TRANSACTION
             Dim fileName As String = $"TransReceipt_{customerId}_{currentDate}.xlsx"
 
             ' Save the Excel workbook with the filename including the current date
-            Dim savePath As String = $"C:\Users\XtiaN\source\repos\InventoryMate\AllReceipts\{fileName}"
+            Dim savePath As String = $"C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\AllReceipts\{fileName}"
             workbook.SaveAs(savePath)
 
             ' Release Excel objects to free up resources
@@ -1009,7 +1013,7 @@ Public Class TRANSACTION
 
 
         'RESTART THE TRANSACTION.TXT FILE
-        Dim filePath As String = "C:\Users\XtiaN\source\repos\InventoryMate\transac\transaction_status.txt"
+        Dim filePath As String = "C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\transac\transaction_status.txt"
         Try
             ' Write the value 0 to the text file
             My.Computer.FileSystem.WriteAllText(filePath, "0", False)
@@ -1037,5 +1041,13 @@ Public Class TRANSACTION
 
     Private Sub CLEAR_Click(sender As Object, e As EventArgs) Handles CLEAR.Click
 
+    End Sub
+
+    Private Sub History_Click(sender As Object, e As EventArgs) Handles History.Click
+
+        Dim HISTORY As New HISTORY_TRANSACTION()
+
+        ' Show the SignUp form as a dialog
+        HISTORY.ShowDialog()
     End Sub
 End Class
