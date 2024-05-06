@@ -16,6 +16,7 @@ Public Class PRODUCTS
 
         LoadDataAndSort()
         LoadWarranty()
+        LoadSupplier()
 
 
         If openDB() Then
@@ -455,45 +456,79 @@ Public Class PRODUCTS
         PurchaseForm.Show()
     End Sub
 
-    Friend Function Purchase_panel() As Object
-        Panel_purchase.Visible = False
-        Return True
-    End Function
 
 
 
     Private Sub Cb_supplier_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Cb_supplier.SelectedIndexChanged
+        ' Check if an item is selected in the ComboBox
         If Cb_supplier.SelectedIndex <> -1 Then
-            Try
-                If openDB() Then
+            ' Get the selected supplier name from the ComboBox
+            Dim selectedSupplierName As String = Cb_supplier.SelectedItem.ToString()
 
-                End If
+            ' Check if the database connection is open
+            If openDB() Then
+                ' Define the SQL query to fetch specific details of the selected supplier
+                Dim query_supplier As String = "SELECT Supp_ID, Supp_store, Supp_address, Supp_email, Supp_cnumber FROM supplier WHERE Supp_name = @supplierName"
 
+                Using command As New MySqlCommand(query_supplier, Conn)
+                    ' Add parameter for supplier name to the query
+                    command.Parameters.AddWithValue("@supplierName", selectedSupplierName)
 
+                    Try
+                        ' Execute the SQL query and get the results
+                        Dim reader As MySqlDataReader = command.ExecuteReader()
 
+                        ' Check if data is retrieved
+                        If reader.Read() Then
+                            ' Update the TextBoxes with the retrieved supplier information
+                            Sup_ID.Text = reader("Supp_ID").ToString()
 
+                        Else
+                            MessageBox.Show("Supplier information not found.")
+                        End If
 
+                        reader.Close() ' Close the reader after use
+                    Catch ex As Exception
+                        MessageBox.Show("Error retrieving supplier information: " & ex.Message)
+                    End Try
+                End Using
 
-
-
-
-
-
-
-
-
-            Catch ex As Exception
-
-            End Try
+                ' Close the database connection after use
+                closeDB()
+            Else
+                MessageBox.Show("Database connection failed.")
+            End If
         End If
+    End Sub
 
 
+    Private Sub LoadSupplier()
+        Cb_supplier.Items.Clear()
+
+        ' Check if the database connection is open
+        If openDB() Then
+            Dim query_supplier As String = "SELECT Supp_name FROM supplier"
+
+            Using command As New MySqlCommand(query_supplier, Conn)
+                Dim reader As MySqlDataReader = command.ExecuteReader()
+
+                ' Loop through the results and add supplier information to the ComboBox
+                While reader.Read()
+                    Dim supplierName As String = reader("Supp_name").ToString()
 
 
+                    ' Format the supplier information for display in the ComboBox
+                    Dim displayText As String = $"{supplierName}"
+                    Cb_supplier.Items.Add(displayText)
+                End While
 
+                reader.Close()
+            End Using
 
-
-
+            closeDB() ' Close the database connection after use
+        Else
+            MessageBox.Show("Database connection failed.")
+        End If
     End Sub
 
 

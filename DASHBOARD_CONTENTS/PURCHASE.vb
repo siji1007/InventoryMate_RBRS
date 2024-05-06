@@ -6,10 +6,12 @@ Public Class PURCHASE
 
     Private Sub Btn_back_Click(sender As Object, e As EventArgs) Handles Btn_back.Click
 
-        ProductForm.Purchase_panel()
+        'ProductForm.Purchase_panel()
         ' Hide the current form
         Me.Hide()
+
     End Sub
+
 
     Private Sub Lbl_purchase_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Lbl_purchase.TextAlign = ContentAlignment.MiddleCenter
@@ -579,6 +581,7 @@ Public Class PURCHASE
             End If
         End If
     End Sub
+
     Private Sub clear_btn_Click(sender As Object, e As EventArgs) Handles clear_btn.Click
         If dt_purchase.SelectedRows.Count > 0 Then
             Dim selectedRow As DataGridViewRow = dt_purchase.SelectedRows(0)
@@ -595,12 +598,6 @@ Public Class PURCHASE
             war_type.Text = "Warranty Type"
             prod_id.Text = "ID"
             lbl_stock.Text = "STOCKS"
-
-
-
-
-
-
         End If
     End Sub
 
