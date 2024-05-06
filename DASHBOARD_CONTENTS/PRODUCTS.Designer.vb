@@ -452,6 +452,7 @@ Partial Class PRODUCTS
         AutoScaleMode = AutoScaleMode.Font
         BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), Image)
         BackgroundImageLayout = ImageLayout.Center
+        Controls.Add(Panel_purchase)
         Controls.Add(Label5)
         Controls.Add(Purchase)
         Controls.Add(Label3)
@@ -477,7 +478,6 @@ Partial Class PRODUCTS
         Controls.Add(Lbl_product)
         Controls.Add(Sup_ID)
         Controls.Add(Cb_supplier)
-        Controls.Add(Panel_purchase)
         DoubleBuffered = True
         Name = "PRODUCTS"
         Size = New Size(1149, 788)

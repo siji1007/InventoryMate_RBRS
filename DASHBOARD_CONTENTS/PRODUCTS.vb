@@ -55,6 +55,7 @@ Public Class PRODUCTS
         Dim P_stocks As Integer
         Dim P_price As Integer
         Dim W_ID As Integer
+        Dim Supp_ID As Integer
 
         If String.IsNullOrWhiteSpace(P_name) OrElse IsNumeric(P_name) Then
             MessageBox.Show("Please enter a product name.", "Fill properly", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -66,6 +67,9 @@ Public Class PRODUCTS
             MessageBox.Show("Please enter a valid number for price.", "Fill properly", MessageBoxButtons.OK, MessageBoxIcon.Information)
         ElseIf Not Integer.TryParse(show_id.Text.Trim(), W_ID) Then
             MessageBox.Show("Please select a valid warranty details", "Fill properly", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        ElseIf Not Integer.TryParse(Sup_ID.Text.Trim(), Supp_ID) Then
+            MessageBox.Show("Please select a valid supplier details", "Fill properly", MessageBoxButtons.OK, MessageBoxIcon.Information)
+
         Else
             Try
                 If openDB() Then
@@ -76,10 +80,11 @@ Public Class PRODUCTS
                         Dim result As DialogResult = MessageBox.Show("Are you sure you want to add this product?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
                         If result = DialogResult.Yes Then
                             openDB()
-                            Dim query As String = "INSERT INTO products (prod_name, Warranty_ID, prod_model, prod_color, prod_stocks, prod_price) VALUES (@P_name, @Warranty_ID, @P_model, @P_color, @P_stocks, @P_price)"
+                            Dim query As String = "INSERT INTO products (prod_name, Warranty_ID,sup_ID, prod_model, prod_color, prod_stocks, prod_price) VALUES (@P_name, @Warranty_ID,@Supplier_ID, @P_model, @P_color, @P_stocks, @P_price)"
                             Using cmdInsert As New MySqlCommand(query, Conn)
                                 cmdInsert.Parameters.AddWithValue("@P_name", P_name.ToUpper())
                                 cmdInsert.Parameters.AddWithValue("@Warranty_ID", W_ID) ' Use W_ID as the Warranty_ID value
+                                cmdInsert.Parameters.AddWithValue("@Supplier_ID", Supp_ID)
                                 cmdInsert.Parameters.AddWithValue("@P_model", P_model.ToUpper())
                                 cmdInsert.Parameters.AddWithValue("@P_color", P_color.ToUpper())
                                 cmdInsert.Parameters.AddWithValue("@P_stocks", P_stocks)
@@ -230,6 +235,7 @@ Public Class PRODUCTS
         If Integer.TryParse(prod_datagridview.CurrentRow.Cells("prod_id").Value.ToString(), P_id) Then
             Dim P_name As String = txt_product_name.Text
             Dim WarId As String = show_id.Text
+            Dim SupplierID As String = Sup_ID.Text
             Dim P_model As String = txt_product_model.Text
             Dim P_color As String = txt_product_color.Text
             Dim P_stocks As Integer
@@ -247,10 +253,11 @@ Public Class PRODUCTS
                     Dim result As DialogResult = MessageBox.Show("Are you sure you want to update this product?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
                     If result = DialogResult.Yes Then
                         If openDB() Then
-                            Dim query As String = "UPDATE products SET prod_name = @P_name,Warranty_ID = @WarID, prod_model = @P_model, prod_color = @P_color, prod_stocks = @P_stocks, prod_price = @P_price WHERE prod_id = @P_id"
+                            Dim query As String = "UPDATE products SET prod_name = @P_name,Warranty_ID = @WarID,sup_ID = @SupplierID ,prod_model = @P_model, prod_color = @P_color, prod_stocks = @P_stocks, prod_price = @P_price WHERE prod_id = @P_id"
                             Dim cmd As New MySqlCommand(query, Conn)
                             cmd.Parameters.AddWithValue("@P_id", P_id)
                             cmd.Parameters.AddWithValue("@WarID", WarId)
+                            cmd.Parameters.AddWithValue("@SupplierID", SupplierID)
                             cmd.Parameters.AddWithValue("@P_name", P_name.ToUpper())
                             cmd.Parameters.AddWithValue("@P_model", P_model.ToUpper())
                             cmd.Parameters.AddWithValue("@P_color", P_color.ToUpper())
@@ -270,6 +277,8 @@ Public Class PRODUCTS
                                 txt_product_color.Clear()
                                 txt_stocks.Clear()
                                 txt_price.Clear()
+                                Sup_ID.Text = "ID"
+                                Cb_supplier.SelectedIndex = -1
 
 
                             Catch ex As Exception
@@ -315,6 +324,8 @@ Public Class PRODUCTS
                         txt_product_color.Clear()
                         txt_stocks.Clear()
                         txt_price.Clear()
+                        Sup_ID.Text = "ID"
+                        Cb_supplier.SelectedIndex = -1
 
                     Catch ex As Exception
                         MessageBox.Show("Error deleting product: " & ex.Message)
@@ -345,6 +356,8 @@ Public Class PRODUCTS
         txt_product_color.Clear()
         txt_stocks.Clear()
         txt_price.Clear()
+        Sup_ID.Text = "ID"
+        Cb_supplier.SelectedIndex = -1
     End Sub
 
     Private Sub prod_search_TextChanged(sender As Object, e As EventArgs) Handles prod_search.TextChanged

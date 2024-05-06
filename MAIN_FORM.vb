@@ -8,30 +8,25 @@ Public Class MAIN_FORM
         Me.WindowState = FormWindowState.Maximized
         ShowLogin()
 
-
-
+        ' RestoreDataAndCreateTable()
+        CheckDatabase()
     End Sub
 
+    Public Sub CheckDatabase()
+        Dim dbName As String = "inventorymate"
+        Try
+            Dim exists As Boolean = CheckDatabaseExists(dbName)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+            If exists Then
+                MessageBox.Show($"Database {dbName} exists.", "Database Existence", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Else
+                MessageBox.Show($"Database {dbName} does not exist. Restoring from backup...", "Database Existence", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                RestoreDatabaseFromBackup("C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\BACKUPDatabase\BackUPdb.sql")
+            End If
+        Catch ex As Exception
+            MessageBox.Show($"Error checking database: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
 
 
 
@@ -68,20 +63,6 @@ Public Class MAIN_FORM
             closeDB()
         End Try
     End Sub
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
