@@ -12,11 +12,19 @@ Public Class HISTORY_TRANSACTION
     Private Sub History()
         Try
             If openDB() Then
-                Dim query As New MySqlCommand("SELECT t.Transac_ID as TransactionID, t.Transact_date as TransactionDate, c.Cust_name as CustomerName FROM transactions t JOIN customer c ON t.Customer_ID = c.Cust_ID", Conn)
+                Dim query As New MySqlCommand("SELECT t.Transac_ID as TransactionID, t.Transact_date as TransactionDate, c.Cust_name as CustomerName FROM transactions t JOIN customer c ON t.Customer_ID = c.Cust_ID ORDER BY t.Transact_date DESC, t.Transac_ID DESC", Conn)
 
                 Using dr As MySqlDataReader = query.ExecuteReader()
+                    Dim lastTransactionDate As Date = Date.MinValue ' Initialize with the minimum date
                     While dr.Read() ' Advance the reader to the first row and loop through all rows
-                        Dim rowIndex As Integer = History_Dt.Rows.Add(dr("TransactionID"), dr("CustomerName"), dr("TransactionDate"))
+                        Dim transactionDate As Date = Convert.ToDateTime(dr("TransactionDate"))
+                        Dim transactionID As Integer = Convert.ToInt32(dr("TransactionID"))
+
+                        ' Check if the current transaction date is different than the last one
+                        If transactionDate <> lastTransactionDate Then
+                            Dim rowIndex As Integer = History_Dt.Rows.Add(transactionID, dr("CustomerName"), transactionDate)
+                            lastTransactionDate = transactionDate ' Update the last transaction date
+                        End If
                     End While
                 End Using
             Else
@@ -28,6 +36,7 @@ Public Class HISTORY_TRANSACTION
             closeDB()
         End Try
     End Sub
+
 
     Enum MonthOption
         January
@@ -94,8 +103,6 @@ Public Class HISTORY_TRANSACTION
                     row_history.Selected = False
                 End If
             Next
-
-
         End If
     End Sub
 
@@ -119,6 +126,10 @@ Public Class HISTORY_TRANSACTION
         Else
             MessageBox.Show("Please select a row first.", "No Row Selected", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
+
+        Me.Close()
+
+
     End Sub
 
     Private Sub BtnRefreshCb_Click(sender As Object, e As EventArgs) Handles BtnRefreshCb.Click
