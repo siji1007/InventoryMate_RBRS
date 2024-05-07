@@ -11,8 +11,8 @@ Public Class LOGIN
 
         Try
             If openDB() Then
-                ' Check user credentials
-                Dim query As New MySqlCommand("SELECT * FROM Users WHERE Username=@Username;", Conn)
+                ' Check user credentials and employee status
+                Dim query As New MySqlCommand("SELECT u.*, e.Emp_status FROM Users u INNER JOIN Employee e ON u.Employee_ID = e.Emp_ID WHERE u.Username=@Username;", Conn)
                 query.Parameters.AddWithValue("@Username", username)
 
                 Dim userStatus As String = ""
@@ -24,18 +24,22 @@ Public Class LOGIN
                         Dim enteredPassword As String = HashPassword(password)
 
                         If hashedPassword = enteredPassword Then
-                            userStatus = reader.GetString("Status")
+                            ' Retrieve employee status
+                            userStatus = reader.GetString("Emp_status")
                         Else
                             MessageBox.Show("Incorrect password. Please try again.")
+                            Exit Sub ' Exit the sub if password is incorrect
                         End If
                     Else
                         MessageBox.Show("Invalid username. Please try again.")
+                        Exit Sub ' Exit the sub if username is invalid
                     End If
                 End Using
 
-                ' Close the data reader after reading user credentials
-                ' and before checking user status or updating status
+                ' Check user status and handle login
                 If userStatus = "OFFLINE" Then
+                    MessageBox.Show("Your application is still pending, and only administrators have the authority to finalize your hiring.")
+                ElseIf userStatus = "ACTIVE" Then
                     ' Begin transaction for updating user status
                     Using transaction As MySqlTransaction = Conn.BeginTransaction()
                         Try
@@ -43,8 +47,6 @@ Public Class LOGIN
                             Dim updateQuery As New MySqlCommand("UPDATE Users SET Status='ACTIVE' WHERE Username=@Username;", Conn, transaction)
                             updateQuery.Parameters.AddWithValue("@Username", username)
                             updateQuery.ExecuteNonQuery()
-
-
 
                             ' Commit transaction if all operations succeed
                             transaction.Commit()
@@ -54,16 +56,14 @@ Public Class LOGIN
                             Dim mainForm As MAIN_FORM = TryCast(Me.ParentForm, MAIN_FORM)
                             mainForm.SwitchToDashboard()
 
-
-
                         Catch ex As Exception
                             ' Rollback transaction if an error occurs
                             transaction.Rollback()
                             MessageBox.Show("Error updating user status: " & ex.Message)
                         End Try
                     End Using
-
-
+                Else
+                    MessageBox.Show("User status not recognized.")
                 End If
             Else
                 MessageBox.Show("Failed to connect to the database")
@@ -73,8 +73,10 @@ Public Class LOGIN
         Finally
             closeDB()
         End Try
-
     End Sub
+
+
+
 
 
     Private Function HashPassword(password As String) As String

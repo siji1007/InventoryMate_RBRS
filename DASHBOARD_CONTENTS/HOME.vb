@@ -102,24 +102,29 @@ Public Class HOME
             If openDB() Then
                 ' Query to get the top-selling product name
                 Dim topSaleQuery As New MySqlCommand("
-            SELECT 
-                p.prod_name
-            FROM 
-                Transactions t 
-            INNER JOIN 
-                products p ON t.Prod_ID = p.prod_id 
-            GROUP BY 
-                t.Prod_ID
-            ORDER BY 
-                COUNT(t.Prod_ID) DESC
-            LIMIT 1
+                SELECT 
+                    p.prod_name
+                FROM 
+                    Transactions t 
+                INNER JOIN 
+                    products p ON t.Prod_ID = p.prod_id 
+                GROUP BY 
+                    t.Prod_ID
+                ORDER BY 
+                    COUNT(t.Prod_ID) DESC
+                LIMIT 1
             ", Conn)
 
                 ' Execute the query to get the top-selling product name
-                Dim topSaleProductName As String = Convert.ToString(topSaleQuery.ExecuteScalar())
+                Dim topSaleProductName As Object = topSaleQuery.ExecuteScalar()
 
-                ' Update the label with the top-selling product name
-                Top_sale.Text = topSaleProductName
+                If topSaleProductName IsNot Nothing AndAlso Not Convert.IsDBNull(topSaleProductName) Then
+                    ' Update the label with the top-selling product name
+                    Top_sale.Text = Convert.ToString(topSaleProductName)
+                Else
+                    ' If the top sale is null or empty, set it to "PRODUCT"
+                    Top_sale.Text = "PRODUCT"
+                End If
             End If
         Catch ex As Exception
             MessageBox.Show(ex.Message)
@@ -127,6 +132,7 @@ Public Class HOME
             closeDB()
         End Try
     End Sub
+
 
 
 End Class

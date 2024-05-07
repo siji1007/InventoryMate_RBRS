@@ -24,7 +24,7 @@ Public Class SIGNUP
             If txt_password.Text.Trim() = txt_passCheck.Text.Trim() Then
                 If Not UsernameExists(username) Then
                     Dim empQuery As String = "INSERT INTO Employee (Emp_name, Emp_address, Emp_cnumber, Emp_bdate, Emp_status) " &
-                     "VALUES (@Name, @Address, @Contact, @BDate, 'ACTIVE');"
+                     "VALUES (@Name, @Address, @Contact, @BDate, 'OFFLINE');"
 
                     ' Insert into Users table
                     Dim userQuery As String = "INSERT INTO Users (Employee_ID, Username, PasswordHash, Privilege, Status) " &
