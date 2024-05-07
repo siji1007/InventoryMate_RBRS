@@ -28,6 +28,8 @@ Partial Class HOME
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(HOME))
         Lbl_home = New Label()
         GroupBox1 = New GroupBox()
+        daily_date = New Label()
+        Label1 = New Label()
         Total_cost = New Label()
         Label3 = New Label()
         Top_sale = New Label()
@@ -37,8 +39,6 @@ Partial Class HOME
         Quantity = New DataGridViewTextBoxColumn()
         CustName = New DataGridViewTextBoxColumn()
         War_exp = New DataGridViewTextBoxColumn()
-        daily_date = New Label()
-        Label1 = New Label()
         GroupBox1.SuspendLayout()
         CType(daily_datagridview, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
@@ -73,6 +73,34 @@ Partial Class HOME
         GroupBox1.TabIndex = 4
         GroupBox1.TabStop = False
         GroupBox1.Text = "DAILY TRANSACTION"
+        ' 
+        ' daily_date
+        ' 
+        daily_date.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        daily_date.AutoSize = True
+        daily_date.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        daily_date.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        daily_date.ForeColor = Color.White
+        daily_date.Location = New Point(578, 22)
+        daily_date.Name = "daily_date"
+        daily_date.Size = New Size(52, 20)
+        daily_date.TabIndex = 5
+        daily_date.Text = "DATE"
+        daily_date.TextAlign = ContentAlignment.TopCenter
+        ' 
+        ' Label1
+        ' 
+        Label1.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        Label1.AutoSize = True
+        Label1.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        Label1.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label1.ForeColor = Color.White
+        Label1.Location = New Point(516, 22)
+        Label1.Name = "Label1"
+        Label1.Size = New Size(56, 20)
+        Label1.TabIndex = 6
+        Label1.Text = "DATE:"
+        Label1.TextAlign = ContentAlignment.TopCenter
         ' 
         ' Total_cost
         ' 
@@ -173,34 +201,6 @@ Partial Class HOME
         War_exp.HeaderText = "WARRANTY EXPIRATION"
         War_exp.Name = "War_exp"
         War_exp.ReadOnly = True
-        ' 
-        ' daily_date
-        ' 
-        daily_date.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        daily_date.AutoSize = True
-        daily_date.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        daily_date.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        daily_date.ForeColor = Color.White
-        daily_date.Location = New Point(578, 22)
-        daily_date.Name = "daily_date"
-        daily_date.Size = New Size(52, 20)
-        daily_date.TabIndex = 5
-        daily_date.Text = "DATE"
-        daily_date.TextAlign = ContentAlignment.TopCenter
-        ' 
-        ' Label1
-        ' 
-        Label1.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        Label1.AutoSize = True
-        Label1.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        Label1.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        Label1.ForeColor = Color.White
-        Label1.Location = New Point(516, 22)
-        Label1.Name = "Label1"
-        Label1.Size = New Size(56, 20)
-        Label1.TabIndex = 6
-        Label1.Text = "DATE:"
-        Label1.TextAlign = ContentAlignment.TopCenter
         ' 
         ' HOME
         ' 

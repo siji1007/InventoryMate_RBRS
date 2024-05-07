@@ -248,44 +248,52 @@ Public Class SUPPLIER
             Dim selectedRow As DataGridViewRow = sup_datagridview.SelectedRows(0)
             Dim S_id As Integer = Convert.ToInt32(selectedRow.Cells("Supp_ID").Value)
 
+            Dim result As DialogResult = MessageBox.Show("Are you sure you want to delete this supplier?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
-            If openDB() Then
-                Dim query As String = "DELETE FROM supplier WHERE Supp_ID = @S_id"
-                Dim cmd As New MySqlCommand(query, Conn)
-                cmd.Parameters.AddWithValue("@S_id", S_id)
-
-
-                txt_sup_name.Clear()
-                txt_store_name.Clear()
-                txt_sup_address.Clear()
-                txt_sup_email.Clear()
-                txt_sup_cnumber.Clear()
+            If result = DialogResult.Yes Then
+                If openDB() Then
+                    Dim query As String = "DELETE FROM supplier WHERE Supp_ID = @S_id"
+                    Dim cmd As New MySqlCommand(query, Conn)
+                    cmd.Parameters.AddWithValue("@S_id", S_id)
 
 
-                Try
-                    cmd.ExecuteNonQuery()
-                    MessageBox.Show("Supplier deleted successfully")
-                    sup_datagridview.Rows.Remove(selectedRow)
+                    txt_sup_name.Clear()
+                    txt_store_name.Clear()
+                    txt_sup_address.Clear()
+                    txt_sup_email.Clear()
+                    txt_sup_cnumber.Clear()
 
 
-                Catch ex As Exception
-                    MessageBox.Show(ex.Message)
-                Finally
-                    closeDB()
+                    Try
+                        cmd.ExecuteNonQuery()
+                        MessageBox.Show("Supplier deleted successfully")
+                        sup_datagridview.Rows.Remove(selectedRow)
 
-                End Try
 
+                    Catch ex As Exception
+                        MessageBox.Show(ex.Message)
+                    Finally
+                        closeDB()
+
+                    End Try
+
+
+                Else
+                    MessageBox.Show("Failed to connect to database")
+
+
+                End If
 
             Else
-                MessageBox.Show("Failed to connect to database")
-
+                MessageBox.Show("Please select a supplier to delete")
 
             End If
-
-        Else
-            MessageBox.Show("Please select a supplier to delete")
-
         End If
+
+
+
+
+
 
     End Sub
 

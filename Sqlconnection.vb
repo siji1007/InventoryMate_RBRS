@@ -2,7 +2,7 @@
 
 Module Sqlconnection
     Public Conn As New MySqlConnection
-    Dim StrConn As String = "server=localhost; user=root; password=; database=mysql;"
+    Dim StrConn As String = "server=localhost; user=root; password=; database=inventorymate;"
 
     Public Function openDB() As Boolean
         Try

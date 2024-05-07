@@ -74,7 +74,7 @@ Public Class PRODUCTS
             Try
                 If openDB() Then
                     ' Check if the product already exists in the database
-                    If ProductExist(P_name, P_model, P_color, P_stocks, P_price) Then
+                    If ProductExist(P_name, P_model, P_color, P_stocks, P_price, W_ID, Supp_ID) Then
                         MessageBox.Show("Product with the same name, model, color, stocks, and price already exists.", "Duplicate Product", MessageBoxButtons.OK, MessageBoxIcon.Warning)
                     Else
                         Dim result As DialogResult = MessageBox.Show("Are you sure you want to add this product?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
@@ -118,8 +118,8 @@ Public Class PRODUCTS
         End If
     End Sub
 
-    Private Function ProductExist(ByVal productName As String, ByVal productModel As String, ByVal productColor As String, ByVal productStocks As Integer, ByVal productPrice As Decimal) As Boolean
-        Dim productExistsQuery As String = "SELECT COUNT(*) FROM products WHERE prod_name = @P_name AND prod_model = @P_model AND prod_color = @P_color AND prod_stocks = @P_stocks AND prod_price = @P_price"
+    Private Function ProductExist(ByVal productName As String, ByVal productModel As String, ByVal productColor As String, ByVal productStocks As Integer, ByVal productPrice As Decimal, ByVal warID As String, ByVal supID As String) As Boolean
+        Dim productExistsQuery As String = "SELECT COUNT(*) FROM products WHERE prod_name = @P_name AND prod_model = @P_model AND prod_color = @P_color AND prod_stocks = @P_stocks AND prod_price = @P_price AND Warranty_ID=@WarID AND sup_ID = @SupID"
         Try
             If openDB() Then
                 Using cmdCheck As New MySqlCommand(productExistsQuery, Conn)
@@ -128,6 +128,8 @@ Public Class PRODUCTS
                     cmdCheck.Parameters.AddWithValue("@P_color", productColor)
                     cmdCheck.Parameters.AddWithValue("@P_stocks", productStocks)
                     cmdCheck.Parameters.AddWithValue("@P_price", productPrice)
+                    cmdCheck.Parameters.AddWithValue("@WarID", warID)
+                    cmdCheck.Parameters.AddWithValue("@SupID", supID)
 
                     Dim productCount As Integer = Convert.ToInt32(cmdCheck.ExecuteScalar())
                     Return productCount > 0
@@ -143,6 +145,7 @@ Public Class PRODUCTS
             closeDB()
         End Try
     End Function
+
 
 
 
@@ -222,6 +225,10 @@ Public Class PRODUCTS
                 txt_product_color.Text = prodColor
                 txt_stocks.Text = prodStocks.ToString()
                 txt_price.Text = prodPriceNumeric.ToString() ' Display the numeric price in the TextBox
+
+                ' Fetch sup_ID from the database based on prodId
+                Dim supId As String = GetSupplierId(prodId) ' Replace GetSupplierId with your database query function
+                Sup_ID.Text = supId ' Display the supplier ID in Sup_ID.Text
             Else
                 ' Handle invalid formatted price
                 MessageBox.Show("Invalid price format.")
@@ -229,12 +236,43 @@ Public Class PRODUCTS
         End If
     End Sub
 
+    Private Function GetSupplierId(prodId As String) As String
+        Dim supId As String = "" ' Initialize supId variable to store the supplier ID
+
+        ' Open database connection
+        If openDB() Then
+            ' Define your SQL query to fetch sup_ID based on prodId
+            Dim query As String = "SELECT sup_ID FROM products WHERE prod_id = @ProdId"
+
+            ' Create a SqlCommand object with the query and connection
+            Using cmd As New MySqlCommand(query, Conn)
+                ' Add parameter for ProdId
+                cmd.Parameters.AddWithValue("@ProdId", prodId)
+
+                ' Execute the query and fetch sup_ID
+                Dim reader As MySqlDataReader = cmd.ExecuteReader()
+                If reader.Read() Then
+                    ' If a record is found, get the sup_ID value
+                    supId = reader("sup_ID").ToString()
+                End If
+                reader.Close()
+            End Using
+
+            ' Close the database connection
+            closeDB()
+        End If
+
+        ' Return the supId value
+        Return supId
+    End Function
+
 
     Private Sub Btn_update_prod_Click(sender As Object, e As EventArgs) Handles Btn_update_prod.Click
         Dim P_id As Integer ' Assuming you have a product ID to identify the record to update
         If Integer.TryParse(prod_datagridview.CurrentRow.Cells("prod_id").Value.ToString(), P_id) Then
             Dim P_name As String = txt_product_name.Text
             Dim WarId As String = show_id.Text
+
             Dim SupplierID As String = Sup_ID.Text
             Dim P_model As String = txt_product_model.Text
             Dim P_color As String = txt_product_color.Text
@@ -245,7 +283,7 @@ Public Class PRODUCTS
                 MessageBox.Show("Please fill all information properly.", "Fill properly", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Else
 
-                If ProductExist(P_name, P_model, P_color, P_stocks, P_price) Then
+                If ProductExist(P_name, P_model, P_color, P_stocks, P_price, WarId, SupplierID) Then
                     MessageBox.Show("Product with the same name, model, color, stocks, and price already exists.", "Duplicate Product", MessageBoxButtons.OK, MessageBoxIcon.Warning)
 
                 Else
