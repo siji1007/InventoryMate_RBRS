@@ -37,7 +37,13 @@ Public Class EMPLOYEE
                     ' Disable update button if user privilege is EMPLOYEE
                     If userPrivilege = "EMPLOYEE" Then
                         Btn_update.Enabled = False
+                        GeneRate.Visible = False
+                    ElseIf userPrivilege = "OWNER" Then
+                        Btn_update.Enabled = True
+                        GeneRate.Visible = True
+
                     End If
+
                 End Using
             End If
         Catch ex As Exception
@@ -370,8 +376,11 @@ Public Class EMPLOYEE
                     Next
                 Next
 
+                ' Auto fit columns
+                excelWorksheet.Columns.AutoFit()
+
                 ' Save Excel file
-                Dim excelFilePath As String = "C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\REPORT\EmployeeReport.xlsx"
+                Dim excelFilePath As String = "C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\REPORTS\EmployeeReport.xlsx"
                 excelWorkbook.SaveAs(excelFilePath)
                 excelWorkbook.Close()
                 excelApp.Quit()
@@ -380,7 +389,8 @@ Public Class EMPLOYEE
                 ReleaseComObject(excelWorkbook)
                 ReleaseComObject(excelApp)
 
-
+                ' Open Excel file after saving
+                ShellExecute(IntPtr.Zero, "open", excelFilePath, Nothing, Nothing, 1)
 
                 MessageBox.Show("Data exported successfully to Excel.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
             Else
@@ -390,6 +400,9 @@ Public Class EMPLOYEE
             MessageBox.Show("Error exporting data to Excel: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
         End Try
     End Sub
+
+
+    Private Declare Function ShellExecute Lib "shell32.dll" Alias "ShellExecuteA" (ByVal hwnd As IntPtr, ByVal lpOperation As String, ByVal lpFile As String, ByVal lpParameters As String, ByVal lpDirectory As String, ByVal nShowCmd As Integer) As IntPtr
 
     Private Sub ReleaseComObject(ByVal obj As Object)
         Try

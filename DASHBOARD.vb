@@ -104,8 +104,9 @@ Public Class DASHBOARD
                     Btn_supplier.Visible = False
                     Btn_employee.Visible = True
                     Btn_transaction.Visible = True
-                    Btn_transaction.Location = New Point(0, 358)
-                    Btn_employee.Location = New Point(0, 416)
+
+                    Btn_transaction.Location = New Point(0, 416)
+                    Btn_employee.Location = New Point(0, 358)
 
 
 
