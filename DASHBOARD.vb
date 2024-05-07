@@ -14,6 +14,7 @@ Public Class DASHBOARD
     Private isSupplierFormOpen As Boolean = False
     Private isEmployeeFormOpen As Boolean = False
     Private isTransactionFromOpen As Boolean = False
+    Private isUserFromOpen As Boolean = False
 
     Private Function ReadFileValueAndNotify() As Integer
         Dim filePath As String = "C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\transac\transaction_status.txt" ' Replace with the actual file path
@@ -171,6 +172,7 @@ Public Class DASHBOARD
                 isSupplierFormOpen = False
                 isEmployeeFormOpen = False
                 isTransactionFromOpen = False
+                isUserFromOpen = False
             End If
         End If
 
@@ -203,6 +205,7 @@ Public Class DASHBOARD
                 isSupplierFormOpen = False
                 isEmployeeFormOpen = False
                 isTransactionFromOpen = False
+                isUserFromOpen = False
             End If
         End If
     End Sub
@@ -273,6 +276,7 @@ Public Class DASHBOARD
                 isEmployeeFormOpen = False
                 isSupplierFormOpen = False
                 isTransactionFromOpen = False
+                isUserFromOpen = False
             End If
 
         End If
@@ -304,6 +308,7 @@ Public Class DASHBOARD
                 isEmployeeFormOpen = False
                 isSupplierFormOpen = False
                 isTransactionFromOpen = False
+                isUserFromOpen = False
             End If
         End If
     End Sub
@@ -335,6 +340,7 @@ Public Class DASHBOARD
                 isCustomerFormOpen = False
                 isEmployeeFormOpen = False
                 isTransactionFromOpen = False
+                isUserFromOpen = False
             End If
         End If
     End Sub
@@ -365,14 +371,11 @@ Public Class DASHBOARD
                 isCustomerFormOpen = False
                 isEmployeeFormOpen = True
                 isTransactionFromOpen = False
+                isUserFromOpen = False
             End If
 
 
         End If
-
-
-
-
 
     End Sub
 
@@ -400,12 +403,40 @@ Public Class DASHBOARD
             isCustomerFormOpen = False
             isEmployeeFormOpen = False
             isTransactionFromOpen = True
+            isUserFromOpen = False
 
 
         End If
 
 
     End Sub
+    Private Sub ShowUser_Click(sender As Object, e As EventArgs) Handles ShowUser.Click
+        If isUserFromOpen Then
+            MessageBox.Show("The USERS form Is Already open", "Form Already Open", MessageBoxButtons.OK, MessageBoxIcon.Information)
+        Else
+            Dim isUserFrom As New USERS()
+            isUserFrom.Dock = DockStyle.Fill
+
+            ' Add PRODUCT form to Panel_Contents and show it
+            Panel_Contents.Controls.Add(isUserFrom)
+            isUserFrom.BringToFront()
+            isUserFrom.Show()
+
+
+            isHomeFormOpen = False
+            isSupplierFormOpen = False
+            isWarrantyFormOpen = False
+            isProductFormOpen = False
+            isCustomerFormOpen = False
+            isEmployeeFormOpen = False
+            isTransactionFromOpen = False
+            isUserFromOpen = True
+        End If
+
+
+    End Sub
+
+
 
 
     Private Sub Btn_logout_Click(sender As Object, e As EventArgs) Handles Btn_logout.Click
@@ -440,6 +471,7 @@ Public Class DASHBOARD
             ' User clicked No, do nothing or handle accordingly
         End If
     End Sub
+
 
 
 End Class

@@ -34,6 +34,7 @@ Partial Class DASHBOARD
         PictureBox1 = New PictureBox()
         Panel2 = New Panel()
         Panel3 = New Panel()
+        ShowUser = New Button()
         txt_name = New Label()
         Panel_Contents = New Panel()
         Panel1.SuspendLayout()
@@ -227,12 +228,24 @@ Partial Class DASHBOARD
         ' Panel3
         ' 
         Panel3.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        Panel3.Controls.Add(ShowUser)
         Panel3.Controls.Add(txt_name)
         Panel3.Dock = DockStyle.Top
         Panel3.Location = New Point(226, 0)
         Panel3.Name = "Panel3"
         Panel3.Size = New Size(586, 32)
         Panel3.TabIndex = 1
+        ' 
+        ' ShowUser
+        ' 
+        ShowUser.BackColor = Color.White
+        ShowUser.BackgroundImage = My.Resources.Resources.writing
+        ShowUser.BackgroundImageLayout = ImageLayout.Center
+        ShowUser.Location = New Point(3, 3)
+        ShowUser.Name = "ShowUser"
+        ShowUser.Size = New Size(33, 28)
+        ShowUser.TabIndex = 1
+        ShowUser.UseVisualStyleBackColor = False
         ' 
         ' txt_name
         ' 
@@ -291,5 +304,6 @@ Partial Class DASHBOARD
     Friend WithEvents Btn_product As Button
     Friend WithEvents Btn_logout As Button
     Friend WithEvents txt_name As Label
+    Friend WithEvents ShowUser As Button
 
 End Class
