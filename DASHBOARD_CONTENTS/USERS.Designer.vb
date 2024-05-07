@@ -27,8 +27,8 @@ Partial Class USERS
         Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
         Dim DataGridViewCellStyle4 As DataGridViewCellStyle = New DataGridViewCellStyle()
         GroupBox1 = New GroupBox()
-        Button2 = New Button()
-        Button1 = New Button()
+        Btn_Fired = New Button()
+        Btn_Hired = New Button()
         usersDt = New DataGridView()
         userID = New DataGridViewTextBoxColumn()
         EmpName = New DataGridViewTextBoxColumn()
@@ -41,8 +41,8 @@ Partial Class USERS
         ' GroupBox1
         ' 
         GroupBox1.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        GroupBox1.Controls.Add(Button2)
-        GroupBox1.Controls.Add(Button1)
+        GroupBox1.Controls.Add(Btn_Fired)
+        GroupBox1.Controls.Add(Btn_Hired)
         GroupBox1.Controls.Add(usersDt)
         GroupBox1.Dock = DockStyle.Fill
         GroupBox1.FlatStyle = FlatStyle.Flat
@@ -55,30 +55,30 @@ Partial Class USERS
         GroupBox1.TabStop = False
         GroupBox1.Text = "USERS ACCOUNTS"
         ' 
-        ' Button2
+        ' Btn_Fired
         ' 
-        Button2.FlatAppearance.BorderSize = 2
-        Button2.FlatStyle = FlatStyle.Flat
-        Button2.ForeColor = Color.Red
-        Button2.Location = New Point(35, 282)
-        Button2.Name = "Button2"
-        Button2.Size = New Size(119, 36)
-        Button2.TabIndex = 2
-        Button2.Text = "FIRED"
-        Button2.UseVisualStyleBackColor = True
+        Btn_Fired.FlatAppearance.BorderSize = 2
+        Btn_Fired.FlatStyle = FlatStyle.Flat
+        Btn_Fired.ForeColor = Color.Red
+        Btn_Fired.Location = New Point(35, 282)
+        Btn_Fired.Name = "Btn_Fired"
+        Btn_Fired.Size = New Size(119, 36)
+        Btn_Fired.TabIndex = 2
+        Btn_Fired.Text = "FIRED"
+        Btn_Fired.UseVisualStyleBackColor = True
         ' 
-        ' Button1
+        ' Btn_Hired
         ' 
-        Button1.Anchor = AnchorStyles.Top Or AnchorStyles.Right
-        Button1.FlatAppearance.BorderSize = 2
-        Button1.FlatStyle = FlatStyle.Flat
-        Button1.ForeColor = Color.FromArgb(CByte(0), CByte(192), CByte(0))
-        Button1.Location = New Point(587, 282)
-        Button1.Name = "Button1"
-        Button1.Size = New Size(119, 36)
-        Button1.TabIndex = 1
-        Button1.Text = "HIRED"
-        Button1.UseVisualStyleBackColor = True
+        Btn_Hired.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        Btn_Hired.FlatAppearance.BorderSize = 2
+        Btn_Hired.FlatStyle = FlatStyle.Flat
+        Btn_Hired.ForeColor = Color.FromArgb(CByte(0), CByte(192), CByte(0))
+        Btn_Hired.Location = New Point(587, 282)
+        Btn_Hired.Name = "Btn_Hired"
+        Btn_Hired.Size = New Size(119, 36)
+        Btn_Hired.TabIndex = 1
+        Btn_Hired.Text = "HIRED"
+        Btn_Hired.UseVisualStyleBackColor = True
         ' 
         ' usersDt
         ' 
@@ -168,8 +168,8 @@ Partial Class USERS
     End Sub
 
     Friend WithEvents GroupBox1 As GroupBox
-    Friend WithEvents Button2 As Button
-    Friend WithEvents Button1 As Button
+    Friend WithEvents Btn_Fired As Button
+    Friend WithEvents Btn_Hired As Button
     Friend WithEvents usersDt As DataGridView
     Friend WithEvents userID As DataGridViewTextBoxColumn
     Friend WithEvents EmpName As DataGridViewTextBoxColumn

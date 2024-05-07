@@ -38,7 +38,7 @@ Public Class LOGIN
 
                 ' Check user status and handle login
                 If userStatus = "OFFLINE" Then
-                    MessageBox.Show("Your application is still pending, and only administrators have the authority to finalize your hiring.")
+                    MessageBox.Show("Your application is still under review, and only administrators have the authority to complete your hiring process. Please reach out to the administrator for further assistance.")
                 ElseIf userStatus = "ACTIVE" Then
                     ' Begin transaction for updating user status
                     Using transaction As MySqlTransaction = Conn.BeginTransaction()
