@@ -55,13 +55,11 @@ Partial Class PRODUCTS
         Btn_delete_prod = New Button()
         Btn_update_prod = New Button()
         Btn_add_prod = New Button()
-        Purchase = New Button()
         Label3 = New Label()
         prod_search = New TextBox()
         Sup_ID = New Label()
         Label5 = New Label()
         Cb_supplier = New ComboBox()
-        Panel_purchase = New Panel()
         CType(prod_datagridview, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
@@ -377,15 +375,6 @@ Partial Class PRODUCTS
         Btn_add_prod.Text = "CREATE"
         Btn_add_prod.UseVisualStyleBackColor = True
         ' 
-        ' Purchase
-        ' 
-        Purchase.Location = New Point(12, 86)
-        Purchase.Name = "Purchase"
-        Purchase.Size = New Size(166, 35)
-        Purchase.TabIndex = 40
-        Purchase.Text = "PURCHASE PRODUCT"
-        Purchase.UseVisualStyleBackColor = True
-        ' 
         ' Label3
         ' 
         Label3.Anchor = AnchorStyles.Top Or AnchorStyles.Right
@@ -438,23 +427,13 @@ Partial Class PRODUCTS
         Cb_supplier.Size = New Size(230, 23)
         Cb_supplier.TabIndex = 56
         ' 
-        ' Panel_purchase
-        ' 
-        Panel_purchase.Dock = DockStyle.Fill
-        Panel_purchase.Location = New Point(0, 0)
-        Panel_purchase.Name = "Panel_purchase"
-        Panel_purchase.Size = New Size(1149, 788)
-        Panel_purchase.TabIndex = 59
-        ' 
         ' PRODUCTS
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), Image)
         BackgroundImageLayout = ImageLayout.Center
-        Controls.Add(Panel_purchase)
         Controls.Add(Label5)
-        Controls.Add(Purchase)
         Controls.Add(Label3)
         Controls.Add(prod_search)
         Controls.Add(Btn_clear_prod)
@@ -512,14 +491,12 @@ Partial Class PRODUCTS
     Friend WithEvents Btn_delete_prod As Button
     Friend WithEvents Btn_update_prod As Button
     Friend WithEvents Btn_add_prod As Button
-    Friend WithEvents Purchase As Button
     Friend WithEvents Label3 As Label
     Friend WithEvents prod_search As TextBox
     Friend WithEvents Sup_ID As Label
     Friend WithEvents Label5 As Label
     Friend WithEvents Cb_supplier As ComboBox
     Friend WithEvents Purchase_panel As Panel
-    Public WithEvents Panel_purchase As Panel
 
 
 End Class

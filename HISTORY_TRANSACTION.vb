@@ -63,18 +63,22 @@ Public Class HISTORY_TRANSACTION
 
     Private Sub Search_history_TextChanged(sender As Object, e As EventArgs) Handles Search_history.TextChanged
         Dim searchValue As String = Search_history.Text.Trim().ToLower()
+        Dim filterMonth As MonthOption = CType(Cb_FilterMonth.SelectedIndex, MonthOption) ' Convert selected index to MonthOption enum
+
         For Each row As DataGridViewRow In History_Dt.Rows
             If Not row.IsNewRow Then
+                Dim transactionMonth As MonthOption = CType(row.Cells("TransDate").Value.Month - 1, MonthOption) ' Convert month to MonthOption enum
                 Dim CustomerName As String = row.Cells("CustName").Value.ToString().ToLower()
 
-                If searchValue = "" OrElse CustomerName.Contains(searchValue) Then
-                    row.Visible = True
+                If (filterMonth = transactionMonth) AndAlso (searchValue = "" OrElse CustomerName.Contains(searchValue)) Then
+                    row.Visible = True ' Show rows with matching month and customer name
                 Else
-                    row.Visible = False
+                    row.Visible = False ' Hide rows with non-matching month or customer name
                 End If
             End If
         Next
     End Sub
+
 
     Private Sub History_Dt_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles History_Dt.CellContentClick
         If e.RowIndex >= 0 AndAlso e.ColumnIndex >= 0 Then
@@ -115,6 +119,16 @@ Public Class HISTORY_TRANSACTION
         Else
             MessageBox.Show("Please select a row first.", "No Row Selected", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
+    End Sub
+
+    Private Sub BtnRefreshCb_Click(sender As Object, e As EventArgs) Handles BtnRefreshCb.Click
+        ' Clear the selected index of the ComboBox to reset the filter
+        Cb_FilterMonth.SelectedIndex = -1 ' Set to -1 to clear selection
+
+        ' Reload the entire transaction history
+        History_Dt.Rows.Clear()
+        History()
+
     End Sub
 
 

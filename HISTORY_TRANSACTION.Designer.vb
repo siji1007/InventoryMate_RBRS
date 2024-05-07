@@ -22,10 +22,11 @@ Partial Class HISTORY_TRANSACTION
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle4 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle5 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
         GroupBox1 = New GroupBox()
+        BtnRefreshCb = New Button()
         Search_history = New TextBox()
         Cb_FilterMonth = New ComboBox()
         ShowReceipt = New Button()
@@ -40,6 +41,7 @@ Partial Class HISTORY_TRANSACTION
         ' GroupBox1
         ' 
         GroupBox1.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        GroupBox1.Controls.Add(BtnRefreshCb)
         GroupBox1.Controls.Add(Search_history)
         GroupBox1.Controls.Add(Cb_FilterMonth)
         GroupBox1.Controls.Add(ShowReceipt)
@@ -52,6 +54,19 @@ Partial Class HISTORY_TRANSACTION
         GroupBox1.TabIndex = 0
         GroupBox1.TabStop = False
         GroupBox1.Text = "SEARCH HISTORY OF TRANSACTION"
+        ' 
+        ' BtnRefreshCb
+        ' 
+        BtnRefreshCb.BackColor = Color.Transparent
+        BtnRefreshCb.BackgroundImage = My.Resources.Resources.loading_arrow
+        BtnRefreshCb.BackgroundImageLayout = ImageLayout.Center
+        BtnRefreshCb.FlatAppearance.BorderSize = 0
+        BtnRefreshCb.FlatStyle = FlatStyle.Flat
+        BtnRefreshCb.Location = New Point(192, 43)
+        BtnRefreshCb.Name = "BtnRefreshCb"
+        BtnRefreshCb.Size = New Size(32, 29)
+        BtnRefreshCb.TabIndex = 32
+        BtnRefreshCb.UseVisualStyleBackColor = False
         ' 
         ' Search_history
         ' 
@@ -88,33 +103,34 @@ Partial Class HISTORY_TRANSACTION
         ' History_Dt
         ' 
         History_Dt.AllowUserToAddRows = False
-        DataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle4.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        DataGridViewCellStyle4.ForeColor = Color.White
-        DataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight
-        DataGridViewCellStyle4.SelectionForeColor = Color.White
-        History_Dt.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle4
+        DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle1.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        DataGridViewCellStyle1.ForeColor = Color.White
+        DataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = Color.White
+        History_Dt.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         History_Dt.BackgroundColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        DataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle5.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        DataGridViewCellStyle5.Font = New Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        DataGridViewCellStyle5.ForeColor = Color.White
-        DataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight
-        DataGridViewCellStyle5.SelectionForeColor = SystemColors.HighlightText
-        DataGridViewCellStyle5.WrapMode = DataGridViewTriState.True
-        History_Dt.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        DataGridViewCellStyle2.Font = New Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        DataGridViewCellStyle2.ForeColor = Color.White
+        DataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = DataGridViewTriState.True
+        History_Dt.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
         History_Dt.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         History_Dt.Columns.AddRange(New DataGridViewColumn() {Trans_ID, CustName, TransDate})
-        DataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle6.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        DataGridViewCellStyle6.Font = New Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        DataGridViewCellStyle6.ForeColor = Color.White
-        DataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight
-        DataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText
-        DataGridViewCellStyle6.WrapMode = DataGridViewTriState.False
-        History_Dt.DefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle3.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        DataGridViewCellStyle3.Font = New Font("Segoe UI", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        DataGridViewCellStyle3.ForeColor = Color.White
+        DataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = DataGridViewTriState.False
+        History_Dt.DefaultCellStyle = DataGridViewCellStyle3
         History_Dt.Location = New Point(0, 78)
         History_Dt.Name = "History_Dt"
+        History_Dt.ReadOnly = True
         History_Dt.RowHeadersVisible = False
         History_Dt.Size = New Size(676, 418)
         History_Dt.TabIndex = 0
@@ -124,6 +140,7 @@ Partial Class HISTORY_TRANSACTION
         Trans_ID.AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells
         Trans_ID.HeaderText = "ID"
         Trans_ID.Name = "Trans_ID"
+        Trans_ID.ReadOnly = True
         Trans_ID.Width = 55
         ' 
         ' CustName
@@ -131,12 +148,14 @@ Partial Class HISTORY_TRANSACTION
         CustName.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
         CustName.HeaderText = "CUSTOMER NAME"
         CustName.Name = "CustName"
+        CustName.ReadOnly = True
         ' 
         ' TransDate
         ' 
         TransDate.AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill
         TransDate.HeaderText = "TRANSACTION DATE"
         TransDate.Name = "TransDate"
+        TransDate.ReadOnly = True
         ' 
         ' HISTORY_TRANSACTION
         ' 
@@ -165,4 +184,5 @@ Partial Class HISTORY_TRANSACTION
     Friend WithEvents Cb_FilterMonth As ComboBox
     Friend WithEvents ShowReceipt As Button
     Friend WithEvents Search_history As TextBox
+    Friend WithEvents BtnRefreshCb As Button
 End Class

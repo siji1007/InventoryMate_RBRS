@@ -3,12 +3,13 @@
 Module Sqlconnection
     Public Conn As New MySqlConnection
     Dim StrConn As String = "server=localhost; user=root; password=; database=inventorymate;"
+    Dim StrConnBackup As String = "server=localhost; user=root; password=; database=back_up;"
 
     Public Function openDB() As Boolean
         Try
             If Conn.State = ConnectionState.Closed Then
-                Conn.ConnectionString = StrConn
-                Conn.Open()
+                Conn.ConnectionString = If(CheckDatabaseExists("inventorymate"), StrConn, StrConnBackup)
+                Conn.Open() ' Open the connection after setting the connection string
             End If
             Return True ' Return true if connection is opened successfully
         Catch ex As Exception
@@ -18,38 +19,30 @@ Module Sqlconnection
         End Try
     End Function
 
+    Public Function CheckDatabaseExists(databaseName As String) As Boolean
+        Dim exists As Boolean = False
+        Try
+            Using checkConn As New MySqlConnection(StrConn)
+                checkConn.Open()
+                Dim cmd As New MySqlCommand("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = @dbName", checkConn)
+                cmd.Parameters.AddWithValue("@dbName", databaseName)
+                Dim result As Object = cmd.ExecuteScalar()
+                If result IsNot Nothing Then
+                    exists = True ' Database exists
+                End If
+            End Using
+        Catch ex As Exception
+            ' Handle exceptions if needed, such as logging errors
+        End Try
+        Return exists
+    End Function
+
     Public Sub closeDB()
         If Conn.State = ConnectionState.Open Then
             Conn.Close()
         End If
     End Sub
 
-    Public Function CheckDatabaseExists(databaseName As String) As Boolean
-        Try
-            openDB()
-            Dim cmd As New MySqlCommand("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = @dbName", Conn)
-            cmd.Parameters.AddWithValue("@dbName", databaseName)
-            Dim result As Object = cmd.ExecuteScalar()
-            closeDB()
-            If result IsNot Nothing Then
-                Return True ' Database exists
-            Else
-                Return False ' Database does not exist
-            End If
-        Catch ex As MySqlException
-            ' Handle MySQL-specific exceptions
-            If ex.Number = 0 Then
-                Throw New Exception("Server is not reachable. Please check your MySQL server and try again.")
-            Else
-                Throw New Exception("MySQL Error: " & ex.Message)
-            End If
-            Return False
-        Catch ex As Exception
-            ' Handle other exceptions
-            Throw New Exception("Error checking database existence: " & ex.Message)
-            Return False
-        End Try
-    End Function
 
     Public Function IsXAMPPRunning() As Boolean
         ' Check if XAMPP Control Panel process is running

@@ -12,7 +12,7 @@ Public Class PRODUCTS
         Dim centerX = (ClientSize.Width - Lbl_product.Width) \ 2
         Lbl_product.Location = New Point(centerX, Lbl_product.Location.Y)
 
-        Panel_purchase.Visible = False
+
 
         LoadDataAndSort()
         LoadWarranty()
@@ -485,30 +485,6 @@ Public Class PRODUCTS
             End Try
         End If
     End Sub
-
-    ' Assuming dashboardForm is a reference to your DASHBOARD form
-    ' Assuming dashboardForm is a reference to your existing DASHBOARD form instance
-    Public dash As New DASHBOARD()
-    Private Sub Purchase_Click(sender As Object, e As EventArgs) Handles Purchase.Click
-
-        Panel_purchase.Visible = True
-        dash.Boolean_panel()
-
-        ' Create an instance of the PURCHASE form
-        ' Pass a reference to the PRODUCTS form to the PURCHASE form
-        Dim PurchaseForm As New PURCHASE With {
-            .Dock = DockStyle.Fill,
-            .ProductForm = Me
-        }
-
-        ' Add PurchaseForm to Panel_purchase and show it
-        Panel_purchase.Controls.Add(PurchaseForm)
-        PurchaseForm.BringToFront()
-        PurchaseForm.Show()
-    End Sub
-
-
-
 
     Private Sub Cb_supplier_SelectedIndexChanged(sender As Object, e As EventArgs) Handles Cb_supplier.SelectedIndexChanged
         ' Check if an item is selected in the ComboBox

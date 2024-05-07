@@ -257,47 +257,63 @@ Public Class CUSTOMER
         If customer_datagridview.SelectedRows.Count > 0 Then
             Dim selectedRow As DataGridViewRow = customer_datagridview.SelectedRows(0)
             Dim Cust_ID As Integer = Convert.ToInt32(selectedRow.Cells("cl_ID").Value)
-            Dim result As DialogResult = MessageBox.Show("Are you sure you want to delete this customer?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+
+            Dim result As DialogResult = MessageBox.Show("Are you sure you want to delete this customer, it may affect the transaction belong with this customer data?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+
             If result = DialogResult.Yes Then
                 If openDB() Then
-                    Dim query As String = "DELETE FROM customer WHERE Cust_ID = @c_id"
-                    Dim cmd As New MySqlCommand(query, Conn)
-                    cmd.Parameters.AddWithValue("@c_id", Cust_ID)
-
-                    Try
-                        cmd.ExecuteNonQuery()
-                        customer_datagridview.Rows.Clear()
-                        LoadDataCustomer()
-
-                        txt_cname.Clear()
-                        txt_caddress.Clear()
-                        txt_cemail.Clear()
-                        txt_cnumber.Text = "+63"
+                    ' First, delete related transactions
+                    If DeleteRelatedTransactions(Cust_ID) Then
+                        ' Related transactions deleted successfully, now delete the customer
+                        Dim query As String = "DELETE FROM customer WHERE Cust_ID = @c_id"
+                        Dim cmd As New MySqlCommand(query, Conn)
+                        cmd.Parameters.AddWithValue("@c_id", Cust_ID)
 
 
+                        Try
+                            cmd.ExecuteNonQuery()
+                            MessageBox.Show("Customer deleted successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
 
-                    Catch ex As Exception
+                            ' Refresh the data in the DataGridView and clear input fields
+                            customer_datagridview.Rows.Clear()
+                            LoadDataCustomer()
 
-                        MessageBox.Show(ex.Message)
-
-                    Finally
-                        closeDB()
-
-                    End Try
+                            txt_cname.Clear()
+                            txt_caddress.Clear()
+                            txt_cemail.Clear()
+                            txt_cnumber.Text = "+63"
+                        Catch ex As Exception
+                            MessageBox.Show("Error deleting customer: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                        Finally
+                            closeDB()
+                        End Try
+                    Else
+                        MessageBox.Show("Error deleting related transactions.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    End If
                 Else
-                    MessageBox.Show("The database is not connected!")
-
+                    MessageBox.Show("Failed to connect to the database", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                 End If
-
             End If
-
         Else
-                MessageBox.Show("Please select customer to delete!")
-
-
+            MessageBox.Show("Please select a customer to delete.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information)
         End If
-
     End Sub
+
+    Private Function DeleteRelatedTransactions(customerID As Integer) As Boolean
+        ' Delete related transactions for the given customer ID
+        Dim query As String = "DELETE FROM transactions WHERE Customer_ID = @customerID"
+        Dim cmd As New MySqlCommand(query, Conn)
+        cmd.Parameters.AddWithValue("@customerID", customerID)
+
+        Try
+            cmd.ExecuteNonQuery()
+            Return True ' Deletion successful
+        Catch ex As Exception
+            MessageBox.Show("Error deleting related transactions: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            Return False ' Deletion failed
+        End Try
+    End Function
+
 
     Private Sub Clear_cust_btn_Click(sender As Object, e As EventArgs) Handles Clear_cust_btn.Click
         If customer_datagridview.SelectedRows.Count > 0 Then
