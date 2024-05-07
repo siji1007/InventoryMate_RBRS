@@ -1,4 +1,6 @@
 ﻿Imports MySql.Data.MySqlClient
+Imports Excel = Microsoft.Office.Interop.Excel
+
 
 Public Class EMPLOYEE
 
@@ -163,7 +165,7 @@ Public Class EMPLOYEE
             End Using
         Else
             MessageBox.Show("Failed to connect to the database.")
-            End If
+        End If
 
         Return True ' Default return value if an exception occurs
     End Function
@@ -341,6 +343,66 @@ Public Class EMPLOYEE
         emp_birthdate.Value = DateTime.Today
         Button1.Text = ">>"
     End Sub
+
+    Private Sub GeneRate_Click(sender As Object, e As EventArgs) Handles GeneRate.Click
+        Try
+            If openDB() Then
+                Dim query As String = "SELECT * FROM employee"
+                Dim adapter As New MySqlDataAdapter(query, Conn)
+                Dim ds As New DataSet()
+
+                adapter.Fill(ds, "employee")
+
+                ' Export to Excel
+                Dim excelApp As New Excel.Application()
+                Dim excelWorkbook As Excel.Workbook = excelApp.Workbooks.Add()
+                Dim excelWorksheet As Excel.Worksheet = CType(excelWorkbook.Sheets("Sheet1"), Excel.Worksheet)
+
+                ' Add column headers
+                For i As Integer = 0 To ds.Tables("employee").Columns.Count - 1
+                    excelWorksheet.Cells(1, i + 1) = ds.Tables("employee").Columns(i).ColumnName
+                Next
+
+                ' Add data
+                For rowIndex As Integer = 0 To ds.Tables("employee").Rows.Count - 1
+                    For colIndex As Integer = 0 To ds.Tables("employee").Columns.Count - 1
+                        excelWorksheet.Cells(rowIndex + 2, colIndex + 1) = ds.Tables("employee").Rows(rowIndex)(colIndex).ToString()
+                    Next
+                Next
+
+                ' Save Excel file
+                Dim excelFilePath As String = "C:\Users\XtiaN\Documents\RBRS GADGET CENTER\InventoryMate_RBRS\REPORT\EmployeeReport.xlsx"
+                excelWorkbook.SaveAs(excelFilePath)
+                excelWorkbook.Close()
+                excelApp.Quit()
+
+                ReleaseComObject(excelWorksheet)
+                ReleaseComObject(excelWorkbook)
+                ReleaseComObject(excelApp)
+
+
+
+                MessageBox.Show("Data exported successfully to Excel.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            Else
+                MessageBox.Show("Failed to connect to the database", "DATABASE CONNECTION FAILED!", MessageBoxButtons.OK, MessageBoxIcon.Information)
+            End If
+        Catch ex As Exception
+            MessageBox.Show("Error exporting data to Excel: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+        End Try
+    End Sub
+
+    Private Sub ReleaseComObject(ByVal obj As Object)
+        Try
+            System.Runtime.InteropServices.Marshal.ReleaseComObject(obj)
+            obj = Nothing
+        Catch ex As Exception
+            obj = Nothing
+        Finally
+            GC.Collect()
+        End Try
+    End Sub
+
+
 
 
 End Class

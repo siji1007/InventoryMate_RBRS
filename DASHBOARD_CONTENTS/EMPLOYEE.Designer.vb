@@ -28,6 +28,9 @@ Partial Class EMPLOYEE
         Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
         Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
         lbl_employee = New Label()
+        status_menu = New ContextMenuStrip(components)
+        ACTIVE = New ToolStripMenuItem()
+        OFFLINE = New ToolStripMenuItem()
         emp_datagridview = New DataGridView()
         Emp_ID = New DataGridViewTextBoxColumn()
         Emp_name = New DataGridViewTextBoxColumn()
@@ -43,9 +46,6 @@ Partial Class EMPLOYEE
         Label1 = New Label()
         Label2 = New Label()
         Label3 = New Label()
-        status_menu = New ContextMenuStrip(components)
-        ACTIVE = New ToolStripMenuItem()
-        OFFLINE = New ToolStripMenuItem()
         Btn_add = New Button()
         Btn_update = New Button()
         Btn_delete = New Button()
@@ -54,8 +54,9 @@ Partial Class EMPLOYEE
         Label4 = New Label()
         txt_search = New TextBox()
         Label5 = New Label()
-        CType(emp_datagridview, ComponentModel.ISupportInitialize).BeginInit()
+        GeneRate = New Button()
         status_menu.SuspendLayout()
+        CType(emp_datagridview, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' lbl_employee
@@ -70,6 +71,24 @@ Partial Class EMPLOYEE
         lbl_employee.Size = New Size(174, 33)
         lbl_employee.TabIndex = 0
         lbl_employee.Text = "EMPLOYEE"
+        ' 
+        ' status_menu
+        ' 
+        status_menu.Items.AddRange(New ToolStripItem() {ACTIVE, OFFLINE})
+        status_menu.Name = "status_menu"
+        status_menu.Size = New Size(120, 48)
+        ' 
+        ' ACTIVE
+        ' 
+        ACTIVE.Name = "ACTIVE"
+        ACTIVE.Size = New Size(119, 22)
+        ACTIVE.Text = "ACTIVE"
+        ' 
+        ' OFFLINE
+        ' 
+        OFFLINE.Name = "OFFLINE"
+        OFFLINE.Size = New Size(119, 22)
+        OFFLINE.Text = "OFFLINE"
         ' 
         ' emp_datagridview
         ' 
@@ -241,24 +260,6 @@ Partial Class EMPLOYEE
         Label3.TabIndex = 11
         Label3.Text = "ID STATUS"
         ' 
-        ' status_menu
-        ' 
-        status_menu.Items.AddRange(New ToolStripItem() {ACTIVE, OFFLINE})
-        status_menu.Name = "status_menu"
-        status_menu.Size = New Size(120, 48)
-        ' 
-        ' ACTIVE
-        ' 
-        ACTIVE.Name = "ACTIVE"
-        ACTIVE.Size = New Size(119, 22)
-        ACTIVE.Text = "ACTIVE"
-        ' 
-        ' OFFLINE
-        ' 
-        OFFLINE.Name = "OFFLINE"
-        OFFLINE.Size = New Size(119, 22)
-        OFFLINE.Text = "OFFLINE"
-        ' 
         ' Btn_add
         ' 
         Btn_add.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left
@@ -341,12 +342,26 @@ Partial Class EMPLOYEE
         Label5.TabIndex = 40
         Label5.Text = "       "
         ' 
+        ' GeneRate
+        ' 
+        GeneRate.Anchor = AnchorStyles.Top Or AnchorStyles.Right
+        GeneRate.BackColor = Color.FromArgb(CByte(0), CByte(192), CByte(0))
+        GeneRate.FlatStyle = FlatStyle.Flat
+        GeneRate.Font = New Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        GeneRate.Location = New Point(1001, 3)
+        GeneRate.Name = "GeneRate"
+        GeneRate.Size = New Size(129, 30)
+        GeneRate.TabIndex = 41
+        GeneRate.Text = "GENERATE REPORT"
+        GeneRate.UseVisualStyleBackColor = False
+        ' 
         ' EMPLOYEE
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         BackgroundImage = My.Resources.Resources.backgroud
         BackgroundImageLayout = ImageLayout.Center
+        Controls.Add(GeneRate)
         Controls.Add(Label5)
         Controls.Add(txt_search)
         Controls.Add(Label4)
@@ -368,8 +383,8 @@ Partial Class EMPLOYEE
         DoubleBuffered = True
         Name = "EMPLOYEE"
         Size = New Size(1133, 772)
-        CType(emp_datagridview, ComponentModel.ISupportInitialize).EndInit()
         status_menu.ResumeLayout(False)
+        CType(emp_datagridview, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
         PerformLayout()
     End Sub
@@ -401,4 +416,5 @@ Partial Class EMPLOYEE
     Friend WithEvents Label4 As Label
     Friend WithEvents txt_search As TextBox
     Friend WithEvents Label5 As Label
+    Friend WithEvents GeneRate As Button
 End Class

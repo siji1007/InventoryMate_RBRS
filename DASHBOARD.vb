@@ -87,6 +87,7 @@ Public Class DASHBOARD
 
 
                     Btn_transaction.Location = New Point(0, 358)
+                    ShowUser.Visible = False
 
 
 
@@ -98,12 +99,16 @@ Public Class DASHBOARD
                 ElseIf userPrivilege = "OWNER" AndAlso userStatus = "ACTIVE" Then
                     Btn_home.Visible = True
                     Btn_product.Visible = True
-                    Btn_warranty.Visible = False
+                    Btn_warranty.Visible = True
                     Btn_customer.Visible = False
                     Btn_supplier.Visible = False
-                    Btn_employee.Visible = False
+                    Btn_employee.Visible = True
                     Btn_transaction.Visible = True
                     Btn_transaction.Location = New Point(0, 358)
+                    Btn_employee.Location = New Point(0, 416)
+
+
+
 
                 Else
                     ' Hide all buttons if user privilege or status doesn't match

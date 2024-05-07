@@ -20,6 +20,8 @@ Public Class USERS
                         usersDt.Rows(rowIndex).DefaultCellStyle.BackColor = color
                     End While
                 End Using
+
+
             Else
                 MessageBox.Show("Failed to connect to the database", "DATABASE CONNECTION FAILED!", MessageBoxButtons.OK, MessageBoxIcon.Information)
             End If
@@ -46,6 +48,8 @@ Public Class USERS
                     row.Selected = False
                 End If
             Next
+
+            Cb_Jobpos.Text = JobPos
 
         End If
     End Sub
@@ -115,4 +119,39 @@ Public Class USERS
         End If
 
     End Sub
+
+    Private Sub Btn_promote_Click(sender As Object, e As EventArgs) Handles Btn_promote.Click
+        Dim result As DialogResult = MessageBox.Show("Are you sure you want to promote the selected employee?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+        If result = DialogResult.Yes Then
+
+            Try
+                Dim selectedRowIndex As Integer = usersDt.CurrentCell.RowIndex
+                Dim selectedEmployeeID As Integer = Convert.ToInt32(usersDt.Rows(selectedRowIndex).Cells("userID").Value)
+                Dim selectedPrivilege As String = Cb_Jobpos.SelectedItem.ToString()
+
+                If openDB() Then
+                    Dim query As New MySqlCommand("UPDATE users SET Privilege = @Privilege WHERE Employee_ID = @Employee_ID", Conn)
+                    query.Parameters.AddWithValue("@Privilege", selectedPrivilege)
+                    query.Parameters.AddWithValue("@Employee_ID", selectedEmployeeID)
+                    Dim rowsAffected As Integer = query.ExecuteNonQuery()
+
+                    If rowsAffected > 0 Then
+                        MessageBox.Show("Privilege updated successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                        usersDt.Rows.Clear()
+                        LoadUser()
+
+                    Else
+                        MessageBox.Show("Failed to update Privilege.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+                    End If
+                Else
+                    MessageBox.Show("Failed to connect to the database", "DATABASE CONNECTION FAILED!", MessageBoxButtons.OK, MessageBoxIcon.Information)
+                End If
+            Catch ex As Exception
+                MessageBox.Show("Error updating Privilege: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
+            End Try
+        End If
+    End Sub
+
+
+
 End Class
