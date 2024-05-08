@@ -179,10 +179,6 @@ Public Class CUSTOMER
     End Function
 
 
-
-
-
-
     Private Sub Update_cust_btn_Click(sender As Object, e As EventArgs) Handles Update_cust_btn.Click
         ' Check if a customer is selected
         If customer_datagridview.CurrentRow IsNot Nothing Then

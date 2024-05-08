@@ -414,8 +414,13 @@ Public Class EMPLOYEE
             GC.Collect()
         End Try
     End Sub
+    Private Sub txt_emp_cnumber_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txt_emp_cnumber.KeyPress
+        If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
+            e.Handled = True
+        End If
+    End Sub
 
+    Private Sub Label6_Click(sender As Object, e As EventArgs) Handles Label6.Click
 
-
-
+    End Sub
 End Class

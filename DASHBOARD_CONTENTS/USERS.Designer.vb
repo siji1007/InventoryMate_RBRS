@@ -22,10 +22,10 @@ Partial Class USERS
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
-        Dim DataGridViewCellStyle5 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle6 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle7 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle8 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle4 As DataGridViewCellStyle = New DataGridViewCellStyle()
         GroupBox1 = New GroupBox()
         Btn_promote = New Button()
         Cb_Jobpos = New ComboBox()
@@ -81,6 +81,7 @@ Partial Class USERS
         ' 
         ' Btn_Fired
         ' 
+        Btn_Fired.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         Btn_Fired.FlatAppearance.BorderSize = 2
         Btn_Fired.FlatStyle = FlatStyle.Flat
         Btn_Fired.ForeColor = Color.Red
@@ -107,44 +108,44 @@ Partial Class USERS
         ' usersDt
         ' 
         usersDt.AllowUserToAddRows = False
-        DataGridViewCellStyle5.Alignment = DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle5.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        DataGridViewCellStyle5.ForeColor = Color.White
-        DataGridViewCellStyle5.SelectionBackColor = SystemColors.Highlight
-        DataGridViewCellStyle5.SelectionForeColor = Color.White
-        usersDt.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle5
+        DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle1.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        DataGridViewCellStyle1.ForeColor = Color.White
+        DataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle1.SelectionForeColor = Color.White
+        usersDt.AlternatingRowsDefaultCellStyle = DataGridViewCellStyle1
         usersDt.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         usersDt.BackgroundColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        DataGridViewCellStyle6.Alignment = DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle6.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        DataGridViewCellStyle6.Font = New Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        DataGridViewCellStyle6.ForeColor = Color.White
-        DataGridViewCellStyle6.SelectionBackColor = SystemColors.Highlight
-        DataGridViewCellStyle6.SelectionForeColor = SystemColors.HighlightText
-        DataGridViewCellStyle6.WrapMode = DataGridViewTriState.True
-        usersDt.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle6
+        DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle2.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        DataGridViewCellStyle2.Font = New Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        DataGridViewCellStyle2.ForeColor = Color.White
+        DataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle2.WrapMode = DataGridViewTriState.True
+        usersDt.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle2
         usersDt.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         usersDt.Columns.AddRange(New DataGridViewColumn() {userID, EmpName, jobpos, status})
-        DataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle7.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        DataGridViewCellStyle7.Font = New Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        DataGridViewCellStyle7.ForeColor = Color.White
-        DataGridViewCellStyle7.SelectionBackColor = SystemColors.Highlight
-        DataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText
-        DataGridViewCellStyle7.WrapMode = DataGridViewTriState.False
-        usersDt.DefaultCellStyle = DataGridViewCellStyle7
+        DataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle3.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        DataGridViewCellStyle3.Font = New Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        DataGridViewCellStyle3.ForeColor = Color.White
+        DataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle3.WrapMode = DataGridViewTriState.False
+        usersDt.DefaultCellStyle = DataGridViewCellStyle3
         usersDt.GridColor = Color.White
         usersDt.Location = New Point(35, 61)
         usersDt.Name = "usersDt"
         usersDt.ReadOnly = True
-        DataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle8.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        DataGridViewCellStyle8.Font = New Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        DataGridViewCellStyle8.ForeColor = Color.White
-        DataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight
-        DataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText
-        DataGridViewCellStyle8.WrapMode = DataGridViewTriState.True
-        usersDt.RowHeadersDefaultCellStyle = DataGridViewCellStyle8
+        DataGridViewCellStyle4.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle4.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        DataGridViewCellStyle4.Font = New Font("Microsoft Sans Serif", 11.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        DataGridViewCellStyle4.ForeColor = Color.White
+        DataGridViewCellStyle4.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle4.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle4.WrapMode = DataGridViewTriState.True
+        usersDt.RowHeadersDefaultCellStyle = DataGridViewCellStyle4
         usersDt.RowHeadersVisible = False
         usersDt.Size = New Size(671, 204)
         usersDt.TabIndex = 0

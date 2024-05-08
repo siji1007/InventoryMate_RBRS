@@ -24,9 +24,9 @@ Partial Class EMPLOYEE
     <System.Diagnostics.DebuggerStepThrough()> _
     Private Sub InitializeComponent()
         components = New ComponentModel.Container()
-        Dim DataGridViewCellStyle1 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle2 As DataGridViewCellStyle = New DataGridViewCellStyle()
-        Dim DataGridViewCellStyle3 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle7 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle8 As DataGridViewCellStyle = New DataGridViewCellStyle()
+        Dim DataGridViewCellStyle9 As DataGridViewCellStyle = New DataGridViewCellStyle()
         lbl_employee = New Label()
         status_menu = New ContextMenuStrip(components)
         ACTIVE = New ToolStripMenuItem()
@@ -55,6 +55,7 @@ Partial Class EMPLOYEE
         txt_search = New TextBox()
         Label5 = New Label()
         GeneRate = New Button()
+        Label6 = New Label()
         status_menu.SuspendLayout()
         CType(emp_datagridview, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
@@ -95,36 +96,36 @@ Partial Class EMPLOYEE
         emp_datagridview.AllowUserToAddRows = False
         emp_datagridview.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         emp_datagridview.BackgroundColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        DataGridViewCellStyle1.Alignment = DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle1.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        DataGridViewCellStyle1.Font = New Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        DataGridViewCellStyle1.ForeColor = SystemColors.Window
-        DataGridViewCellStyle1.SelectionBackColor = SystemColors.Highlight
-        DataGridViewCellStyle1.SelectionForeColor = SystemColors.HighlightText
-        DataGridViewCellStyle1.WrapMode = DataGridViewTriState.True
-        emp_datagridview.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle1
+        DataGridViewCellStyle7.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle7.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        DataGridViewCellStyle7.Font = New Font("Microsoft Sans Serif", 14.25F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        DataGridViewCellStyle7.ForeColor = SystemColors.Window
+        DataGridViewCellStyle7.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle7.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle7.WrapMode = DataGridViewTriState.True
+        emp_datagridview.ColumnHeadersDefaultCellStyle = DataGridViewCellStyle7
         emp_datagridview.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize
         emp_datagridview.Columns.AddRange(New DataGridViewColumn() {Emp_ID, Emp_name, Emp_address, Emp_cnumber, Emp_bdate, Emp_status})
-        DataGridViewCellStyle2.Alignment = DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle2.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        DataGridViewCellStyle2.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        DataGridViewCellStyle2.ForeColor = Color.White
-        DataGridViewCellStyle2.SelectionBackColor = SystemColors.Highlight
-        DataGridViewCellStyle2.SelectionForeColor = SystemColors.HighlightText
-        DataGridViewCellStyle2.WrapMode = DataGridViewTriState.False
-        emp_datagridview.DefaultCellStyle = DataGridViewCellStyle2
+        DataGridViewCellStyle8.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle8.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        DataGridViewCellStyle8.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        DataGridViewCellStyle8.ForeColor = Color.White
+        DataGridViewCellStyle8.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle8.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle8.WrapMode = DataGridViewTriState.False
+        emp_datagridview.DefaultCellStyle = DataGridViewCellStyle8
         emp_datagridview.GridColor = SystemColors.Window
         emp_datagridview.Location = New Point(12, 127)
         emp_datagridview.Name = "emp_datagridview"
         emp_datagridview.ReadOnly = True
-        DataGridViewCellStyle3.Alignment = DataGridViewContentAlignment.MiddleCenter
-        DataGridViewCellStyle3.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
-        DataGridViewCellStyle3.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
-        DataGridViewCellStyle3.ForeColor = Color.White
-        DataGridViewCellStyle3.SelectionBackColor = SystemColors.Highlight
-        DataGridViewCellStyle3.SelectionForeColor = SystemColors.HighlightText
-        DataGridViewCellStyle3.WrapMode = DataGridViewTriState.True
-        emp_datagridview.RowHeadersDefaultCellStyle = DataGridViewCellStyle3
+        DataGridViewCellStyle9.Alignment = DataGridViewContentAlignment.MiddleCenter
+        DataGridViewCellStyle9.BackColor = Color.FromArgb(CByte(30), CByte(39), CByte(46))
+        DataGridViewCellStyle9.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        DataGridViewCellStyle9.ForeColor = Color.White
+        DataGridViewCellStyle9.SelectionBackColor = SystemColors.Highlight
+        DataGridViewCellStyle9.SelectionForeColor = SystemColors.HighlightText
+        DataGridViewCellStyle9.WrapMode = DataGridViewTriState.True
+        emp_datagridview.RowHeadersDefaultCellStyle = DataGridViewCellStyle9
         emp_datagridview.RowHeadersVisible = False
         emp_datagridview.Size = New Size(1109, 301)
         emp_datagridview.TabIndex = 1
@@ -183,11 +184,10 @@ Partial Class EMPLOYEE
         ' 
         ' txt_emp_cnumber
         ' 
-        txt_emp_cnumber.Location = New Point(143, 535)
+        txt_emp_cnumber.Location = New Point(168, 535)
         txt_emp_cnumber.Name = "txt_emp_cnumber"
-        txt_emp_cnumber.Size = New Size(230, 23)
+        txt_emp_cnumber.Size = New Size(205, 23)
         txt_emp_cnumber.TabIndex = 4
-        txt_emp_cnumber.Text = "+63"
         ' 
         ' emp_birthdate
         ' 
@@ -355,12 +355,26 @@ Partial Class EMPLOYEE
         GeneRate.Text = "GENERATE REPORT"
         GeneRate.UseVisualStyleBackColor = False
         ' 
+        ' Label6
+        ' 
+        Label6.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left
+        Label6.AutoSize = True
+        Label6.BackColor = Color.Transparent
+        Label6.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label6.ForeColor = Color.White
+        Label6.Location = New Point(129, 537)
+        Label6.Name = "Label6"
+        Label6.Size = New Size(36, 20)
+        Label6.TabIndex = 42
+        Label6.Text = "+63"
+        ' 
         ' EMPLOYEE
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         BackgroundImage = My.Resources.Resources.backgroud
         BackgroundImageLayout = ImageLayout.Center
+        Controls.Add(Label6)
         Controls.Add(GeneRate)
         Controls.Add(Label5)
         Controls.Add(txt_search)
@@ -417,4 +431,5 @@ Partial Class EMPLOYEE
     Friend WithEvents txt_search As TextBox
     Friend WithEvents Label5 As Label
     Friend WithEvents GeneRate As Button
+    Friend WithEvents Label6 As Label
 End Class
