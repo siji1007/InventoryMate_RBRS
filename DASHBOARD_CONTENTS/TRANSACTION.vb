@@ -1051,4 +1051,36 @@ Public Class TRANSACTION
         ' Show the SignUp form as a dialog
         HISTORY.ShowDialog()
     End Sub
+
+    Private Sub txt_custnumber_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txt_custnumber.KeyPress
+        ' Check if the pressed key is not a digit and not a control key
+        If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
+            ' If it's not a digit or control key, handle the event to prevent the character from being entered
+            e.Handled = True
+        End If
+    End Sub
+
+    Private Sub txt_quantity_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txt_quantity.KeyPress
+        ' Check if the pressed key is not a digit and not a control key
+        If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
+            ' If it's not a digit or control key, handle the event to prevent the character from being entered
+            e.Handled = True
+        End If
+    End Sub
+
+    Private Sub txt_price_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txt_price.KeyPress
+        ' Check if the pressed key is not a digit and not a control key
+        If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
+            ' If it's not a digit or control key, handle the event to prevent the character from being entered
+            e.Handled = True
+        End If
+    End Sub
+    Private Sub txt_service_fee_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txt_service_fee.KeyPress
+        ' Check if the pressed key is not a digit and not a control key
+        If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
+            ' If it's not a digit or control key, handle the event to prevent the character from being entered
+            e.Handled = True
+        End If
+    End Sub
+
 End Class

@@ -50,6 +50,7 @@ Partial Class SUPPLIER
         txt_sup_name = New TextBox()
         Label5 = New Label()
         Search_supplier = New TextBox()
+        Label3 = New Label()
         CType(sup_datagridview, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
@@ -198,7 +199,7 @@ Partial Class SUPPLIER
         Label2.BackColor = Color.Transparent
         Label2.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         Label2.ForeColor = Color.Black
-        Label2.Location = New Point(641, 508)
+        Label2.Location = New Point(639, 508)
         Label2.Name = "Label2"
         Label2.Size = New Size(83, 20)
         Label2.TabIndex = 25
@@ -258,11 +259,10 @@ Partial Class SUPPLIER
         ' 
         ' txt_sup_cnumber
         ' 
-        txt_sup_cnumber.Location = New Point(730, 505)
+        txt_sup_cnumber.Location = New Point(772, 505)
         txt_sup_cnumber.Name = "txt_sup_cnumber"
-        txt_sup_cnumber.Size = New Size(230, 23)
+        txt_sup_cnumber.Size = New Size(188, 23)
         txt_sup_cnumber.TabIndex = 20
-        txt_sup_cnumber.Text = "+63"
         ' 
         ' txt_sup_email
         ' 
@@ -317,12 +317,26 @@ Partial Class SUPPLIER
         Search_supplier.Size = New Size(213, 23)
         Search_supplier.TabIndex = 30
         ' 
+        ' Label3
+        ' 
+        Label3.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left
+        Label3.AutoSize = True
+        Label3.BackColor = Color.Transparent
+        Label3.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label3.ForeColor = Color.Black
+        Label3.Location = New Point(730, 508)
+        Label3.Name = "Label3"
+        Label3.Size = New Size(36, 20)
+        Label3.TabIndex = 32
+        Label3.Text = "+63"
+        ' 
         ' SUPPLIER
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         BackgroundImage = CType(resources.GetObject("$this.BackgroundImage"), Image)
         BackgroundImageLayout = ImageLayout.Center
+        Controls.Add(Label3)
         Controls.Add(Label5)
         Controls.Add(Search_supplier)
         Controls.Add(Btn_clear)
@@ -373,5 +387,6 @@ Partial Class SUPPLIER
     Friend WithEvents txt_sup_name As TextBox
     Friend WithEvents Label5 As Label
     Friend WithEvents Search_supplier As TextBox
+    Friend WithEvents Label3 As Label
 
 End Class

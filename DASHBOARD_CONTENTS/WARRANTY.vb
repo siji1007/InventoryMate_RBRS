@@ -113,8 +113,8 @@ Public Class WARRANTY
                             Finally
                                 closeDB()
                             End Try
-                                End Using
-                            Else
+                        End Using
+                    Else
                         MessageBox.Show("Failed to connect to the database")
                     End If
                 End If
@@ -226,7 +226,7 @@ Public Class WARRANTY
                     End If
 
                 End If
-                End If
+            End If
         End If
     End Sub
 
@@ -284,18 +284,12 @@ Public Class WARRANTY
 
     End Sub
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+    Private Sub txt_war_days_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txt_war_days.KeyPress
+        ' Check if the pressed key is not a digit and not a control key
+        If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
+            ' If it's not a digit or control key, handle the event to prevent the character from being entered
+            e.Handled = True
+        End If
+    End Sub
 
 End Class
