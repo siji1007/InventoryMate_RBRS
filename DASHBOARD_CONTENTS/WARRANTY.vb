@@ -245,46 +245,59 @@ Public Class WARRANTY
                 Dim WarID As Integer = Convert.ToInt32(selectedRow.Cells("dt_id").Value)
 
                 If openDB() Then
-
-                    Dim query As String = "DELETE FROM warranty WHERE War_ID = @W_ID"
-                    Dim cmd As New MySqlCommand(query, Conn)
-                    cmd.Parameters.AddWithValue("@W_ID", WarID)
+                    Dim transaction As MySqlTransaction = Nothing
 
                     Try
-                        cmd.ExecuteNonQuery()
-                        MessageBox.Show("The selected warranty is deleted.")
+                        ' Begin transaction
+                        transaction = Conn.BeginTransaction()
+
+                        ' Delete products with the specified Warranty_ID
+                        Dim deleteProductsQuery As String = "DELETE FROM products WHERE Warranty_ID = @WarID"
+                        Dim deleteProductsCmd As New MySqlCommand(deleteProductsQuery, Conn)
+                        deleteProductsCmd.Parameters.AddWithValue("@WarID", WarID)
+                        deleteProductsCmd.Transaction = transaction
+                        deleteProductsCmd.ExecuteNonQuery()
+
+                        ' Delete the warranty
+                        Dim deleteWarrantyQuery As String = "DELETE FROM warranty WHERE War_ID = @W_ID"
+                        Dim deleteWarrantyCmd As New MySqlCommand(deleteWarrantyQuery, Conn)
+                        deleteWarrantyCmd.Parameters.AddWithValue("@W_ID", WarID)
+                        deleteWarrantyCmd.Transaction = transaction
+                        deleteWarrantyCmd.ExecuteNonQuery()
+
+                        ' Commit transaction if everything is successful
+                        transaction.Commit()
+
+                        MessageBox.Show("The selected warranty and associated products are deleted.")
                         War_datagridview.Rows.Clear()
                         LoadDataWarranty()
-
 
                         txt_war_days.Clear()
                         war_month_combobox.SelectedIndex = -1
                         type_war_combobox.SelectedIndex = -1
                         war_status_combobox.SelectedIndex = -1
                         war_coverage_combobox.SelectedIndex = -1
-
-
-
                     Catch ex As Exception
-                        MessageBox.Show(ex.Message)
+                        ' Rollback transaction if there's an exception
+                        If transaction IsNot Nothing Then
+                            transaction.Rollback()
+                        End If
+                        MessageBox.Show("Error deleting warranty and associated products: " & ex.Message)
                     Finally
+                        ' Close the transaction and database connection
+                        If transaction IsNot Nothing Then
+                            transaction.Dispose()
+                        End If
                         closeDB()
-
                     End Try
                 Else
                     MessageBox.Show("The database failed to Connect!")
-
                 End If
-
-            Else
-                ' Code to handle the user's "No" response or do nothing
             End If
-
-
         End If
-
-
     End Sub
+
+
 
     Private Sub txt_war_days_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txt_war_days.KeyPress
         ' Check if the pressed key is not a digit and not a control key

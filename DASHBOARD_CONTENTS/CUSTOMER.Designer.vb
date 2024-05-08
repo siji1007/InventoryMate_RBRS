@@ -46,6 +46,7 @@ Partial Class CUSTOMER
         txt_cemail = New TextBox()
         txt_caddress = New TextBox()
         txt_cname = New TextBox()
+        Label6 = New Label()
         CType(customer_datagridview, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
@@ -247,11 +248,10 @@ Partial Class CUSTOMER
         ' 
         ' txt_cnumber
         ' 
-        txt_cnumber.Location = New Point(731, 460)
+        txt_cnumber.Location = New Point(771, 460)
         txt_cnumber.Name = "txt_cnumber"
-        txt_cnumber.Size = New Size(230, 23)
+        txt_cnumber.Size = New Size(190, 23)
         txt_cnumber.TabIndex = 25
-        txt_cnumber.Text = "+63"
         ' 
         ' txt_cemail
         ' 
@@ -277,12 +277,25 @@ Partial Class CUSTOMER
         txt_cname.Size = New Size(230, 23)
         txt_cname.TabIndex = 22
         ' 
+        ' Label6
+        ' 
+        Label6.AutoSize = True
+        Label6.BackColor = Color.Transparent
+        Label6.Font = New Font("Microsoft Sans Serif", 12F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
+        Label6.ForeColor = Color.Black
+        Label6.Location = New Point(733, 463)
+        Label6.Name = "Label6"
+        Label6.Size = New Size(36, 20)
+        Label6.TabIndex = 36
+        Label6.Text = "+63"
+        ' 
         ' CUSTOMER
         ' 
         AutoScaleDimensions = New SizeF(7F, 15F)
         AutoScaleMode = AutoScaleMode.Font
         BackgroundImage = My.Resources.Resources.backgroud
         BackgroundImageLayout = ImageLayout.Center
+        Controls.Add(Label6)
         Controls.Add(Label5)
         Controls.Add(Cust_search)
         Controls.Add(Clear_cust_btn)
@@ -328,5 +341,6 @@ Partial Class CUSTOMER
     Friend WithEvents txt_cemail As TextBox
     Friend WithEvents txt_caddress As TextBox
     Friend WithEvents txt_cname As TextBox
+    Friend WithEvents Label6 As Label
 
 End Class

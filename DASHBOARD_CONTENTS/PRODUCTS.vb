@@ -106,6 +106,9 @@ Public Class PRODUCTS
                                 txt_price.Clear()
                                 show_id.Text = "ID"
                                 Cb_warranty.SelectedIndex = -1
+                                Cb_supplier.SelectedIndex = -1
+                                Sup_ID.Text = "ID"
+
                             End Using
                             closeDB()
                         End If
@@ -325,6 +328,8 @@ Public Class PRODUCTS
                                 Cb_supplier.SelectedIndex = -1
 
 
+
+
                             Catch ex As Exception
                                 MessageBox.Show("Error updating product: " & ex.Message)
                             Finally
@@ -402,6 +407,8 @@ Public Class PRODUCTS
         txt_price.Clear()
         Sup_ID.Text = "ID"
         Cb_supplier.SelectedIndex = -1
+
+
     End Sub
 
     Private Sub prod_search_TextChanged(sender As Object, e As EventArgs) Handles prod_search.TextChanged

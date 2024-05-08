@@ -121,7 +121,7 @@ Public Class CUSTOMER
                             txt_cname.Clear()
                             txt_caddress.Clear()
                             txt_cemail.Clear()
-                            txt_cnumber.Text = "+63"
+                            txt_cnumber.Clear()
 
                         Catch ex As Exception
                             MessageBox.Show("Error adding customer: " & ex.Message)
@@ -227,7 +227,7 @@ Public Class CUSTOMER
                                     txt_cname.Clear()
                                     txt_caddress.Clear()
                                     txt_cemail.Clear()
-                                    txt_cnumber.Text = "+63"
+                                    txt_cnumber.Clear()
                                 Catch ex As Exception
                                     MessageBox.Show("Error updating customer: " & ex.Message)
                                 Finally
@@ -277,7 +277,7 @@ Public Class CUSTOMER
                             txt_cname.Clear()
                             txt_caddress.Clear()
                             txt_cemail.Clear()
-                            txt_cnumber.Text = "+63"
+                            txt_cnumber.Clear()
                         Catch ex As Exception
                             MessageBox.Show("Error deleting customer: " & ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                         Finally

@@ -224,7 +224,7 @@ Partial Class WARRANTY
         type_war_combobox.AutoCompleteSource = AutoCompleteSource.ListItems
         type_war_combobox.DropDownStyle = ComboBoxStyle.DropDownList
         type_war_combobox.FormattingEnabled = True
-        type_war_combobox.Items.AddRange(New Object() {"Limited Warranty", "Service Warranty", "Extended Warranty ", "Extended Warranty ", "Parts Warranty"})
+        type_war_combobox.Items.AddRange(New Object() {"Limited Warranty", "Service Warranty", "Extended Warranty", "Parts Warranty"})
         type_war_combobox.Location = New Point(126, 510)
         type_war_combobox.Name = "type_war_combobox"
         type_war_combobox.Size = New Size(195, 23)

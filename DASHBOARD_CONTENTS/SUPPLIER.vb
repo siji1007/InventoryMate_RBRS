@@ -52,13 +52,19 @@ Public Class SUPPLIER
                 End If
             Next
 
+            ' Remove country code (+63) from the phone number if present
+            If supContact.StartsWith("+63") Then
+                supContact = supContact.Substring(3) ' Remove the first three characters (+63)
+            End If
+
             txt_sup_name.Text = supName
             txt_store_name.Text = supStore
             txt_sup_address.Text = supAddress
             txt_sup_email.Text = supEmail
-            txt_sup_cnumber.Text = supContact ' Assuming supContact already has the country code
+            txt_sup_cnumber.Text = supContact
         End If
     End Sub
+
 
 
     Private Sub Btn_create_Click(sender As Object, e As EventArgs) Handles Btn_create.Click
@@ -107,6 +113,7 @@ Public Class SUPPLIER
                                 txt_sup_address.Clear()
                                 txt_sup_email.Clear()
                                 txt_sup_cnumber.Clear()
+
                             Catch ex As Exception
                                 MessageBox.Show("An error occurred while adding the supplier. Please try again.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error)
                             Finally
@@ -253,50 +260,39 @@ Public Class SUPPLIER
 
             If result = DialogResult.Yes Then
                 If openDB() Then
-                    Dim query As String = "DELETE FROM supplier WHERE Supp_ID = @S_id"
-                    Dim cmd As New MySqlCommand(query, Conn)
-                    cmd.Parameters.AddWithValue("@S_id", S_id)
-
-
-                    txt_sup_name.Clear()
-                    txt_store_name.Clear()
-                    txt_sup_address.Clear()
-                    txt_sup_email.Clear()
-                    txt_sup_cnumber.Clear()
-
-
                     Try
-                        cmd.ExecuteNonQuery()
+                        ' Disable foreign key checks temporarily
+                        Dim disableFKQuery As String = "SET FOREIGN_KEY_CHECKS = 0;"
+                        Dim disableFKCmd As New MySqlCommand(disableFKQuery, Conn)
+                        disableFKCmd.ExecuteNonQuery()
+
+                        ' Delete supplier
+                        Dim deleteQuery As String = "DELETE FROM supplier WHERE Supp_ID = @S_id"
+                        Dim deleteCmd As New MySqlCommand(deleteQuery, Conn)
+                        deleteCmd.Parameters.AddWithValue("@S_id", S_id)
+                        deleteCmd.ExecuteNonQuery()
+
+                        ' Enable foreign key checks
+                        Dim enableFKQuery As String = "SET FOREIGN_KEY_CHECKS = 1;"
+                        Dim enableFKCmd As New MySqlCommand(enableFKQuery, Conn)
+                        enableFKCmd.ExecuteNonQuery()
+
                         MessageBox.Show("Supplier deleted successfully")
                         sup_datagridview.Rows.Remove(selectedRow)
-
-
                     Catch ex As Exception
                         MessageBox.Show(ex.Message)
                     Finally
                         closeDB()
-
                     End Try
-
-
                 Else
                     MessageBox.Show("Failed to connect to database")
-
-
                 End If
-
-            Else
-                MessageBox.Show("Please select a supplier to delete")
-
             End If
+        Else
+            MessageBox.Show("Please select a supplier to delete")
         End If
-
-
-
-
-
-
     End Sub
+
 
     Private Sub Btn_clear_Click(sender As Object, e As EventArgs) Handles Btn_clear.Click
         If sup_datagridview.SelectedRows.Count > 0 Then
@@ -307,7 +303,7 @@ Public Class SUPPLIER
         txt_store_name.Clear()
         txt_sup_address.Clear()
         txt_sup_email.Clear()
-        txt_sup_cnumber.Text = "+63"
+        txt_sup_cnumber.Clear()
 
     End Sub
 
@@ -334,5 +330,6 @@ Public Class SUPPLIER
             e.Handled = True
         End If
     End Sub
+
 
 End Class

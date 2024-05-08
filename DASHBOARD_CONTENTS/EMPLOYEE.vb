@@ -304,15 +304,33 @@ Public Class EMPLOYEE
             Dim selectedRow As DataGridViewRow = emp_datagridview.SelectedRows(0)
             Dim EmpId As Integer = Convert.ToInt32(selectedRow.Cells("Emp_ID").Value)
 
-            Dim result As DialogResult = MessageBox.Show("Are you sure you want to delete this customer?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
+            Dim result As DialogResult = MessageBox.Show("Are you sure you want to delete this employee?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
 
             If result = DialogResult.Yes Then
                 If openDB() Then
-                    Dim query As String = "DELETE FROM employee WHERE Emp_ID = @EmpId"
-                    Dim cmd As New MySqlCommand(query, Conn)
-                    cmd.Parameters.AddWithValue("@EmpId", EmpId)
+                    Dim transaction As MySqlTransaction = Nothing
+
                     Try
-                        cmd.ExecuteNonQuery()
+                        ' Begin transaction
+                        transaction = Conn.BeginTransaction()
+
+                        ' Delete user account associated with the employee
+                        Dim deleteUserQuery As String = "DELETE FROM users WHERE Employee_ID = @EmpId"
+                        Dim deleteUserCmd As New MySqlCommand(deleteUserQuery, Conn)
+                        deleteUserCmd.Parameters.AddWithValue("@EmpId", EmpId)
+                        deleteUserCmd.Transaction = transaction
+                        deleteUserCmd.ExecuteNonQuery()
+
+                        ' Delete the employee
+                        Dim deleteEmployeeQuery As String = "DELETE FROM employee WHERE Emp_ID = @EmpId"
+                        Dim deleteEmployeeCmd As New MySqlCommand(deleteEmployeeQuery, Conn)
+                        deleteEmployeeCmd.Parameters.AddWithValue("@EmpId", EmpId)
+                        deleteEmployeeCmd.Transaction = transaction
+                        deleteEmployeeCmd.ExecuteNonQuery()
+
+                        ' Commit transaction if everything is successful
+                        transaction.Commit()
+
                         emp_datagridview.Rows.Clear()
                         DataLoadEmployee()
 
@@ -322,21 +340,24 @@ Public Class EMPLOYEE
                         emp_birthdate.Value = DateTime.Today
                         Button1.Text = ">>"
 
-
+                        MessageBox.Show("Employee and associated user account deleted successfully")
                     Catch ex As Exception
-                        MessageBox.Show(ex.Message)
+                        ' Rollback transaction if there's an exception
+                        If transaction IsNot Nothing Then
+                            transaction.Rollback()
+                        End If
+                        MessageBox.Show("Error deleting employee and associated user account: " & ex.Message)
                     Finally
+                        ' Close the transaction and database connection
+                        If transaction IsNot Nothing Then
+                            transaction.Dispose()
+                        End If
                         closeDB()
-
                     End Try
                 Else
                     MessageBox.Show("Failed to connect to database")
-
                 End If
             End If
-
-
-
         End If
     End Sub
 
@@ -347,7 +368,7 @@ Public Class EMPLOYEE
 
         txt_emp_name.Clear()
         txt_emp_address.Clear()
-        txt_emp_cnumber.Text = "+63"
+        txt_emp_cnumber.Clear()
         emp_birthdate.Value = DateTime.Today
         Button1.Text = ">>"
     End Sub
