@@ -80,7 +80,10 @@ Public Class PRODUCTS
                         Dim result As DialogResult = MessageBox.Show("Are you sure you want to add this product?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
                         If result = DialogResult.Yes Then
                             openDB()
-                            Dim query As String = "INSERT INTO products (prod_name, Warranty_ID,sup_ID, prod_model, prod_color, prod_stocks, prod_price) VALUES (@P_name, @Warranty_ID,@Supplier_ID, @P_model, @P_color, @P_stocks, @P_price)"
+
+                            Dim query As String = "INSERT INTO products (prod_name, Warranty_ID,sup_ID, prod_model, prod_color, prod_stocks, prod_price)
+                                                    VALUES (@P_name, @Warranty_ID,@Supplier_ID, @P_model, @P_color, @P_stocks, @P_price)"
+
                             Using cmdInsert As New MySqlCommand(query, Conn)
                                 cmdInsert.Parameters.AddWithValue("@P_name", P_name.ToUpper())
                                 cmdInsert.Parameters.AddWithValue("@Warranty_ID", W_ID) ' Use W_ID as the Warranty_ID value
@@ -291,7 +294,10 @@ Public Class PRODUCTS
                     Dim result As DialogResult = MessageBox.Show("Are you sure you want to update this product?", "Confirmation", MessageBoxButtons.YesNo, MessageBoxIcon.Question)
                     If result = DialogResult.Yes Then
                         If openDB() Then
-                            Dim query As String = "UPDATE products SET prod_name = @P_name,Warranty_ID = @WarID,sup_ID = @SupplierID ,prod_model = @P_model, prod_color = @P_color, prod_stocks = @P_stocks, prod_price = @P_price WHERE prod_id = @P_id"
+
+                            Dim query As String = "UPDATE products SET prod_name = @P_name,Warranty_ID = @WarID,sup_ID = @SupplierID ,prod_model = @P_model,
+                                                    prod_color = @P_color, prod_stocks = @P_stocks, prod_price = @P_price WHERE prod_id = @P_id"
+
                             Dim cmd As New MySqlCommand(query, Conn)
                             cmd.Parameters.AddWithValue("@P_id", P_id)
                             cmd.Parameters.AddWithValue("@WarID", WarId)
@@ -417,7 +423,8 @@ Public Class PRODUCTS
 
     Private Sub LoadWarranty()
         If openDB() Then
-            Dim query_warranty = "SELECT CONCAT(War_ID,'-',War_Duration, '-', War_DurationUnit, '-', War_Type, '-', War_Coverage) AS warranty_info FROM warranty"
+            Dim query_warranty = "SELECT CONCAT(War_ID,'-',War_Duration, '-', War_DurationUnit,
+                                '-', War_Type, '-', War_Coverage) AS warranty_info FROM warranty"
             Using cmd As New MySqlCommand(query_warranty, Conn)
                 Try
                     Using reader = cmd.ExecuteReader

@@ -123,7 +123,8 @@ Public Class EMPLOYEE
 
                 If result = DialogResult.Yes Then
                     If openDB() Then
-                        Dim query As String = "INSERT INTO employee (Emp_name, Emp_address, Emp_cnumber, Emp_bdate, Emp_status) VALUES (@Emp_name, @Emp_address, @Emp_cnumber, STR_TO_DATE(@Emp_bdate, '%Y-%m-%d'), @Emp_status)"
+                        Dim query As String = "INSERT INTO employee (Emp_name, Emp_address, Emp_cnumber, Emp_bdate, Emp_status) VALUES (@Emp_name, @Emp_address, 
+                                               @Emp_cnumber, STR_TO_DATE(@Emp_bdate, '%Y-%m-%d'), @Emp_status)"
                         Dim cmd As New MySqlCommand(query, Conn)
                         cmd.Parameters.AddWithValue("@Emp_name", Emp_name.ToUpper())
                         cmd.Parameters.AddWithValue("@Emp_address", Emp_address.ToUpper())
@@ -243,7 +244,8 @@ Public Class EMPLOYEE
                 If result = DialogResult.Yes Then
                     ' Valid phone number format
                     If openDB() Then
-                        Dim query As String = "UPDATE employee SET Emp_name = @Emp_name, Emp_address = @Emp_address, Emp_cnumber = @Emp_cnumber, Emp_bdate = @Emp_bdate, Emp_status = @Emp_status WHERE Emp_ID = @Emp_ID"
+                        Dim query As String = "UPDATE employee SET Emp_name = @Emp_name, Emp_address = @Emp_address, Emp_cnumber = @Emp_cnumber, 
+                                                Emp_bdate = @Emp_bdate, Emp_status = @Emp_status WHERE Emp_ID = @Emp_ID"
                         Dim cmd As New MySqlCommand(query, Conn)
                         cmd.Parameters.AddWithValue("@Emp_ID", Emp_ID)
                         cmd.Parameters.AddWithValue("@Emp_name", Emp_name.ToUpper())

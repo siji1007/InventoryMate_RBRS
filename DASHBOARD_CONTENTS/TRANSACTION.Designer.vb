@@ -251,9 +251,10 @@ Partial Class TRANSACTION
         ' 
         Label10.Anchor = AnchorStyles.Top Or AnchorStyles.Right
         Label10.AutoSize = True
-        Label10.Location = New Point(564, 75)
+        Label10.Font = New Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, CByte(0))
+        Label10.Location = New Point(549, 72)
         Label10.Name = "Label10"
-        Label10.Size = New Size(71, 15)
+        Label10.Size = New Size(95, 20)
         Label10.TabIndex = 31
         Label10.Text = "SERVICE FEE"
         ' 
@@ -270,7 +271,8 @@ Partial Class TRANSACTION
         txt_EmpID.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Right
         txt_EmpID.Location = New Point(699, 19)
         txt_EmpID.Name = "txt_EmpID"
-        txt_EmpID.Size = New Size(224, 23)
+        txt_EmpID.ReadOnly = True
+        txt_EmpID.Size = New Size(39, 23)
         txt_EmpID.TabIndex = 29
         ' 
         ' Cb_employeeName

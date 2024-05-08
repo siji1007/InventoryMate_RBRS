@@ -203,7 +203,8 @@ Public Class SUPPLIER
 
                         If result = DialogResult.Yes Then
                             If openDB() Then
-                                Dim query As String = "UPDATE supplier SET Supp_name = @S_name, Supp_store = @S_store, Supp_address = @S_address, Supp_email = @S_email, Supp_cnumber = @S_contact WHERE Supp_ID = @S_id"
+                                Dim query As String = "UPDATE supplier SET Supp_name = @S_name, Supp_store = @S_store, Supp_address
+                                                      = @S_address, Supp_email = @S_email, Supp_cnumber = @S_contact WHERE Supp_ID = @S_id"
                                 Dim cmd As New MySqlCommand(query, Conn)
                                 cmd.Parameters.AddWithValue("@S_id", S_id)
                                 cmd.Parameters.AddWithValue("@S_name", S_name.ToUpper())

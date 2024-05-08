@@ -88,7 +88,8 @@ Public Class WARRANTY
 
                 If result = DialogResult.Yes Then
                     If openDB() Then
-                        Dim query As String = "INSERT INTO warranty (War_Duration, War_DurationUnit, War_Type, War_Status, War_Coverage) VALUES (@WarDuration, @WarUnit, @WarType, @WarStatus, @WarCoverage)"
+                        Dim query As String = "INSERT INTO warranty (War_Duration, War_DurationUnit, War_Type, War_Status, War_Coverage) 
+                                                VALUES (@WarDuration, @WarUnit, @WarType, @WarStatus, @WarCoverage)"
                         Using cmd As New MySqlCommand(query, Conn)
                             cmd.Parameters.AddWithValue("@WarDuration", WarDuration)
                             cmd.Parameters.AddWithValue("@WarUnit", WarUnit)
@@ -196,7 +197,8 @@ Public Class WARRANTY
                     If result = DialogResult.Yes Then
                         Try
                             If openDB() Then
-                                Dim queryUpdate As String = "UPDATE warranty SET War_Duration = @W_duration, War_DurationUnit = @W_unit, War_Type = @W_type, War_Status = @W_status, War_Coverage = @W_coverage WHERE War_ID = @W_ID"
+                                Dim queryUpdate As String = "UPDATE warranty SET War_Duration = @W_duration, War_DurationUnit = @W_unit, 
+                                                            War_Type = @W_type, War_Status = @W_status, War_Coverage = @W_coverage WHERE War_ID = @W_ID"
                                 Dim cmdUpdate As New MySqlCommand(queryUpdate, Conn)
                                 cmdUpdate.Parameters.AddWithValue("@W_ID", WarID)
                                 cmdUpdate.Parameters.AddWithValue("@W_duration", Convert.ToInt32(WarDuration))

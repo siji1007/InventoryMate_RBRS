@@ -612,7 +612,7 @@ Public Class TRANSACTION
                     Try
                         If openDB() Then
                             Dim query As String = "INSERT INTO Transactions (Prod_ID, Customer_ID, Emp_ID, Warr_ID, Quantity, S_fee, Total_cost, Transact_date) " &
-  "VALUES (@Prod_ID, @Customer_ID, @Emp_ID, @Warr_ID, @Quantity, @S_fee, @Total_cost, @Transac_date)"
+                                                    "VALUES (@Prod_ID, @Customer_ID, @Emp_ID, @Warr_ID, @Quantity, @S_fee, @Total_cost, @Transac_date)"
 
                             Using cmd As New MySqlCommand(query, Conn)
                                 cmd.Parameters.AddWithValue("@Prod_ID", selectedProductId)
@@ -1053,32 +1053,24 @@ Public Class TRANSACTION
     End Sub
 
     Private Sub txt_custnumber_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txt_custnumber.KeyPress
-        ' Check if the pressed key is not a digit and not a control key
         If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
-            ' If it's not a digit or control key, handle the event to prevent the character from being entered
             e.Handled = True
         End If
     End Sub
 
     Private Sub txt_quantity_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txt_quantity.KeyPress
-        ' Check if the pressed key is not a digit and not a control key
         If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
-            ' If it's not a digit or control key, handle the event to prevent the character from being entered
             e.Handled = True
         End If
     End Sub
 
     Private Sub txt_price_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txt_price.KeyPress
-        ' Check if the pressed key is not a digit and not a control key
         If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
-            ' If it's not a digit or control key, handle the event to prevent the character from being entered
             e.Handled = True
         End If
     End Sub
     Private Sub txt_service_fee_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txt_service_fee.KeyPress
-        ' Check if the pressed key is not a digit and not a control key
         If Not Char.IsDigit(e.KeyChar) AndAlso Not Char.IsControl(e.KeyChar) Then
-            ' If it's not a digit or control key, handle the event to prevent the character from being entered
             e.Handled = True
         End If
     End Sub
